@@ -1,0 +1,13 @@
+.Nav {
+  background-color: #0069c0;
+}
+.NavLogo {
+  background-color: white;
+}
+.d {
+  color: white;
+}
+#collasible-nav-dropdown {
+  color: white;
+  width: 210px;
+}
