@@ -1,16 +1,13 @@
 const sql = require("./db.js");
-const tbl_name = "User_Table";
+const tbl_name = "User_ID_PWD";
 
 const User = function (user) {
-  //this.User_Index = user.User_Index;
   this.User_ID = user.User_ID;
-  this.User_Password = user.User_Password;
-  this.User_Name = user.User_Name;
-  this.User_Birth = user.User_Birth;
-  this.User_Phone = user.User_Phone;
+  this.User_PWD = user.User_PWD;
 };
 
 User.create = (new_user, result) => {
+  console.log("< POST > create new user");
   sql.query(`INSERT INTO ${tbl_name} SET ?`, new_user, (err, res) => {
     if (err) {
       console.log("error: ", err);
@@ -23,9 +20,10 @@ User.create = (new_user, result) => {
   });
 };
 
-User.findById = (user_index, result) => {
+User.findById = (user_ID, result) => {
   sql.query(
-    `SELECT * FROM ${tbl_name} WHERE User_Index = ${user_index}`,
+    `SELECT * FROM ${tbl_name} WHERE User_ID = ?`,
+    user_ID,
     (err, res) => {
       if (err) {
         console.log("error: ", err);
@@ -58,31 +56,29 @@ User.getAll = (result) => {
   });
 };
 
-//   User.updateById = (id, customer, result) => {
-//     sql.query(
-//       "UPDATE User_Table SET params = ? WHERE id = ?",
-//       [],
-//       (err, res) => {
-//         if (err) {
-//           console.log("error: ", err);
-//           result(null, err);
-//           return;
-//         }
-
-//         if (res.affectedRows == 0) {
-//           // not found User with the id
-//           result({ kind: "not_found" }, null);
-//           return;
-//         }
-
-//         console.log("updated customer: ", { id: id, ...customer });
-//         result(null, { id: id, ...customer });
-//       }
-//     );
-//   };
+User.updateById = (id, user, result) => {
+  sql.query(
+    `UPDATE ${tbl_name} SET User_ID = ?, User_PWD = ? WHERE idx = ?`,
+    [user.User_ID, user.User_PWD, id],
+    (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(null, err);
+        return;
+      }
+      if (res.affectedRows == 0) {
+        // not found User with the id
+        result({ kind: "not_found" }, null);
+        return;
+      }
+      console.log("updated User: ", { id: id, ...user });
+      result(null, { id: id, ...user });
+    }
+  );
+};
 
 User.remove = (id, result) => {
-  sql.query(`DELETE FROM ${tbl_name} WHERE id = ?`, id, (err, res) => {
+  sql.query(`DELETE FROM ${tbl_name} WHERE User_ID=?`, id, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(null, err);
@@ -95,20 +91,7 @@ User.remove = (id, result) => {
       return;
     }
 
-    console.log(`deleted ${tbl_name} with id: `, id);
-    result(null, res);
-  });
-};
-
-User.removeAll = (result) => {
-  sql.query(`DELETE FROM ${tbl_name}`, (err, res) => {
-    if (err) {
-      console.log("error: ", err);
-      result(null, err);
-      return;
-    }
-
-    console.log(`deleted ${res.affectedRows} users`);
+    console.log(`deleted ${tbl_name} with ID: `, id);
     result(null, res);
   });
 };

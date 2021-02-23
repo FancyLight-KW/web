@@ -1,4 +1,4 @@
-const User = require("../models/user_model.js");
+const User = require("../models/user.model.js");
 
 // 새 유저 생성
 exports.create = (req, res) => {
@@ -13,10 +13,7 @@ exports.create = (req, res) => {
   const user = new User({
     //User_Index: req.body.User_Index,
     User_ID: req.body.User_ID,
-    User_Password: req.body.User_Password,
-    User_Name: req.body.User_Name,
-    User_Birth: req.body.User_Birth,
-    User_Phone: req.body.User_Phone,
+    User_PWD: req.body.User_PWD,
   });
 
   User.create(user, (err, data) => {
@@ -68,22 +65,21 @@ exports.update = (req, res) => {
     });
   }
 
-  //   User.updateById(req.params.userId, new User(req.body), (err, data) => {
-  //     if (err) {
-  //       if (err.kind == "not_found") {
-  //         res.status(404).send({
-  //           message: `not found user id: ${req.params.userId}`,
-  //         });
-  //       } else {
-  //         res.status(500).send({
-  //             message: `error user id: ${req.params.userId}`,
-  //           });
-  //       }
-  //     }
-  //     else{
-  //         res.send(data)
-  //     }
-  //   });
+  User.updateById(req.params.userId, new User(req.body), (err, data) => {
+    if (err) {
+      if (err.kind == "not_found") {
+        res.status(404).send({
+          message: `not found user id: ${req.params.userId}`,
+        });
+      } else {
+        res.status(500).send({
+          message: `error user id: ${req.params.userId}`,
+        });
+      }
+    } else {
+      res.send(data);
+    }
+  });
 };
 
 // 유저 삭제
