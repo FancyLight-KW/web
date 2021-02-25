@@ -1,12 +1,14 @@
 import React, { useState } from "react";
+import axios from "axios";
 
 function RegisterPage() {
   // const dispatch = useDispatch();
 
-  const [Email, setEmail] = useState("");
-  const [Name, setName] = useState("");
-  const [Password, setPassword] = useState("");
-  const [ConfirmPassword, setConfirmPassword] = useState("");
+  const [EmailReg, setEmail] = useState("");
+  const [NameReg, setName] = useState("");
+  const [PasswordReg, setPassword] = useState("");
+  const [ConfirmPasswordReg, setConfirmPassword] = useState("");
+  
 
   const onEmailHandler = (event) => {
     setEmail(event.currentTarget.value);
@@ -27,9 +29,24 @@ function RegisterPage() {
   const onSubmitHandler = (event) => {
     event.preventDefault();
 
-    if (Password !== ConfirmPassword) {
+    if (PasswordReg !== ConfirmPasswordReg) {
       return alert("비밀번호와 비밀번호 확인은 같아야 합니다.");
     }
+  };
+
+  const submit = () => {
+    
+    // if (PasswordReg !== ConfirmPasswordReg) {
+    //   return alert("비밀번호와 비밀번호 확인은 같아야 합니다.");
+    // }
+    console.log("hello");
+    axios.post('http://localhost:5000/register', {
+      email: EmailReg,
+      name: NameReg, 
+      password: PasswordReg,
+    }).then((response) => {
+      console.log(response);
+    });
   };
 
   return (
@@ -47,24 +64,25 @@ function RegisterPage() {
         onSubmit={onSubmitHandler}
       >
         <label>Email</label>
-        <input type="email" value={Email} onChange={onEmailHandler} />
+        <input type="email" value={EmailReg} onChange={onEmailHandler} />
 
         <label>Name</label>
-        <input type="text" value={Name} onChange={onNameHandler} />
+        <input type="text" value={NameReg} onChange={onNameHandler} />
 
         <label>Password</label>
-        <input type="password" value={Password} onChange={onPasswordHandler} />
+        <input type="password" value={PasswordReg} onChange={onPasswordHandler} />
 
         <label>Confirm Password</label>
         <input
           type="password"
-          value={ConfirmPassword}
+          value={ConfirmPasswordReg}
           onChange={onConfirmPasswordHandler}
         />
 
         <br />
-        <button type="submit">회원 가입</button>
+        <button onClick={submit}>회원 가입</button>
       </form>
+
     </div>
   );
 }
