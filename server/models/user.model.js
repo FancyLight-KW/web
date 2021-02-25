@@ -4,6 +4,7 @@ const tbl_name = "User_ID_PWD";
 const User = function (user) {
   this.User_ID = user.User_ID;
   this.User_PWD = user.User_PWD;
+  this.User_Name = user.User_Name;
 };
 
 User.create = (new_user, result) => {
@@ -58,8 +59,8 @@ User.getAll = (result) => {
 
 User.updateById = (id, user, result) => {
   sql.query(
-    `UPDATE ${tbl_name} SET User_ID = ?, User_PWD = ? WHERE idx = ?`,
-    [user.User_ID, user.User_PWD, id],
+    `UPDATE ${tbl_name} SET User_ID = ?, User_PWD = ?, User_Name = ? WHERE idx = ?`,
+    [user.User_ID, user.User_PWD, user.User_Name, id],
     (err, res) => {
       if (err) {
         console.log("error: ", err);
