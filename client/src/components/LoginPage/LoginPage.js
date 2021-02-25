@@ -18,26 +18,26 @@ function LoginPage() {
   const onSubmitHandler = (event) => {
     event.preventDefault();
 
-    axios.post('http://localhost:5000/login', {
-      email: Email, 
-      password: Password,
-    }).then((response) => {
-
-      if(response.data.message){
-        alert("이메일 혹은 비밀번호가 다릅니다.");
-      } else {
-        console.log(response);
-        return alert(response.data[0].User_ID);
-      }
-    });
+    axios
+      .post("http://localhost:5000/login", {
+        email: Email,
+        password: Password,
+      })
+      .then((response) => {
+        if (response.data.message) {
+          alert("이메일 혹은 비밀번호가 다릅니다.");
+        } else {
+          console.log(response);
+          return alert(response.data[0].User_ID);
+        }
+      });
   };
 
   const login = () => {
     // axios.post('http://localhost:5000/login', {
-    //   email: Email, 
+    //   email: Email,
     //   password: Password,
     // }).then((response) => {
-
     //   if(response.data.message){
     //     alert("이메일 혹은 비밀번호가 다릅니다.");
     //   } else {
@@ -57,9 +57,10 @@ function LoginPage() {
         height: "100vh",
       }}
     >
-
-      <form style={{ display: "flex", flexDirection: "column" }}
-      onSubmit={onSubmitHandler}>
+      <form
+        style={{ display: "flex", flexDirection: "column" }}
+        onSubmit={onSubmitHandler}
+      >
         <label>Email</label>
         <input type="email" value={Email} onChange={onEmailHandler} />
 
@@ -67,9 +68,7 @@ function LoginPage() {
         <input type="password" value={Password} onChange={onPasswordHandler} />
         <br />
         <button>Login</button>
-        
       </form>
-      
     </div>
   );
 }
