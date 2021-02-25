@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 
 function LoginPage() {
   // const dispatch = useDispatch();
@@ -13,6 +14,22 @@ function LoginPage() {
   const onPasswordHandler = (event) => {
     setPassword(event.currentTarget.value);
   };
+
+  const login = () => {
+    axios.post('http://localhost:5000/login', {
+      email: Email, 
+      password: Password,
+    }).then((response) => {
+
+      if(response.data.message){
+        alert("이메일 혹은 비밀번호가 다릅니다.");
+      } else {
+        console.log(response);
+        return alert(response.data[0].User_ID);
+      }
+    });
+  };
+
   return (
     <div
       style={{
@@ -23,6 +40,7 @@ function LoginPage() {
         height: "100vh",
       }}
     >
+
       <form style={{ display: "flex", flexDirection: "column" }}>
         <label>Email</label>
         <input type="email" value={Email} onChange={onEmailHandler} />
@@ -30,8 +48,10 @@ function LoginPage() {
         <label>Password</label>
         <input type="password" value={Password} onChange={onPasswordHandler} />
         <br />
-        <button>Login</button>
+        <button onClick={login}>Login</button>
+        
       </form>
+      
     </div>
   );
 }

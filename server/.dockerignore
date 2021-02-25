@@ -20,4 +20,6 @@
 **/obj
 **/secrets.dev.yaml
 **/values.dev.yaml
+**/config
 README.md
+

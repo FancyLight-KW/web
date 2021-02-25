@@ -14,12 +14,13 @@ exports.create = (req, res) => {
     //User_Index: req.body.User_Index,
     User_ID: req.body.User_ID,
     User_PWD: req.body.User_PWD,
+    User_Name: req.body.User_Name,
   });
 
   User.create(user, (err, data) => {
     if (err)
       res.status(500).send({
-        message: err.message || "error.",
+        message: err.message || "Insert Failed.",
       });
     else res.send(data);
   });
