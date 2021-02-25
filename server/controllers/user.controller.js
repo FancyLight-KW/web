@@ -1,4 +1,4 @@
-const User = require("../API/models/user/user.model.js");
+const User = require("../models/user.model.js");
 
 // 새 유저 생성
 exports.create = (req, res) => {
@@ -10,7 +10,6 @@ exports.create = (req, res) => {
     });
   }
 
-  //Json
   const user = new User({
     //User_Index: req.body.User_Index,
     User_ID: req.body.User_ID,

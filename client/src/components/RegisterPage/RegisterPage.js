@@ -32,13 +32,7 @@ function RegisterPage() {
     if (PasswordReg !== ConfirmPasswordReg) {
       return alert("비밀번호와 비밀번호 확인은 같아야 합니다.");
     }
-  };
 
-  const submit = () => {
-    
-    // if (PasswordReg !== ConfirmPasswordReg) {
-    //   return alert("비밀번호와 비밀번호 확인은 같아야 합니다.");
-    // }
     console.log("hello");
     axios.post('http://localhost:5000/register', {
       email: EmailReg,
@@ -47,6 +41,21 @@ function RegisterPage() {
     }).then((response) => {
       console.log(response);
     });
+  };
+
+  const submit = () => {
+    
+    // if (PasswordReg !== ConfirmPasswordReg) {
+    //   return alert("비밀번호와 비밀번호 확인은 같아야 합니다.");
+    // }
+    // console.log("hello");
+    // axios.post('http://localhost:5000/register', {
+    //   email: EmailReg,
+    //   name: NameReg, 
+    //   password: PasswordReg,
+    // }).then((response) => {
+    //   console.log(response);
+    // });
   };
 
   return (
@@ -80,7 +89,7 @@ function RegisterPage() {
         />
 
         <br />
-        <button onClick={submit}>회원 가입</button>
+        <button>회원 가입</button>
       </form>
 
     </div>
