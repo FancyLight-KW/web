@@ -35,9 +35,9 @@ function RegisterPage() {
 
     console.log("hello");
     axios.post('http://localhost:5000/register', {
-      email: EmailReg,
-      name: NameReg, 
-      password: PasswordReg,
+      User_ID: EmailReg,
+      User_PWD: PasswordReg,
+      User_Name: NameReg, 
     }).then((response) => {
       console.log(response);
     });
