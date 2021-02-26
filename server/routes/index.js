@@ -1,6 +1,6 @@
 var express = require("express");
 var router = express.Router();
-const sql = require("../models/db.js");
+const sql = require("../models/mysql.connection.js");
 const user = require("../controllers/user.controller.js");
 
 //testcode

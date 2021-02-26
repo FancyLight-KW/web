@@ -1,3 +1,5 @@
 .vscode
 server/config
 server/node_modules
+.env
+.env.test
