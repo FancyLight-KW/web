@@ -36,13 +36,13 @@ function RegisterPage() {
     }
 
     let body = {
-      User_ID: EmailReg,
-      User_PWD: PasswordReg,
-      User_Name: NameReg,
+      User_id: EmailReg,
+      User_password: PasswordReg,
+      User_name: NameReg,
     };
 
     dispatch(registerUser(body)).then((response) => {
-      alert(response.payload.User_Name + "님 회원가입 되었습니다.");
+      alert(response.payload.User_name + "님 회원가입 되었습니다.");
     });
 
     // axios

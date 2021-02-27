@@ -1,7 +1,6 @@
 var express = require("express");
 var router = express.Router();
-const sql = require("../models/mysql.connection.js");
-const user = require("../controllers/user.controller.js");
+const user = require("../controllers/Users.controller.js");
 
 //testcode
 // router.post('/register', (req, res) => {
