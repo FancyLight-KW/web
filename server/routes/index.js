@@ -1,48 +1,49 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
-const sql = require("../models/db.js");
+const sql = require("../models/mysql.connection.js");
+const user = require("../controllers/user.controller.js");
 
 //testcode
-router.post('/register', (req, res) => {
+// router.post('/register', (req, res) => {
 
+//   const email = req.body.email;
+//   const name = req.body.name;
+//   const password = req.body.password;
+
+//   sql.query(
+//     "INSERT INTO User_ID_PWD (User_ID, User_PWD) VALUES (?,?)",
+//     [email, password],
+//     (err, result) => {
+//       console.log(err);
+//     }
+//   );
+// });
+
+router.post("/register", user.create);
+
+router.post("/login", (req, res) => {
   const email = req.body.email;
-  const name = req.body.name;
   const password = req.body.password;
 
   sql.query(
-    "INSERT INTO User_ID_PWD (User_ID, User_PWD) VALUES (?,?)", 
+    "SELECT * FROM User_ID_PWD WHERE User_ID = ? AND User_PWD = ?",
     [email, password],
     (err, result) => {
-      console.log(err);
-    }
-  );
-});
+      if (err) {
+        res.send({ err: err });
+      }
 
-router.post('/login', (req, res) => {
-
-  const email = req.body.email;
-  const password = req.body.password;
-
-  sql.query(
-    "SELECT * FROM User_ID_PWD WHERE User_ID = ? AND User_PWD = ?", 
-    [email, password],
-    (err, result) => {
-
-      if(err){
-        res.send({err: err});
-      } 
-
-      if(result.length > 0){
+      if (result.length > 0) {
         res.send(result);
-        } else {
-        res.send({message: "Wrong username/password combination!"});
+      } else {
+        res.send({ message: "Wrong username/password combination!" });
       }
     }
   );
-})
+});
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+router.get("/", function (req, res, next) {
+  res.render("index", { title: "Express" });
 });
 
 module.exports = router;

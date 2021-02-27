@@ -1,4 +1,4 @@
-const sql = require("./db.js");
+const sql = require("./mysql.connection.js");
 const tbl_name = "User_ID_PWD";
 
 const User = function (user) {

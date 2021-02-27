@@ -1,14 +1,16 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { registerUser } from "../../actions/user";
+
 import axios from "axios";
 
 function RegisterPage() {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   const [EmailReg, setEmail] = useState("");
   const [NameReg, setName] = useState("");
   const [PasswordReg, setPassword] = useState("");
   const [ConfirmPasswordReg, setConfirmPassword] = useState("");
-  
 
   const onEmailHandler = (event) => {
     setEmail(event.currentTarget.value);
@@ -32,22 +34,41 @@ function RegisterPage() {
     if (PasswordReg !== ConfirmPasswordReg) {
       return alert("비밀번호와 비밀번호 확인은 같아야 합니다.");
     }
+
+    let body = {
+      User_ID: EmailReg,
+      User_PWD: PasswordReg,
+      User_Name: NameReg,
+    };
+
+    dispatch(registerUser(body)).then((response) => {
+      alert(response.payload.User_Name + "님 회원가입 되었습니다.");
+    });
+
+    // axios
+    //   .post("http://localhost:5000/register", {
+    //     User_ID: EmailReg,
+    //     User_PWD: PasswordReg,
+    //     User_Name: NameReg,
+    //   })
+    //   .then((response) => {
+    //     console.log(response);
+    //   });
   };
 
-  const submit = () => {
-    
-    // if (PasswordReg !== ConfirmPasswordReg) {
-    //   return alert("비밀번호와 비밀번호 확인은 같아야 합니다.");
-    // }
-    console.log("hello");
-    axios.post('http://localhost:5000/register', {
-      email: EmailReg,
-      name: NameReg, 
-      password: PasswordReg,
-    }).then((response) => {
-      console.log(response);
-    });
-  };
+  // const submit = () => {
+  //   // if (PasswordReg !== ConfirmPasswordReg) {
+  //   //   return alert("비밀번호와 비밀번호 확인은 같아야 합니다.");
+  //   // }
+  //   // console.log("hello");
+  //   // axios.post('http://localhost:5000/register', {
+  //   //   email: EmailReg,
+  //   //   name: NameReg,
+  //   //   password: PasswordReg,
+  //   // }).then((response) => {
+  //   //   console.log(response);
+  //   // });
+  // };
 
   return (
     <div
@@ -70,7 +91,11 @@ function RegisterPage() {
         <input type="text" value={NameReg} onChange={onNameHandler} />
 
         <label>Password</label>
-        <input type="password" value={PasswordReg} onChange={onPasswordHandler} />
+        <input
+          type="password"
+          value={PasswordReg}
+          onChange={onPasswordHandler}
+        />
 
         <label>Confirm Password</label>
         <input
@@ -80,9 +105,8 @@ function RegisterPage() {
         />
 
         <br />
-        <button onClick={submit}>회원 가입</button>
+        <button>회원 가입</button>
       </form>
-
     </div>
   );
 }

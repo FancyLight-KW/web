@@ -1,8 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { loginUser } from "../../actions/user";
+
 import axios from "axios";
 
 function LoginPage() {
-  // const dispatch = useDispatch();
+  // useEffect(() => {
+  //   axios.get("http://localhost:3000/login").then((response) => {
+  //     if (response.data.loggedIn == true) {
+  //       setLoginStatus(response.data.user[0].username);
+  //     }
+  //   });
+  // }, []);
+
+  const dispatch = useDispatch();
+  //axios.defaults.withCredentials = true;
 
   const [Email, setEmail] = useState("");
   const [Password, setPassword] = useState("");
@@ -15,20 +27,51 @@ function LoginPage() {
     setPassword(event.currentTarget.value);
   };
 
-  const login = () => {
-    axios.post('http://localhost:5000/login', {
-      email: Email, 
-      password: Password,
-    }).then((response) => {
+  const onSubmitHandler = (event) => {
+    event.preventDefault(); // 새로고침 방지
 
-      if(response.data.message){
+    let body = {
+      email: Email,
+      password: Password,
+    };
+
+    dispatch(loginUser(body)).then((response) => {
+      if (response.payload.message) {
         alert("이메일 혹은 비밀번호가 다릅니다.");
       } else {
-        console.log(response);
-        return alert(response.data[0].User_ID);
+        alert(response.payload[0].User_ID);
       }
     });
   };
+
+  // axios
+  //   .post("http://localhost:5000/login", {
+  //     email: Email,
+  //     password: Password,
+  //   })
+  //   .then((response) => {
+  //     if (response.data.message) {
+  //       alert("이메일 혹은 비밀번호가 다릅니다.");
+  //     } else {
+  //       console.log(response);
+  //       return alert(response.data[0].User_ID);
+  //     }
+  //   });
+  // };
+
+  // const login = () => {
+  //   // axios.post('http://localhost:5000/login', {
+  //   //   email: Email,
+  //   //   password: Password,
+  //   // }).then((response) => {
+  //   //   if(response.data.message){
+  //   //     alert("이메일 혹은 비밀번호가 다릅니다.");
+  //   //   } else {
+  //   //     console.log(response);
+  //   //     return alert(response.data[0].User_ID);
+  //   //   }
+  //   // });
+  // };
 
   return (
     <div
@@ -40,18 +83,18 @@ function LoginPage() {
         height: "100vh",
       }}
     >
-
-      <form style={{ display: "flex", flexDirection: "column" }}>
+      <form
+        style={{ display: "flex", flexDirection: "column" }}
+        onSubmit={onSubmitHandler}
+      >
         <label>Email</label>
         <input type="email" value={Email} onChange={onEmailHandler} />
 
         <label>Password</label>
         <input type="password" value={Password} onChange={onPasswordHandler} />
         <br />
-        <button onClick={login}>Login</button>
-        
+        <button>Login</button>
       </form>
-      
     </div>
   );
 }
