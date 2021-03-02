@@ -1,4 +1,4 @@
-const models = require("../models");
+const models = require("../../models");
 
 // 새 유저 생성
 exports.create = (req, res) => {
