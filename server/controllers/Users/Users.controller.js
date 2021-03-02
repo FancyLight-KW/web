@@ -1,8 +1,9 @@
 const models = require("../../models");
+const bcrypt = require("./encrypt");
 
 // 새 유저 생성
 exports.create = (req, res) => {
-  console.log(`create:`, req.body);
+  //console.log(`create:`, req.body);
 
   if (!req.body) {
     res.status(400).send({
@@ -12,7 +13,7 @@ exports.create = (req, res) => {
 
   models.Users.create({
     User_id: req.body.User_id,
-    User_password: req.body.User_password,
+    User_password: bcrypt.encrypt(req.body.User_password),
     User_name: req.body.User_name,
   })
     .then((result) => {
@@ -62,7 +63,7 @@ exports.update = (req, res) => {
   models.Users.update(
     {
       User_id: body.User_id,
-      User_password: body.User_password,
+      User_password: bcrypt.encrypt(body.User_password),
       User_name: body.User_name,
     },
     {
