@@ -8,6 +8,7 @@
     "dev": "nodemon"
   },
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "body-parser": "^1.18.3",
     "cookie-parser": "~1.4.4",
     "cors": "^2.8.5",
@@ -23,4 +24,3 @@
     "sequelize-auto": "^0.8.0"
   }
 }
-
