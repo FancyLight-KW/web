@@ -40,7 +40,7 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
   models.Users.findOne({
     where: {
-      User_id: req.params.userId,
+      User_id: req.body.User_id,
     },
   })
     .then((result) => {
@@ -49,6 +49,39 @@ exports.findOne = (req, res) => {
     .catch((err) => {
       console.log(`id 찾기 에러: `, err);
     });
+};
+
+// 로그인
+exports.login = (req, res) => {
+  models.Users.findOne({
+    where: {
+      User_id: req.body.User_id,
+    },
+  })
+    .then((result) => {
+      if (req.session.user) {
+        console.log('이미 로그인 되어 있음');
+      } else {
+        req.session.user =
+            {
+                id: req.body.User_id,
+                name: req.body.User_name,
+                authorized: true
+            };
+            console.log("세션 생성 완료.");
+      }
+
+      res.send(result);
+    })
+    .catch((err) => {
+      console.log(`id 찾기 에러: `, err);
+      res.send({ message: "Wrong username/password combination!" });
+    });
+};
+
+exports.logout = (req, res) => {
+  req.session.destory();  // 세션 삭제
+  res.clearCookie('key'); // 세션 쿠키 삭제
 };
 
 // 유저 정보 변경
