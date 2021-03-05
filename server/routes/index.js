@@ -23,7 +23,7 @@ router.post("/register", user.create);
 router.post("/login", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
-
+  let body = req.body;
   sql.query(
     "SELECT * FROM User_ID_PWD WHERE User_ID = ? AND User_PWD = ?",
     [email, password],

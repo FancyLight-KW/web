@@ -4,7 +4,6 @@ const bcrypt = require("./encrypt");
 // 새 유저 생성
 exports.create = (req, res) => {
   //console.log(`create:`, req.body);
-
   if (!req.body) {
     res.status(400).send({
       message: "유저가 없습니다.",
@@ -47,7 +46,7 @@ exports.findOne = (req, res) => {
       res.send(result);
     })
     .catch((err) => {
-      console.log(`id 찾기 에러: `, err);
+      res.send(err);
     });
 };
 
