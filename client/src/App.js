@@ -8,6 +8,7 @@ import RegisterPage from "./components/RegisterPage/RegisterPage";
 import LoginPage from "./components/LoginPage/LoginPage";
 import NavBar from "./components/NavBar/NavBar";
 import ServiceRequestPage from "./components/ServiceRequestPage/ServiceRequestPage";
+import Request from "./components/Modal/Request";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route exact path="/login" component={LoginPage} />
           <Route exact path="/servicerequest" component={ServiceRequestPage} />
           <Route exact path="/test" component={Testpage} />
+          <Route exact path="/request" component={Request} />
         </Switch>
       </div>
     </Router>
