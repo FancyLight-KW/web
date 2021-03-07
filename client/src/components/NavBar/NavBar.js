@@ -5,8 +5,6 @@ import Logo from "../../800px-Hyundai_Transys_logo.png";
 import { Link } from "react-router-dom";
 // import { withRouter } from "react-router-dom";
 
-//
-
 function NavBar() {
   return (
     <>
@@ -41,9 +39,9 @@ function NavBar() {
       </div>
 
       <div>
-        <Navbar collapseOnSelect expand="lg" variant="dark" className="Nav">
+        <Navbar collapseOnSelect expand="lg" variant="dark" id="NavSecondRow">
           <NavDropdown title="요청/접수" id="collasible-nav-dropdown">
-            <NavDropdown.Item href="/servicerequest">
+            <NavDropdown.Item href="/servicerequest" id="DropdownWidth">
               요청/접수
             </NavDropdown.Item>
             <NavDropdown.Item href="#action/3.2">
@@ -58,18 +56,22 @@ function NavBar() {
           </NavDropdown>
 
           <NavDropdown title="장애관리" id="collasible-nav-dropdown">
-            <NavDropdown.Item href="#action/3.1">장애관리</NavDropdown.Item>
+            <NavDropdown.Item href="#action/3.1" id="DropdownWidth">
+              장애관리
+            </NavDropdown.Item>
           </NavDropdown>
 
           <NavDropdown title="변경관리" id="collasible-nav-dropdown">
-            <NavDropdown.Item href="#action/3.1">변경관리</NavDropdown.Item>
+            <NavDropdown.Item href="#action/3.1" id="DropdownWidth">
+              변경관리
+            </NavDropdown.Item>
             <NavDropdown.Item href="#action/3.2">
               나의 결재함(변경)
             </NavDropdown.Item>
           </NavDropdown>
 
           <NavDropdown title="통계정보" id="collasible-nav-dropdown">
-            <NavDropdown.Item href="#action/3.1">
+            <NavDropdown.Item href="#action/3.1" id="DropdownWidth">
               서비스요청 적기접수율
             </NavDropdown.Item>
             <NavDropdown.Item href="#action/3.2">
@@ -81,7 +83,9 @@ function NavBar() {
           </NavDropdown>
 
           <NavDropdown title="게시판" id="collasible-nav-dropdown">
-            <NavDropdown.Item href="#action/3.1">공지사항</NavDropdown.Item>
+            <NavDropdown.Item href="#action/3.1" id="DropdownWidth">
+              공지사항
+            </NavDropdown.Item>
             <NavDropdown.Item href="#action/3.2">IT정책</NavDropdown.Item>
             <NavDropdown.Item href="#action/3.3">질의응답</NavDropdown.Item>
 
