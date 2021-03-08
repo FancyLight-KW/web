@@ -3,7 +3,6 @@ const bcrypt = require("./encrypt");
 
 // 새 유저 생성
 exports.create = (req, res) => {
-  //console.log(`create:`, req.body);
   if (!req.body) {
     res.status(400).send({
       message: "유저가 없습니다.",
@@ -48,38 +47,6 @@ exports.findOne = (req, res) => {
     .catch((err) => {
       console.log(`id 찾기 에러: `, err);
     });
-};
-
-// 로그인
-exports.login = (req, res) => {
-  models.Users.findOne({
-    where: {
-      User_id: req.body.User_id,
-    },
-  })
-    .then((result) => {
-      if (req.session.user) {
-        console.log('이미 로그인 되어 있음');
-      } else {
-        req.session.user =
-            {
-                id: req.body.User_id,
-                name: req.body.User_name,
-                authorized: true
-            };
-            console.log("세션 생성 완료.");
-      }
-
-      res.send(result);
-    })
-    .catch((err) => {
-      res.send(err);
-    });
-};
-
-exports.logout = (req, res) => {
-  req.session.destory();  // 세션 삭제
-  res.clearCookie('key'); // 세션 쿠키 삭제
 };
 
 // 유저 정보 변경

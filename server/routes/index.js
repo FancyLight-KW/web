@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
-const user = require("../controllers/Users/Users.controller.js");
+const user = require("../controllers/Users/Users.controller");
+const login = require("../controllers/Users/Users.login.controller");
 
 //testcode
 // router.post('/register', (req, res) => {
@@ -19,8 +20,8 @@ const user = require("../controllers/Users/Users.controller.js");
 // });
 
 router.post("/register", user.create);
-router.post("/login", user.login);
-router.get("/logout", user.logout);
+router.post("/login", login.login);
+router.get("/logout", login.logout);
 // router.post("/login", (req, res) => {
 //   const email = req.body.User_id;
 //   const password = req.body.User_password;
