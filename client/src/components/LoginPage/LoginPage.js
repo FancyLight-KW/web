@@ -31,15 +31,15 @@ function LoginPage() {
     event.preventDefault(); // 새로고침 방지
 
     let body = {
-      email: Email,
-      password: Password,
+      User_id: Email,
+      User_password: Password,
     };
 
     dispatch(loginUser(body)).then((response) => {
       if (response.payload.message) {
         alert("이메일 혹은 비밀번호가 다릅니다.");
       } else {
-        alert(response.payload[0].User_ID);
+        //alert(response.payload[0].User_id);
       }
     });
   };

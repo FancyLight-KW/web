@@ -3,7 +3,6 @@ const bcrypt = require("./encrypt");
 
 // 새 유저 생성
 exports.create = (req, res) => {
-  //console.log(`create:`, req.body);
   if (!req.body) {
     res.status(400).send({
       message: "유저가 없습니다.",
@@ -39,14 +38,14 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
   models.Users.findOne({
     where: {
-      User_id: req.params.userId,
+      User_id: req.body.User_id,
     },
   })
     .then((result) => {
       res.send(result);
     })
     .catch((err) => {
-      res.send(err);
+      console.log(`id 찾기 에러: `, err);
     });
 };
 
