@@ -2,17 +2,21 @@ import React from "react";
 import { Table } from "react-bootstrap";
 import styled, { css } from "styled-components";
 import "./ServiceRequest.css";
+import Datepicker from "../Datepicker";
 
 const TableContainer = styled.div`
   display: flex;
+  flex-direction: column;
   border-radius: 5px;
   border-top: solid #0069c0;
 `;
 
 const TopContainer = styled.div`
+  display: flex;
   box-sizing: border-box;
   height: 100px;
   background-color: aliceblue;
+  justify-content: flex-start;
 `;
 
 function ServiceRequestPage() {
@@ -20,9 +24,10 @@ function ServiceRequestPage() {
     <div>
       <TopContainer>
         요청/접수
-        <br />
+        <Datepicker />
+        ~
+        <Datepicker />
         요청/접수
-        <br />
       </TopContainer>
       <TableContainer>
         <Table striped bordered hover>
