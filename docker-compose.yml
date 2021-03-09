@@ -18,5 +18,7 @@ services:
       dockerfile: ./Dockerfile
     env_file:
       - ./server/.env
+    environment:
+      NODE_ENV: development
     ports:
       - 5000:5000
