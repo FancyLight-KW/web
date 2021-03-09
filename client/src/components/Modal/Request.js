@@ -6,6 +6,7 @@ import Form from "react-bootstrap/Form";
 import { Radio } from "antd";
 import Checkbox from "antd/lib/checkbox/Checkbox";
 import axios from "axios";
+import Datepicker from "../Datepicker";
 
 // border: 1px solid black;
 const RateBlock = styled.div`
@@ -18,6 +19,10 @@ const RateBlock = styled.div`
 const RadioBlock = styled.div`
   position: relative;
   top: 8px;
+`;
+const MarginBlock = styled.div`
+  position: relative;
+  top: 5px;
 `;
 
 function Request() {
@@ -57,8 +62,9 @@ function Request() {
     setContent(e.target.value);
   };
 
-  const finishDateHandler = (e) => {
-    setReqFinishDate(e.target.value);
+  const finishDateHandler = (date) => {
+    setReqFinishDate(date);
+    console.log(ReqFinishDate);
   };
 
   const onSubmitHandler = (e) => {
@@ -155,8 +161,10 @@ function Request() {
           <Form.Label column sm="1" className="labelColor">
             요청만료일
           </Form.Label>
-          <Col sm="2" onChange={finishDateHandler}>
-            <Form.Control type="text" placeholder="20210101" />
+          <Col sm="2">
+            <MarginBlock>
+              <Datepicker onChange={finishDateHandler} />
+            </MarginBlock>
           </Col>
         </Form.Group>
 

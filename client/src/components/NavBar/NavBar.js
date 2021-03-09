@@ -17,7 +17,7 @@ function NavBar() {
               height="30"
               className="d-inline-block align-top"
             />
-            <label class="logo-text">IT Service Portal</label>
+            <label className="logo-text">IT Service Portal</label>
           </Navbar.Brand>
 
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
