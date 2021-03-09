@@ -104,11 +104,11 @@ module.exports = function (sequelize, DataTypes) {
     }
   );
 
-  // Requests.associate = (models) => {
-  //   Requests.belongsTo(models.Users, {
-  //     foreignKey: "User_id",
-  //   });
-  // };
+  Requests.associate = (models) => {
+    Requests.belongsTo(models.Users, {
+      foreignKey: "User_id",
+    });
+  };
 
   return Requests;
 };
