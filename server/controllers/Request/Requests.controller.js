@@ -46,3 +46,13 @@ exports.findAll = (req, res) => {
       res.send(err);
     });
 };
+
+exports.findOne = (req, res) => {
+  models.Requests.findOne({
+    where: {
+      REG_USER_ID: req.params.userId,
+    },
+  }).then((result) => {
+    res.send(result);
+  });
+};
