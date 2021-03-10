@@ -1,6 +1,6 @@
 const Sequelize = require("sequelize");
 module.exports = function (sequelize, DataTypes) {
-  var Requests = sequelize.define(
+  const Requests = sequelize.define(
     "Requests",
     {
       REQ_SEQ: {

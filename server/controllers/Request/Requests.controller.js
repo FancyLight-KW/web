@@ -134,7 +134,7 @@ exports.delete = (req, res) => {
 
 exports.findRequest = (req, res) => {
   let keyword = req.params.keyword;
-  var search;
+  let search;
   if (req.params.searchParam == "user") {
     search = "REG_USER_ID";
   } else if (req.params.searchParam == "title") {
@@ -146,7 +146,7 @@ exports.findRequest = (req, res) => {
   }
 
   console.log(keyword, search);
-  var query = {};
+  let query = {};
   let like = {
     [Op.like]: `%${keyword}%`,
   };
