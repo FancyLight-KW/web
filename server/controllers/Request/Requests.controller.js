@@ -1,4 +1,6 @@
 const models = require("../../models");
+const Sequelize = require("sequelize");
+const Op = Sequelize.Op;
 
 // 요청 생성
 exports.create = (req, res) => {
@@ -126,6 +128,41 @@ exports.delete = (req, res) => {
     .catch((err) => {
       res.send({
         message: err,
+      });
+    });
+};
+
+exports.findRequest = (req, res) => {
+  let keyword = req.params.keyword;
+  let search;
+  if (req.params.searchParam == "user") {
+    search = "REG_USER_ID";
+  } else if (req.params.searchParam == "title") {
+    search = "TITLE";
+  } else {
+    res.status(500).send({
+      message: "search parameter error",
+    });
+  }
+
+  console.log(keyword, search);
+  let query = {};
+  let like = {
+    [Op.like]: `%${keyword}%`,
+  };
+  query[search] = like;
+  console.log(query);
+
+  models.Requests.findAll({
+    where: query,
+  })
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => {
+      console.log("find err");
+      res.send({
+        message: "Find Request Error",
       });
     });
 };

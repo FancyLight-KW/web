@@ -1,6 +1,6 @@
 const Sequelize = require("sequelize");
 module.exports = function (sequelize, DataTypes) {
-  var Users = sequelize.define(
+  const Users = sequelize.define(
     "Users",
     {
       User_id: {
@@ -46,9 +46,9 @@ module.exports = function (sequelize, DataTypes) {
       ],
     }
   );
-  Users.associate = (models) => {
-    Users.hasMany(models.Requests);
-  };
+  // Users.associate = (models) => {
+  //   Users.hasMany(models.Requests);
+  // };
 
   return Users;
 };

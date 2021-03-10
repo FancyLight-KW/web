@@ -1,6 +1,6 @@
 const Sequelize = require("sequelize");
 module.exports = function (sequelize, DataTypes) {
-  var Requests = sequelize.define(
+  const Requests = sequelize.define(
     "Requests",
     {
       REQ_SEQ: {
@@ -104,11 +104,11 @@ module.exports = function (sequelize, DataTypes) {
     }
   );
 
-  Requests.associate = (models) => {
-    Requests.belongsTo(models.Users, {
-      foreignKey: "User_id",
-    });
-  };
+  // Requests.associate = (models) => {
+  //   Requests.belongsTo(models.Users, {
+  //     foreignKey: "User_id",
+  //   });
+  // };
 
   return Requests;
 };
