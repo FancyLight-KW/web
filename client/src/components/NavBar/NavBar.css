@@ -13,7 +13,6 @@
   margin-left: 10px;
 }
 #collasible-nav {
-  color: white;
   width: 300px;
 }
 #NavSecondRow {
@@ -23,4 +22,7 @@
 
 .left-margin {
   margin-left: 4px;
+}
+#textcolorwhite {
+  color: white;
 }

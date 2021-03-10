@@ -41,19 +41,29 @@ function NavBar() {
       <div>
         <Navbar collapseOnSelect expand="lg" variant="dark" id="NavSecondRow">
           <Nav.Link id="collasible-nav">
-            <Link to="/servicerequest">요청/접수</Link>
+            <Link to="/servicerequest" id="textcolorwhite">
+              요청/접수
+            </Link>
           </Nav.Link>
           <Nav.Link id="collasible-nav">
-            <Link to="">요청/접수(처리자)</Link>
+            <Link to="" id="textcolorwhite">
+              요청/접수(처리자)
+            </Link>
           </Nav.Link>
           <Nav.Link id="collasible-nav">
-            <Link to=""> 처리이력정보</Link>
+            <Link to="" id="textcolorwhite">
+              처리이력정보
+            </Link>
           </Nav.Link>
           <Nav.Link id="collasible-nav">
-            <Link to=""> 처리이력정보(관리자)</Link>
+            <Link to="" id="textcolorwhite">
+              처리이력정보(관리자)
+            </Link>
           </Nav.Link>
           <Nav.Link id="collasible-nav">
-            <Link to="">나의 결재함</Link>
+            <Link to="" id="textcolorwhite">
+              나의 결재함
+            </Link>
           </Nav.Link>
         </Navbar>
       </div>
