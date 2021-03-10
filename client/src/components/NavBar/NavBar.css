@@ -12,7 +12,7 @@
   margin-top: 5px;
   margin-left: 10px;
 }
-#collasible-nav-dropdown {
+#collasible-nav {
   color: white;
   width: 300px;
 }
@@ -20,9 +20,7 @@
   background-color: #0069c0;
   justify-content: space-between;
 }
-#DropdownWidth {
-  min-width: 18.5rem;
-}
+
 .left-margin {
   margin-left: 4px;
 }

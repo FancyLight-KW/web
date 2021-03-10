@@ -64,7 +64,7 @@ function Request() {
 
   const finishDateHandler = (date) => {
     setReqFinishDate(date);
-    console.log(ReqFinishDate);
+    // console.log(ReqFinishDate);
   };
 
   const onSubmitHandler = (e) => {
@@ -81,6 +81,8 @@ function Request() {
       CSR_STATUS: CSR진행상태,
       IMSI_YN: 임시저장,
     };
+
+    console.log(body);
 
     axios
       .post("http://localhost:5000/requests/newRequest/", body)
@@ -163,7 +165,7 @@ function Request() {
           </Form.Label>
           <Col sm="2">
             <MarginBlock>
-              <Datepicker onChange={finishDateHandler} />
+              <Datepicker change={finishDateHandler} />
             </MarginBlock>
           </Col>
         </Form.Group>

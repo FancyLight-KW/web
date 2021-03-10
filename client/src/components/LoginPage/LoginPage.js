@@ -39,7 +39,7 @@ function LoginPage() {
       if (response.payload.message) {
         alert("이메일 혹은 비밀번호가 다릅니다.");
       } else {
-        //alert(response.payload[0].User_id);
+        //alert(response.payload.User_id);
       }
     });
   };
