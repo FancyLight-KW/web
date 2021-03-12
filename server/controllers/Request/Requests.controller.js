@@ -1,11 +1,24 @@
 const models = require("../../models");
 const Sequelize = require("sequelize");
+const moment = require("moment");
+require("moment-timezone");
+moment.tz.setDefault("Asia/Seoul");
+
 const Op = Sequelize.Op;
+
+function parse(str) {
+  let y = str.substr(0, 4),
+    m = str.substr(4, 2) - 1,
+    d = str.substr(6, 2);
+  let D = new Date(y, m, d);
+  return D.getFullYear() == y && D.getMonth() == m && D.getDate() == d
+    ? D
+    : "invalid date";
+}
 
 // 요청 생성
 exports.create = (req, res) => {
   let body = req.body;
-  let time = new Date();
   console.log(body);
   if (!body) {
     res.status(400).send({ message: "no data!" });
@@ -27,8 +40,6 @@ exports.create = (req, res) => {
     REG_USER_ID: body.REG_USER_ID,
     REG_DATE: body.REG_DATE,
     MOD_USER_ID: body.MOD_USER_ID,
-    updatedAt: time,
-    createdAt: time,
   })
     .then((result) => {
       res.send(result);
@@ -71,7 +82,7 @@ exports.update = (req, res) => {
   }
 
   let body = req.body;
-  let time = new Date();
+  const nowDate = moment().format("YYYY-MM-DD HH:mm:ss");
 
   models.Requests.update(
     {
@@ -89,7 +100,7 @@ exports.update = (req, res) => {
       REG_USER_ID: body.REG_USER_ID,
       REG_DATE: body.REG_DATE,
       MOD_USER_ID: body.MOD_USER_ID,
-      updatedAt: time,
+      updatedAt: nowDate,
     },
     {
       where: {
@@ -145,13 +156,30 @@ exports.findRequest = (req, res) => {
     });
   }
 
-  console.log(keyword, search);
+  //console.log(keyword, search);
   let query = {};
   let like = {
     [Op.like]: `%${keyword}%`,
   };
   query[search] = like;
-  console.log(query);
+
+  // let startDate = req.query.startDate
+  //   ? parse(req.query.startDate)
+  //   : parse("20000101");
+  // let endDate = req.query.endDate
+  //   ? parse(req.query.endDate)
+  //   : new Date().toLocaleString("ko-KR", { timeZone: "Asia/Seoul" });
+
+  let startDate = req.query.startDate
+    ? moment(req.query.startDate).format("YYYY-MM-DD HH:mm:ss")
+    : moment(0).format("YYYY-MM-DD HH:mm:ss");
+  let endDate = req.query.endDate
+    ? moment(req.query.endDate).format("YYYY-MM-DD 23:59:59")
+    : moment().format("YYYY-MM-DD HH:mm:ss");
+
+  query["createdAt"] = {
+    [Op.between]: [startDate, endDate],
+  };
 
   models.Requests.findAll({
     where: query,

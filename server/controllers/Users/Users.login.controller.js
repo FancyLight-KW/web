@@ -1,32 +1,48 @@
 const models = require("../../models");
 const encrypt = require("./encrypt");
+const moment = require("moment");
+require("moment-timezone");
+moment.tz.setDefault("Asia/Seoul");
 
 // 로그인
 exports.login = (req, res) => {
+  let body = req.body;
   models.Users.findOne({
     where: {
-      User_id: req.body.User_id,
+      User_id: body.User_id,
     },
   })
     .then((result) => {
       if (
-        encrypt.isPasswordSame(req.body.User_password, result.User_password)
+        result &&
+        encrypt.isPasswordSame(body.User_password, result.User_password)
       ) {
         // Check password
         if (req.session.user) {
           console.log("이미 로그인 되어 있음");
         } else {
           req.session.user = {
-            id: req.body.User_id,
-            name: req.body.User_name,
+            id: body.User_id,
             authorized: true,
+            name: body.User_name,
           };
           console.log("세션 생성 완료.");
+          const nowDate = moment().format("YYYY-MM-DD HH:mm:ss");
+          models.Users.update(
+            {
+              User_lastlogin: nowDate,
+            },
+            {
+              where: {
+                User_id: result.User_id,
+              },
+            }
+          );
 
           res.send({
             User_id: result.User_id,
             User_name: result.User_name,
-            //User_lastlogin:
+            User_lastlogin: nowDate,
             User_position: result.User_position,
             resultCode: 0,
           });
