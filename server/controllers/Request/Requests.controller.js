@@ -15,7 +15,6 @@ function parse(str) {
 // 요청 생성
 exports.create = (req, res) => {
   let body = req.body;
-  let time = new Date();
   console.log(body);
   if (!body) {
     res.status(400).send({ message: "no data!" });
@@ -37,8 +36,6 @@ exports.create = (req, res) => {
     REG_USER_ID: body.REG_USER_ID,
     REG_DATE: body.REG_DATE,
     MOD_USER_ID: body.MOD_USER_ID,
-    updatedAt: time,
-    createdAt: time,
   })
     .then((result) => {
       res.send(result);
@@ -81,7 +78,7 @@ exports.update = (req, res) => {
   }
 
   let body = req.body;
-  let time = new Date();
+  const time = new Date().toLocaleString("ko-KR", { timeZone: "Asia/Seoul" });
 
   models.Requests.update(
     {
@@ -165,8 +162,10 @@ exports.findRequest = (req, res) => {
   let startDate = req.query.startDate
     ? parse(req.query.startDate)
     : parse("20000101");
+  let endDate = req.query.endDate
+    ? parse(req.query.endDate)
+    : new Date().toLocaleString("ko-KR", { timeZone: "Asia/Seoul" });
 
-  let endDate = req.query.endDate ? parse(req.query.endDate) : new Date();
   query["createdAt"] = {
     [Op.between]: [startDate, endDate],
   };

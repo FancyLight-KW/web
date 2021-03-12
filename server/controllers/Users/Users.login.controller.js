@@ -1,5 +1,8 @@
 const models = require("../../models");
 const encrypt = require("./encrypt");
+const moment = require("moment");
+require("moment-timezone");
+moment.tz.setDefault("Asia/Seoul");
 
 // 로그인
 exports.login = (req, res) => {
@@ -24,10 +27,10 @@ exports.login = (req, res) => {
             name: body.User_name,
           };
           console.log("세션 생성 완료.");
-
+          const nowDate = moment().format("YYYY-MM-DD HH:mm:ss");
           models.Users.update(
             {
-              User_lastlogin: new Date(),
+              User_lastlogin: nowDate,
             },
             {
               where: {
@@ -39,7 +42,7 @@ exports.login = (req, res) => {
           res.send({
             User_id: result.User_id,
             User_name: result.User_name,
-            User_lastlogin: result.User_lastlogin,
+            User_lastlogin: nowDate,
             User_position: result.User_position,
             resultCode: 0,
           });
