@@ -35,7 +35,19 @@ function Request() {
   const [TMApprovalReqYN, setTMApprovalReqYN] = useState("true");
   const [Title, setTitle] = useState("");
   const [Content, setContent] = useState("");
-  const [ReqFinishDate, setReqFinishDate] = useState("");
+
+  const dateChanger = (date) => {
+    let year = date.getFullYear();
+    let month = date.getMonth() + 1;
+    let day = date.getDate();
+
+    month = month > 9 ? month : "0" + month;
+    day = day > 9 ? day : "0" + day;
+
+    return String(year + month + day);
+  };
+
+  const [ReqFinishDate, setReqFinishDate] = useState(dateChanger(new Date()));
 
   // const [RegUserID, setRegUserID] = useState("");
 
