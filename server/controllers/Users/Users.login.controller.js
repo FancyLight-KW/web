@@ -10,15 +10,18 @@ exports.login = (req, res) => {
     },
   })
     .then((result) => {
-      if (encrypt.isPasswordSame(body.User_password, result.User_password)) {
+      if (
+        result &&
+        encrypt.isPasswordSame(body.User_password, result.User_password)
+      ) {
         // Check password
         if (req.session.user) {
           console.log("이미 로그인 되어 있음");
         } else {
           req.session.user = {
             id: body.User_id,
-            name: body.User_name,
             authorized: true,
+            name: body.User_name,
           };
           console.log("세션 생성 완료.");
 
