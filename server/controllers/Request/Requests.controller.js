@@ -2,6 +2,16 @@ const models = require("../../models");
 const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
 
+function parse(str) {
+  let y = str.substr(0, 4),
+    m = str.substr(4, 2) - 1,
+    d = str.substr(6, 2);
+  let D = new Date(y, m, d);
+  return D.getFullYear() == y && D.getMonth() == m && D.getDate() == d
+    ? D
+    : "invalid date";
+}
+
 // 요청 생성
 exports.create = (req, res) => {
   let body = req.body;
@@ -145,13 +155,21 @@ exports.findRequest = (req, res) => {
     });
   }
 
-  console.log(keyword, search);
+  //console.log(keyword, search);
   let query = {};
   let like = {
     [Op.like]: `%${keyword}%`,
   };
   query[search] = like;
-  console.log(query);
+
+  let startDate = req.query.startDate
+    ? parse(req.query.startDate)
+    : parse("20000101");
+
+  let endDate = req.query.endDate ? parse(req.query.endDate) : new Date();
+  query["createdAt"] = {
+    [Op.between]: [startDate, endDate],
+  };
 
   models.Requests.findAll({
     where: query,
