@@ -1,5 +1,9 @@
 const models = require("../../models");
 const Sequelize = require("sequelize");
+const moment = require("moment");
+require("moment-timezone");
+moment.tz.setDefault("Asia/Seoul");
+
 const Op = Sequelize.Op;
 
 function parse(str) {
@@ -78,7 +82,7 @@ exports.update = (req, res) => {
   }
 
   let body = req.body;
-  const time = new Date().toLocaleString("ko-KR", { timeZone: "Asia/Seoul" });
+  const nowDate = moment().format("YYYY-MM-DD HH:mm:ss");
 
   models.Requests.update(
     {
@@ -96,7 +100,7 @@ exports.update = (req, res) => {
       REG_USER_ID: body.REG_USER_ID,
       REG_DATE: body.REG_DATE,
       MOD_USER_ID: body.MOD_USER_ID,
-      updatedAt: time,
+      updatedAt: nowDate,
     },
     {
       where: {
@@ -159,12 +163,19 @@ exports.findRequest = (req, res) => {
   };
   query[search] = like;
 
+  // let startDate = req.query.startDate
+  //   ? parse(req.query.startDate)
+  //   : parse("20000101");
+  // let endDate = req.query.endDate
+  //   ? parse(req.query.endDate)
+  //   : new Date().toLocaleString("ko-KR", { timeZone: "Asia/Seoul" });
+
   let startDate = req.query.startDate
-    ? parse(req.query.startDate)
-    : parse("20000101");
+    ? moment(req.query.startDate).format("YYYY-MM-DD HH:mm:ss")
+    : moment(0).format("YYYY-MM-DD HH:mm:ss");
   let endDate = req.query.endDate
-    ? parse(req.query.endDate)
-    : new Date().toLocaleString("ko-KR", { timeZone: "Asia/Seoul" });
+    ? moment(req.query.endDate).format("YYYY-MM-DD 23:59:59")
+    : moment().format("YYYY-MM-DD HH:mm:ss");
 
   query["createdAt"] = {
     [Op.between]: [startDate, endDate],

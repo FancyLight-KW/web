@@ -15,10 +15,10 @@ if (config.use_env_variable) {
     dialect: config.dialect,
     dialectOptions: {
       // for reading
-      //useUTC: false,
+      useUTC: false,
       dateString: true,
       typeCast: true,
-      timezone: config.timezone,
+      //timezone: config.timezone,
     },
     timezone: config.timezone, // for writing
   });
@@ -28,10 +28,10 @@ if (config.use_env_variable) {
     dialect: config.dialect,
     dialectOptions: {
       // for reading
-      //useUTC: false,
+      useUTC: false,
       dateString: true,
       typeCast: true,
-      timezone: config.timezone,
+      //timezone: config.timezone,
     },
     timezone: config.timezone, // for writing
   });
