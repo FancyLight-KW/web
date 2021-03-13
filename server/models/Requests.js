@@ -75,6 +75,10 @@ module.exports = function (sequelize, DataTypes) {
         type: DataTypes.STRING(50),
         allowNull: true,
       },
+      REQ_IMG_PATH: {
+        type: DataTypes.STRING(100),
+        allowNull: true,
+      },
       updatedAt: {
         type: DataTypes.DATE,
         allowNull: false,
