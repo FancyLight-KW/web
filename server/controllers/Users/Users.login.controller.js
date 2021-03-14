@@ -7,6 +7,7 @@ moment.tz.setDefault("Asia/Seoul");
 // 로그인
 exports.login = (req, res) => {
   let body = req.body;
+  console.log("login");
   models.Users.findOne({
     where: {
       User_id: body.User_id,
