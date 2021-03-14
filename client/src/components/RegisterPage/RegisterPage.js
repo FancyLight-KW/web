@@ -7,13 +7,13 @@ import axios from "axios";
 function RegisterPage() {
   const dispatch = useDispatch();
 
-  const [EmailReg, setEmail] = useState("");
-  const [NameReg, setName] = useState("");
-  const [PasswordReg, setPassword] = useState("");
-  const [ConfirmPasswordReg, setConfirmPassword] = useState("");
+  const [ID, setID] = useState("");
+  const [Name, setName] = useState("");
+  const [Password, setPassword] = useState("");
+  const [ConfirmPassword, setConfirmPassword] = useState("");
 
-  const onEmailHandler = (event) => {
-    setEmail(event.currentTarget.value);
+  const onIDHandler = (event) => {
+    setID(event.currentTarget.value);
   };
 
   const onNameHandler = (event) => {
@@ -31,18 +31,22 @@ function RegisterPage() {
   const onSubmitHandler = (event) => {
     event.preventDefault();
 
-    if (PasswordReg !== ConfirmPasswordReg) {
+    if (Password !== ConfirmPassword) {
       return alert("비밀번호와 비밀번호 확인은 같아야 합니다.");
     }
 
     let body = {
-      User_id: EmailReg,
-      User_password: PasswordReg,
-      User_name: NameReg,
+      User_id: ID,
+      User_password: Password,
+      User_name: Name,
     };
 
     dispatch(registerUser(body)).then((response) => {
-      alert(response.payload.User_name + "님 회원가입 되었습니다.");
+      if (response.payload.registerSuccess) {
+        alert("회원가입이 완료됐습니다.");
+      } else {
+        alert(response.payload.message);
+      }
     });
 
     // axios
@@ -84,23 +88,19 @@ function RegisterPage() {
         style={{ display: "flex", flexDirection: "column" }}
         onSubmit={onSubmitHandler}
       >
-        <label>Email</label>
-        <input type="email" value={EmailReg} onChange={onEmailHandler} />
+        <label>ID</label>
+        <input type="text" value={ID} onChange={onIDHandler} />
 
         <label>Name</label>
-        <input type="text" value={NameReg} onChange={onNameHandler} />
+        <input type="text" value={Name} onChange={onNameHandler} />
 
         <label>Password</label>
-        <input
-          type="password"
-          value={PasswordReg}
-          onChange={onPasswordHandler}
-        />
+        <input type="password" value={Password} onChange={onPasswordHandler} />
 
-        <label>Confirm Password</label>
+        <label>Confrim Password</label>
         <input
           type="password"
-          value={ConfirmPasswordReg}
+          value={ConfirmPassword}
           onChange={onConfirmPasswordHandler}
         />
 

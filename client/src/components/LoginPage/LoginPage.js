@@ -16,11 +16,11 @@ function LoginPage() {
   const dispatch = useDispatch();
   //axios.defaults.withCredentials = true;
 
-  const [Email, setEmail] = useState("");
+  const [ID, setID] = useState("");
   const [Password, setPassword] = useState("");
 
-  const onEmailHandler = (event) => {
-    setEmail(event.currentTarget.value);
+  const onIDHandler = (event) => {
+    setID(event.currentTarget.value);
   };
 
   const onPasswordHandler = (event) => {
@@ -31,7 +31,7 @@ function LoginPage() {
     event.preventDefault(); // 새로고침 방지
 
     let body = {
-      User_id: Email,
+      User_id: ID,
       User_password: Password,
     };
 
@@ -39,7 +39,7 @@ function LoginPage() {
       if (response.payload.message) {
         alert("이메일 혹은 비밀번호가 다릅니다.");
       } else {
-        //alert(response.payload[0].User_id);
+        //alert(response.payload.User_id);
       }
     });
   };
@@ -87,8 +87,8 @@ function LoginPage() {
         style={{ display: "flex", flexDirection: "column" }}
         onSubmit={onSubmitHandler}
       >
-        <label>Email</label>
-        <input type="email" value={Email} onChange={onEmailHandler} />
+        <label>ID</label>
+        <input type="text" value={ID} onChange={onIDHandler} />
 
         <label>Password</label>
         <input type="password" value={Password} onChange={onPasswordHandler} />
