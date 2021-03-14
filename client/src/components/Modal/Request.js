@@ -35,7 +35,19 @@ function Request() {
   const [TMApprovalReqYN, setTMApprovalReqYN] = useState("true");
   const [Title, setTitle] = useState("");
   const [Content, setContent] = useState("");
-  const [ReqFinishDate, setReqFinishDate] = useState("");
+
+  const dateChanger = (date) => {
+    let year = date.getFullYear();
+    let month = date.getMonth() + 1;
+    let day = date.getDate();
+
+    month = month > 9 ? month : "0" + month;
+    day = day > 9 ? day : "0" + day;
+
+    return String(year + month + day);
+  };
+
+  const [ReqFinishDate, setReqFinishDate] = useState(dateChanger(new Date()));
 
   // const [RegUserID, setRegUserID] = useState("");
 
@@ -64,7 +76,7 @@ function Request() {
 
   const finishDateHandler = (date) => {
     setReqFinishDate(date);
-    console.log(ReqFinishDate);
+    // console.log(ReqFinishDate);
   };
 
   const onSubmitHandler = (e) => {
@@ -81,6 +93,8 @@ function Request() {
       CSR_STATUS: CSR진행상태,
       IMSI_YN: 임시저장,
     };
+
+    console.log(body);
 
     axios
       .post("http://localhost:5000/requests/newRequest/", body)
@@ -163,7 +177,7 @@ function Request() {
           </Form.Label>
           <Col sm="2">
             <MarginBlock>
-              <Datepicker onChange={finishDateHandler} />
+              <Datepicker change={finishDateHandler} />
             </MarginBlock>
           </Col>
         </Form.Group>

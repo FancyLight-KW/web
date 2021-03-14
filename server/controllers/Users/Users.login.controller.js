@@ -18,6 +18,40 @@ exports.login = (req, res) => {
         result &&
         encrypt.isPasswordSame(body.User_password, result.User_password)
       ) {
+        console.log("Login: succeeded");
+        // Check password
+        res.send({
+          User_id: result.User_id,
+          User_name: result.User_name,
+          //User_lastlogin:
+          User_position: result.User_position,
+          resultCode: 0,
+        });
+        return done(null, result); 
+      } else {
+        console.log("Login: Invalid password");
+        res.send({
+          message: "Invalid user",
+          resultCode: 1,
+        });
+        return done(false, null, { message: 'Incorrect user info.' });
+      }
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+};
+/*
+exports.login = (req, res) => {
+  models.Users.findOne({
+    where: {
+      User_id: req.body.User_id,
+    },
+  })
+    .then((result) => {
+      if (
+        encrypt.isPasswordSame(req.body.User_password, result.User_password)
+      ) {
         // Check password
         if (req.session.user) {
           console.log("이미 로그인 되어 있음");
@@ -60,9 +94,17 @@ exports.login = (req, res) => {
       res.send(err);
     });
 };
-
+*/
 // 로그아웃
 exports.logout = (req, res) => {
-  req.session.destroy(); // 세션 삭제
+  req.session.destroy((err) => {
+    if(err){
+      console.log(err);
+      res.send('session not destroyed');
+    }else{
+      console.log('session successfully destroyed');
+      res.send('session destroyed');
+    }
+  }); // 세션 삭제
   res.clearCookie("key"); // 세션 쿠키 삭제
 };
