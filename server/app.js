@@ -6,15 +6,14 @@ const bodyParser = require("body-parser");
 const logger = require("morgan");
 const cors = require("cors");
 const models = require("./models/index.js");
-const redis = require('redis');
-const session = require('express-session'),
-  RedisStore = require('connect-redis')(session);
+const session = require('express-session');
 const passport = require('passport');
 const passportConfig = require('./controllers/Users/passport.js');
 
 require("dotenv").config();
-
-var redisClient = redis.createClient(6379,'127.0.0.1');
+// const redis = require('redis'),
+//   RedisStore = require('connect-redis')(session);
+//var redisClient = redis.createClient(6379,'127.0.0.1');
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const requestsRouter = require("./routes/request");
@@ -44,14 +43,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 //세션 환경 세팅
 app.use(session({
-  store: new RedisStore({
-    client: redisClient,
-    // host: 'localhost',
-    // port: 6379,
-    ttl: 200,
-    db : 0,
-    prefix: "session",
-  }),
+  // store: new RedisStore({
+  //   client: redisClient,
+  //   // host: 'localhost',
+  //   // port: 6379,
+  //   ttl: 200,
+  //   db : 0,
+  //   prefix: "session",
+  // }),
   saveUninitialized: false,
   resave: false,
   key: 'key',
@@ -63,11 +62,14 @@ app.use(session({
 }));
 app.use(passport.initialize()); // passport 구동
 app.use(passport.session()); // 세션 연결
-passportConfig();
+passportConfig(passport);
 
+const flash = require('connect-flash')
+app.use(flash());
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/requests", requestsRouter);
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
