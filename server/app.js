@@ -17,6 +17,7 @@ require("dotenv").config();
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const requestsRouter = require("./routes/request");
+const uploadRouter = require("./routes/upload");
 const app = express();
 
 models.sequelize
@@ -40,17 +41,11 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use("/uploads", express.static("uploads"));
 app.use(cors());
 //세션 환경 세팅
+
 app.use(session({
-  // store: new RedisStore({
-  //   client: redisClient,
-  //   // host: 'localhost',
-  //   // port: 6379,
-  //   ttl: 200,
-  //   db : 0,
-  //   prefix: "session",
-  // }),
   saveUninitialized: false,
   resave: false,
   key: 'key',
@@ -64,19 +59,22 @@ app.use(passport.initialize()); // passport 구동
 app.use(passport.session()); // 세션 연결
 passportConfig(passport);
 
+
 const flash = require('connect-flash')
 app.use(flash());
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/requests", requestsRouter);
 
+app.use("/upload", uploadRouter);
+
 // catch 404 and forward to error handler
-app.use(function (req, res, next) {
+app.use((req, res, next) => {
   next(createError(404));
 });
 
 // error handler
-app.use(function (err, req, res, next) {
+app.use((err, req, res, next) => {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};

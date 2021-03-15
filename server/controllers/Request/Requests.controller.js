@@ -6,16 +6,6 @@ moment.tz.setDefault("Asia/Seoul");
 
 const Op = Sequelize.Op;
 
-function parse(str) {
-  let y = str.substr(0, 4),
-    m = str.substr(4, 2) - 1,
-    d = str.substr(6, 2);
-  let D = new Date(y, m, d);
-  return D.getFullYear() == y && D.getMonth() == m && D.getDate() == d
-    ? D
-    : "invalid date";
-}
-
 // 요청 생성
 exports.create = (req, res) => {
   let body = req.body;
@@ -23,8 +13,7 @@ exports.create = (req, res) => {
   if (!body) {
     res.status(400).send({ message: "no data!" });
   }
-
-  models.Requests.create({
+  let query = {
     //REQ_SEQ: body.REQ_SEQ,
     TITLE: body.TITLE,
     CONTENT: body.CONTENT,
@@ -40,7 +29,13 @@ exports.create = (req, res) => {
     REG_USER_ID: body.REG_USER_ID,
     REG_DATE: body.REG_DATE,
     MOD_USER_ID: body.MOD_USER_ID,
-  })
+  };
+
+  if (req.file) {
+    query[REQ_IMG_PATH] = "/uploads/" + req.file.filename;
+  }
+
+  models.Requests.create(query)
     .then((result) => {
       res.send(result);
     })
@@ -162,13 +157,6 @@ exports.findRequest = (req, res) => {
     [Op.like]: `%${keyword}%`,
   };
   query[search] = like;
-
-  // let startDate = req.query.startDate
-  //   ? parse(req.query.startDate)
-  //   : parse("20000101");
-  // let endDate = req.query.endDate
-  //   ? parse(req.query.endDate)
-  //   : new Date().toLocaleString("ko-KR", { timeZone: "Asia/Seoul" });
 
   let startDate = req.query.startDate
     ? moment(req.query.startDate).format("YYYY-MM-DD HH:mm:ss")
