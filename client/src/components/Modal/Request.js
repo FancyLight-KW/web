@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import "./Request.css";
 import { Row, Col } from "react-bootstrap";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import Form from "react-bootstrap/Form";
 import { Radio } from "antd";
 import Checkbox from "antd/lib/checkbox/Checkbox";
 import axios from "axios";
 import Datepicker from "../Datepicker";
-import SkeletonImage from "antd/lib/skeleton/Image";
 
 // border: 1px solid black;
 const RateBlock = styled.div`
@@ -36,7 +35,6 @@ function Request() {
   const [TMApprovalReqYN, setTMApprovalReqYN] = useState("true");
   const [Title, setTitle] = useState("");
   const [Content, setContent] = useState("");
-  const [File, setFile] = useState("");
 
   const dateChanger = (date) => {
     let year = date.getFullYear();
@@ -76,23 +74,12 @@ function Request() {
     setContent(e.target.value);
   };
 
-  const file = new FormData();
-
-  const fileHandler = (e) => {
-    file.append("filename", e.target.files[0]);
-    setFile(file);
-    console.log(file.name);
-    console.log(File);
-    console.log(imagefile);
-  };
-
   const finishDateHandler = (date) => {
     setReqFinishDate(date);
     // console.log(ReqFinishDate);
   };
 
   const onSubmitHandler = (e) => {
-    // Form 제출
     e.preventDefault();
 
     let body = {
@@ -202,15 +189,10 @@ function Request() {
             첨부파일
           </Form.Label>
           <Col sm="5">
-            <input
-              type="file"
-              accept="image/jpg,impge/png,image/jpeg,image/gif"
-              name="imagefile"
-              onChange={fileHandler}
-            ></input>
-            <Form.Text muted>
-              (첨부 가능 파일 확장자: jpg, png, doc, docx)
-            </Form.Text>
+            <Form.File id="formcheck-api-regular">
+              <Form.File.Input />
+            </Form.File>
+            <Form.Text muted>(첨부 가능 파일 확장자: jpg, doc, docx)</Form.Text>
           </Col>
         </Form.Group>
 

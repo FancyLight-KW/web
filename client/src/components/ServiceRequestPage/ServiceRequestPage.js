@@ -83,9 +83,11 @@ function ServiceRequestPage() {
 
   const StartdatedHandler = (date) => {
     setStartDate(date);
+    console.log(StartDate);
   };
   const FinishDateHandler = (date) => {
     setFinishDate(date);
+    console.log(FinishDate);
   };
   // const SearchHandler = () => {
 
