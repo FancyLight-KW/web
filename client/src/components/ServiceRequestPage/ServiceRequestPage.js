@@ -106,12 +106,15 @@ function ServiceRequestPage() {
             <MarginforButton />
 
             <Button variant="primary" size="sm" onClick={console.log(Requests)}>
-              IT 서비스 요청 콘솔확인
+              IT 서비스 요청/콘솔확인
             </Button>
           </DateSearchWrapper>
 
           <Span />
-          <Span>제목</Span>
+          <Span>
+            제목
+            <input></input>
+          </Span>
 
           <SearchButton>검색</SearchButton>
         </TopWrapper>
