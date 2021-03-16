@@ -6,11 +6,11 @@ const Op = Sequelize.Op;
 
 // 요청 생성
 exports.create = (req, res) => {
-  let body = req.body;
-  console.log(body);
+  let body = JSON.parse(req.body.body);
   if (!body) {
     res.status(400).send({ message: "no data!" });
   }
+  console.log(body.TARGET_CODE)
   let query = {
     //REQ_SEQ: body.REQ_SEQ,
     TITLE: body.TITLE,
@@ -28,16 +28,17 @@ exports.create = (req, res) => {
     REG_DATE: body.REG_DATE,
     MOD_USER_ID: body.MOD_USER_ID,
   };
-
+  console.log(req.file)
   if (req.file) {
-    query[REQ_IMG_PATH] = "/uploads/" + req.file.filename;
+    query['REQ_IMG_PATH'] = "/uploads/" + req.file.filename;
   }
-
+  console.log(query)
   models.Requests.create(query)
     .then((result) => {
       res.send(result);
     })
     .catch((err) => {
+      console.log(err)
       res.send(err);
     });
 };
