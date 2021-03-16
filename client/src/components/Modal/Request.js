@@ -35,6 +35,8 @@ function Request() {
   const [TMApprovalReqYN, setTMApprovalReqYN] = useState("true");
   const [Title, setTitle] = useState("");
   const [Content, setContent] = useState("");
+  const [File, setFile] = useState("");
+  // const fileRef = useRef();
 
   const dateChanger = (date) => {
     let year = date.getFullYear();
@@ -79,8 +81,25 @@ function Request() {
     // console.log(ReqFinishDate);
   };
 
+  //   let file = new FormData();
+
+  const fileHandler = (e) => {
+    // let file = e.target.files[0];
+    // console.log(file.name);
+
+    setFile(e.target.files[0]);
+    //console.log(File);
+    //setFile(e.target.files[0]);
+  };
+
+  const Submit = (e) => {
+    e.preventDefault();
+  };
+
   const onSubmitHandler = (e) => {
     e.preventDefault();
+
+    const formData = new FormData();
 
     let body = {
       TARGET_CODE: TargetCode,
@@ -94,10 +113,14 @@ function Request() {
       IMSI_YN: 임시저장,
     };
 
-    console.log(body);
+    formData.append("imagefile", File);
+    formData.append("body", body);
+
+    console.log(formData);
+    //console.log(body);
 
     axios
-      .post("http://localhost:5000/requests/newRequest/", body)
+      .post("http://localhost:5000/requests/newRequest/", formData)
       .then((response) => {
         console.log(response);
       });
@@ -189,10 +212,14 @@ function Request() {
             첨부파일
           </Form.Label>
           <Col sm="5">
-            <Form.File id="formcheck-api-regular">
-              <Form.File.Input />
-            </Form.File>
-            <Form.Text muted>(첨부 가능 파일 확장자: jpg, doc, docx)</Form.Text>
+            <input
+              type="file"
+              name="imagefile"
+              accept=".gif, .jpg, .png"
+              onChange={fileHandler}
+            ></input>
+            <Form.Text muted>(첨부 가능 파일 확장자: jpg, gif, png)</Form.Text>
+            <button onClick={Submit}>클릭</button>
           </Col>
         </Form.Group>
 

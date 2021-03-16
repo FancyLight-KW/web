@@ -14,7 +14,7 @@ const upload = multer({ storage: storage });
 router.get("/", (req, res) => {
   res.render("upload");
 });
-router.post("/", upload.single("userfile"), (req, res) => {
+router.post("/", upload.single("imagefile"), (req, res) => {
   if (req.file) {
     res.send("uploaded: " + req.file.path);
   } else {
