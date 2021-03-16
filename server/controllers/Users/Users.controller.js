@@ -1,5 +1,5 @@
 const models = require("../../models");
-const bcrypt = require("./encrypt");
+const bcrypt = require("../../config/password.encrypt");
 
 // 새 유저 생성
 exports.create = (req, res) => {

@@ -1,16 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const request = require("../controllers/Request/Requests.controller");
-const path = require("path");
-const multer = require("multer");
-const moment = require("moment");
-const storage = multer.diskStorage({
-  destination: "./uploads",
-  filename: function (req, file, cb) {
-    cb(null, moment.now() + path.extname(file.originalname));
-  },
-});
-const upload = multer({ storage: storage });
+const upload = require('../config/fileupload')
 
 router.post("/newRequest/", upload.single("imagefile"), request.create);
 router.get("/getAllRequest/", request.findAll);
