@@ -5,7 +5,7 @@ export const REGISTER_USER = "register_user";
 
 export function loginUser(loginInfo) {
   const request = axios
-    .post("http://localhost:5000/login", loginInfo)
+    .post("http://localhost:5000/login/done", loginInfo)
     .then((response) => response.data);
 
   return {

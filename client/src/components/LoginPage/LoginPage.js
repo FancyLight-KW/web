@@ -36,10 +36,11 @@ function LoginPage() {
     };
 
     dispatch(loginUser(body)).then((response) => {
+      console.log("payload: " + JSON.stringify(response.payload))
       if (response.payload.message) {
         alert("이메일 혹은 비밀번호가 다릅니다.");
       } else {
-        //alert(response.payload.User_id);
+        alert("로그인 완료.");
       }
     });
   };

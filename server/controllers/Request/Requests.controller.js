@@ -10,7 +10,7 @@ exports.create = (req, res) => {
   if (!body) {
     res.status(400).send({ message: "no data!" });
   }
-  console.log(body.TARGET_CODE)
+  console.log(req.session)
   let query = {
     //REQ_SEQ: body.REQ_SEQ,
     TITLE: body.TITLE,
@@ -24,7 +24,7 @@ exports.create = (req, res) => {
     CSR_STATUS: body.CSR_STATUS,
     IMSI_YN: body.IMSI_YN,
     REQ_FINISH_DATE: body.REQ_FINISH_DATE,
-    REG_USER_ID: body.REG_USER_ID,
+    REG_USER_ID: "sehwagod",
     REG_DATE: body.REG_DATE,
     MOD_USER_ID: body.MOD_USER_ID,
   };
