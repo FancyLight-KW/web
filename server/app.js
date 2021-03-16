@@ -5,15 +5,15 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const logger = require("morgan");
 const cors = require("cors");
-const models = require("./models/index.js");
+
+// session modules
 const session = require('express-session');
 const passport = require('passport');
-const passportConfig = require('./controllers/Users/passport.js');
+const models = require("./models/index.js");
+const passportConfig = require('./config/passport.config');
 
 require("dotenv").config();
-// const redis = require('redis'),
-//   RedisStore = require('connect-redis')(session);
-//var redisClient = redis.createClient(6379,'127.0.0.1');
+
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const requestsRouter = require("./routes/request");

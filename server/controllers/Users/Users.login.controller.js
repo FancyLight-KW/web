@@ -1,8 +1,6 @@
 const models = require("../../models");
-const encrypt = require("./encrypt");
-const moment = require("moment");
-require("moment-timezone");
-moment.tz.setDefault("Asia/Seoul");
+const encrypt = require("../../config/password.encrypt");
+const moment = require('../../config/moment.config');
 
 // 로그인
 exports.login = (req, res) => {

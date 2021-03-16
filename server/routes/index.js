@@ -7,20 +7,20 @@ const index = require("../controllers/index/index.controller");
 
 //라우팅
 router.post("/register", user.create);
-//router.post("/login", login.login);
 router.get("/logout", login.logout);
 
 router.get("/login", (req, res) => {
   res.render('login')
 })
-router.post('/login/done', passport.authenticate('local',{
+
+router.post('/login', passport.authenticate('local',{
   successRedirect: '/',
   failureRedirect: '/login',
   failureFlash: true
 }), (req, res) => {
   console.log("req.user : "+ JSON.stringify(req.user));
   res.redirect('/login');
-} 
+  } 
 );
 /* GET home page. */
 // 여기에 쿠키, 세션정보 확인 해야할 듯
@@ -33,7 +33,9 @@ router.get("/", (req, res) => {
     });
   }
   else{
-    res.render("index", { title: "Express" });
+    res.send({
+      message: "main"
+    });
   }
 });
 

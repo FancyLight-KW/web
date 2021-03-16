@@ -1,8 +1,6 @@
 const models = require("../../models");
 const Sequelize = require("sequelize");
-const moment = require("moment");
-require("moment-timezone");
-moment.tz.setDefault("Asia/Seoul");
+const moment = require("../../config/moment.config");
 
 const Op = Sequelize.Op;
 
