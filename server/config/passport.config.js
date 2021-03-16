@@ -7,18 +7,18 @@ const passportConfig = (passport) => {
   console.log("passport init")
   
   passport.serializeUser((user, done) => { // Strategy 성공 시 호출됨
-    console.log(user);
+    console.log("serializeUser" + JSON.stringify(user));
     done(null, user); // 여기의 user가 deserializeUser의 첫 번째 매개변수로 이동
   });
 
   passport.deserializeUser((user, done) => { // 매개변수 user는 serializeUser의 done의 인자 user를 받은 것
-    console.log("deserializeUser:", user);
+    console.log("deserializeUser:"+ JSON.stringify(user));
     done(null, user);
   });
 
   passport.use(new LocalStrategy({ // local 전략을 세움
-    usernameField: 'id',
-    passwordField: 'pwd',
+    usernameField: 'User_id',
+    passwordField: 'User_password',
     session: true, // 세션에 저장 여부
     passReqToCallback : true
   }, (req, username, password, done) => {
@@ -33,7 +33,8 @@ const passportConfig = (passport) => {
       }
       if(encrypt.isPasswordSame(password, result.User_password)){
         console.log("yes! pwd");
-        return done(null, result, { message: "password error", resultCode: 0});
+        console.log(result)
+        return done(null, result);
       }
       else{
         console.log("incorrect pwd");

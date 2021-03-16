@@ -37,7 +37,7 @@ app.set("view engine", "ejs");
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -48,17 +48,14 @@ app.use(cors());
 app.use(session({
   saveUninitialized: false,
   resave: false,
-  key: 'key',
-  secret: 'secret',           //이때의 옵션은 세션에 세이브 정보를 저장할때 할때 파일을 만들꺼냐
-                              //아니면 미리 만들어 놓을꺼냐 등에 대한 옵션들임
+  secret: process.env.COOKIE_SECRET,
   cookie: {
     maxAge: 1000 * 60 * 10 //유효시간 10분
   },
 }));
+passportConfig(passport);
 app.use(passport.initialize()); // passport 구동
 app.use(passport.session()); // 세션 연결
-passportConfig(passport);
-
 
 const flash = require('connect-flash')
 app.use(flash());
