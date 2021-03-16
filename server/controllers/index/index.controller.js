@@ -1,6 +1,5 @@
 const models = require("../../models");
 const sequelize = require("sequelize");
-const { json } = require("sequelize");
 const Op = sequelize.Op;
 
 //여기에 접수 진행상황 count
