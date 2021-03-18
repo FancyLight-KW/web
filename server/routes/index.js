@@ -10,10 +10,13 @@ router.post("/register", user.create);
 router.get("/logout", login.logout);
 
 // router.get("/login", (req, res) => {
+//   if(req.isAuthenticated()){
+//     res.redirect('/')
+//   }
 //   res.render('login');
 // })
 
-router.post('/login/done',(req, res, next) => {
+router.post('/login',(req, res, next) => {
   if(req.isAuthenticated()){
     console.log("Already logined")
   }
@@ -24,7 +27,15 @@ router.post('/login/done',(req, res, next) => {
       failureRedirect: '/login',
       failureFlash: true,
       })(req, res, next);
+    }
+}, (req, res) => {
+  if(req.isAuthenticated()){
+    console.log("auth success")
+    console.log(req.user)
   }
+  else[
+    console.log("auth fail")
+  ]
 });
 
 // router.post('/login', passport.authenticate('local',{
@@ -41,16 +52,14 @@ router.post('/login/done',(req, res, next) => {
 /* GET home page. */
 // 여기에 쿠키, 세션정보 확인 해야할 듯
 router.get("/", (req, res) => {
-  console.log(JSON.stringify(req.cookies))
+  console.log("auth: " + req.isAuthenticated())
   if(req.isAuthenticated()){
     res.send({
       session: req.session
     });
   }
   else{
-    res.send({
-      message: "main"
-    });
+    res.send(req.session.passport);
   }
 });
 

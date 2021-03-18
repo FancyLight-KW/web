@@ -9,5 +9,5 @@ router.get("/getRequest/:userId", request.findOne);
 router.put("/updateRequest/:requestId", request.update);
 router.delete("/deleteRequest/:requestId", request.delete);
 
-router.get("/searchRequest/:searchParam/:keyword", request.findRequest);
+router.get("/searchRequest/", request.findRequest);
 module.exports = router;

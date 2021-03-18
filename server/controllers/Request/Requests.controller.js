@@ -10,7 +10,7 @@ exports.create = (req, res) => {
   if (!body) {
     res.status(400).send({ message: "no data!" });
   }
-  console.log(req.session)
+  console.log(body)
   let query = {
     //REQ_SEQ: body.REQ_SEQ,
     TITLE: body.TITLE,
@@ -25,10 +25,10 @@ exports.create = (req, res) => {
     IMSI_YN: body.IMSI_YN,
     REQ_FINISH_DATE: body.REQ_FINISH_DATE,
     REG_USER_ID: "sehwagod",
-    REG_DATE: body.REG_DATE,
+    //REG_DATE: moment().format('YYYYMMDD-HH:mm:ss'),
     MOD_USER_ID: body.MOD_USER_ID,
   };
-  console.log(req.file)
+
   if (req.file) {
     query['REQ_IMG_PATH'] = "/uploads/" + req.file.filename;
   }
@@ -138,13 +138,15 @@ exports.delete = (req, res) => {
 };
 
 exports.findRequest = (req, res) => {
-  let keyword = req.params.keyword;
-  let search;
-  if (req.params.searchParam == "user") {
+  let queryparam = req.query;
+  let keyword = queryparam.keyword;
+  let search = queryparam.searchparam;
+  
+  if (search == "user") {
     search = "REG_USER_ID";
-  } else if (req.params.searchParam == "title") {
+  } else if (search == "title") {
     search = "TITLE";
-  } else {
+  } else{
     res.status(500).send({
       message: "search parameter error",
     });

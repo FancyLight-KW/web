@@ -32,7 +32,7 @@ function Request() {
 
   const [TargetCode, setTargetCode] = useState("업무시스템");
   const [SystemGroupCode, setSystemGroupCode] = useState("test");
-  const [TMApprovalReqYN, setTMApprovalReqYN] = useState("true");
+  const [TMApprovalReqYN, setTMApprovalReqYN] = useState("N");
   const [Title, setTitle] = useState("");
   const [Content, setContent] = useState("");
   const [File, setFile] = useState("");
@@ -114,7 +114,7 @@ function Request() {
     };
 
     formData.append("imagefile", File);
-    formData.append("body", body);
+    formData.append("body", JSON.stringify(body));
 
     console.log(formData);
     //console.log(body);
