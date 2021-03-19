@@ -67,10 +67,6 @@ module.exports = function (sequelize, DataTypes) {
           key: "User_id",
         },
       },
-      REG_DATE: {
-        type: DataTypes.STRING(14),
-        allowNull: true,
-      },
       MOD_USER_ID: {
         type: DataTypes.STRING(50),
         allowNull: true,

@@ -139,25 +139,19 @@ exports.delete = (req, res) => {
 
 exports.findRequest = (req, res) => {
   let queryparam = req.query;
-  let keyword = queryparam.keyword;
-  let search = queryparam.searchparam;
-  
-  if (search == "user") {
-    search = "REG_USER_ID";
-  } else if (search == "title") {
-    search = "TITLE";
-  } else{
-    res.status(500).send({
-      message: "search parameter error",
-    });
-  }
-
+  let title = queryparam.title ?  queryparam.title : ""
+  let user = queryparam.user ? queryparam.user : "";
+  let targetCode = queryparam.targetcode ? queryparam.targetcode : "";
+  let csrStatus = queryparam.csrstatus ? queryparam.csrstatus : "";
   //console.log(keyword, search);
+  const like = (keyword) => {
+    return { [Op.like]: `%${keyword}%` }
+  }
   let query = {};
-  let like = {
-    [Op.like]: `%${keyword}%`,
-  };
-  query[search] = like;
+  query['REG_USER_ID'] = like(user)
+  query['TITLE'] = like(title)
+  query['TARGET_CODE'] = like(targetCode);
+  query['CSR_STATUS'] = like(csrStatus);
 
   let startDate = req.query.startDate
     ? moment(req.query.startDate).format("YYYY-MM-DD HH:mm:ss")
@@ -170,6 +164,7 @@ exports.findRequest = (req, res) => {
     [Op.between]: [startDate, endDate],
   };
 
+  console.log(query);
   models.Requests.findAll({
     where: query,
   })

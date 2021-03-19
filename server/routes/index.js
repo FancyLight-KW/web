@@ -63,5 +63,6 @@ router.get("/", (req, res) => {
   }
 });
 
+router.get("/getCSR_COUNT", index.countCSR_STATUS);
 
 module.exports = router;
