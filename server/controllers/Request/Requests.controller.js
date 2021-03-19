@@ -10,7 +10,7 @@ exports.create = (req, res) => {
   if (!body) {
     res.status(400).send({ message: "no data!" });
   }
-  console.log(req.session)
+  console.log(body)
   let query = {
     //REQ_SEQ: body.REQ_SEQ,
     TITLE: body.TITLE,
@@ -25,10 +25,10 @@ exports.create = (req, res) => {
     IMSI_YN: body.IMSI_YN,
     REQ_FINISH_DATE: body.REQ_FINISH_DATE,
     REG_USER_ID: "sehwagod",
-    REG_DATE: body.REG_DATE,
+    //REG_DATE: moment().format('YYYYMMDD-HH:mm:ss'),
     MOD_USER_ID: body.MOD_USER_ID,
   };
-  console.log(req.file)
+
   if (req.file) {
     query['REQ_IMG_PATH'] = "/uploads/" + req.file.filename;
   }
@@ -138,24 +138,20 @@ exports.delete = (req, res) => {
 };
 
 exports.findRequest = (req, res) => {
-  let keyword = req.params.keyword;
-  let search;
-  if (req.params.searchParam == "user") {
-    search = "REG_USER_ID";
-  } else if (req.params.searchParam == "title") {
-    search = "TITLE";
-  } else {
-    res.status(500).send({
-      message: "search parameter error",
-    });
-  }
-
+  let queryparam = req.query;
+  let title = queryparam.title ?  queryparam.title : ""
+  let user = queryparam.user ? queryparam.user : "";
+  let targetCode = queryparam.targetcode ? queryparam.targetcode : "";
+  let csrStatus = queryparam.csrstatus ? queryparam.csrstatus : "";
   //console.log(keyword, search);
+  const like = (keyword) => {
+    return { [Op.like]: `%${keyword}%` }
+  }
   let query = {};
-  let like = {
-    [Op.like]: `%${keyword}%`,
-  };
-  query[search] = like;
+  query['REG_USER_ID'] = like(user)
+  query['TITLE'] = like(title)
+  query['TARGET_CODE'] = like(targetCode);
+  query['CSR_STATUS'] = like(csrStatus);
 
   let startDate = req.query.startDate
     ? moment(req.query.startDate).format("YYYY-MM-DD HH:mm:ss")
@@ -168,6 +164,7 @@ exports.findRequest = (req, res) => {
     [Op.between]: [startDate, endDate],
   };
 
+  console.log(query);
   models.Requests.findAll({
     where: query,
   })

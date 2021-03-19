@@ -7,7 +7,7 @@ const passportConfig = (passport) => {
   console.log("passport init")
   
   passport.serializeUser((user, done) => { // Strategy 성공 시 호출됨
-    console.log("serializeUser" + JSON.stringify(user));
+    console.log("serializeUser: " + JSON.stringify(user));
     done(null, user); // 여기의 user가 deserializeUser의 첫 번째 매개변수로 이동
   });
 
@@ -32,9 +32,8 @@ const passportConfig = (passport) => {
         return done(null, false, {message: "no user"});
       }
       if(encrypt.isPasswordSame(password, result.User_password)){
-        console.log("yes! pwd");
-        console.log(result)
-        return done(null, result);
+        console.log("login success: " + result)
+        return done(null, result, { resultCode: 0 });
       }
       else{
         console.log("incorrect pwd");
