@@ -7,6 +7,7 @@ import "./Datepicker.css";
 
 const DatepickerWrapper = styled.div`
   margin-left: 10px;
+  margin-top: -1px;
 `;
 
 // const Datepickers = styled.(DatePicker)`
@@ -19,7 +20,7 @@ const DatepickerWrapper = styled.div`
 // `;
 
 const Datepicker = ({ change }) => {
-  const [startDate, setStartDate] = useState(new Date());
+  const [startDate, setStartDate] = useState();
 
   const showChange = (date) => {
     // 상위 Component로 date값 반환하기 위한 함수
