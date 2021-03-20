@@ -1,7 +1,7 @@
 import React from "react";
 import "./NavBar.css";
 import { Navbar, Nav, NavDropdown, Button } from "react-bootstrap";
-import Logo from "../../800px-Hyundai_Transys_logo.png";
+import Logo from "../../assets/800px-Hyundai_Transys_logo.png";
 import { Link } from "react-router-dom";
 // import { withRouter } from "react-router-dom";
 

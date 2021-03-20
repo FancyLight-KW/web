@@ -1,10 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { Table, Button } from "react-bootstrap";
+import { Table, Button, Row, Col } from "react-bootstrap";
 import styled, { css } from "styled-components";
 import "./ServiceRequest.css";
 import Datepicker from "../Datepicker";
 import axios from "axios";
 
+const TopContainer = styled.div`
+  height: 100px;
+  background-color: aliceblue;
+`;
+const TopFirstRowhWrapper = styled.div`
+  height: 50%;
+`;
+const SecondRowWrapper = styled.div`
+  height: 50%;
+`;
+const SearchBlock = styled.div`
+  display: flex;
+  margin-top: 12px;
+  margin-left: 15px;
+  color: #0069c0;
+  font-weight: bold;
+`;
 const TableContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -12,66 +29,59 @@ const TableContainer = styled.div`
   border-top: solid #0069c0;
 `;
 
-const TopContainer = styled.div`
-  display: flex;
-  box-sizing: border-box;
-  height: 100px;
-  background-color: aliceblue;
-  justify-content: flex-start;
-`;
-
 const BetweenDate = styled.span`
   padding-left: 10px;
   padding-top: 3px;
   font-size: 14px;
 `;
-const Span = styled.span`
-  margin-top: 3.3px;
-  margin-left: 10px;
-  height: 25px;
-  color: #0069c0;
-  font-weight: bold;
-`;
+
 const TopWrapper = styled.div`
   margin-top: 10px;
   display: flex;
   flex-flow: wrap;
 `;
-const DateSearchWrapper = styled.div`
-  display: flex;
-  width: 100%;
+
+const SRButton = styled(Button)`
+  margin-left: 500px;
 `;
 
-const SearchButton = styled.button`
+const Select = styled.select`
   margin-left: 10px;
-  height: 25px;
 `;
-
-const MarginforButton = styled.div`
-  margin-left: 1200px;
+const Input = styled.input`
+  margin-left: 8px;
 `;
 
 function ServiceRequestPage() {
   const [Requests, setRequests] = useState([]);
 
-  const dateChanger = (date) => {
-    let year = date.getFullYear();
-    let month = date.getMonth() + 1;
-    let day = date.getDate();
+  const [StartDate, setStartDate] = useState("");
+  const [FinishDate, setFinishDate] = useState("");
+  const [Keyword, setKeyword] = useState("");
 
-    month = month > 9 ? month : "0" + month;
-    day = day > 9 ? day : "0" + day;
+  const SearchHandler = () => {
+    const queryDate =
+      StartDate === ""
+        ? FinishDate === ""
+          ? ``
+          : `&finishDate=${FinishDate}`
+        : FinishDate === ""
+        ? `&startDate=${StartDate}`
+        : `&startDate=${StartDate}&finishDate=${FinishDate}`;
+    console.log(queryDate);
 
-    return String(year + month + day);
+    const queryKeyword = Keyword ? `keyword=${Keyword}` : ``;
+    console.log(queryKeyword);
+
+    const searchAPI = `http://localhost:5000/requests/searchRequest/?${queryDate}`;
+    console.log(searchAPI);
+    // http://localhost:5000/requests/searchRequest/?keyword=제목&searchparam=title&startDate=20210310
   };
-
-  const [StartDate, setStartDate] = useState(dateChanger(new Date()));
-  const [FinishDate, setFinishDate] = useState(dateChanger(new Date()));
 
   useEffect(() => {
     const endpoint = "http://localhost:5000/requests/getAllRequest";
     fetchRequests(endpoint);
-  }, Requests);
+  }, []);
 
   const fetchRequests = (endpoint) => {
     axios.get(endpoint).then((response) => {
@@ -89,35 +99,107 @@ function ServiceRequestPage() {
     setFinishDate(date);
     console.log(FinishDate);
   };
-  // const SearchHandler = () => {
+  const keywordHandler = (e) => {
+    setKeyword(e.target.value);
+  };
 
-  // }
+  // <TopWrapper>
+  //         <FirstRowhWrapper>
+  //           <Row>
+  //             <Col xs={16} md={11}>
+  //               <Span>· 요청/접수 기간</Span>
+  //               <Datepicker change={StartdatedHandler} />
+  //               <BetweenDate>~</BetweenDate>
+  //               <Datepicker change={FinishDateHandler} />
+  //               <Span>
+  //                 {" "}
+  //                 · 문의 대상
+  //                 <Select>
+  //                   <option>업무시스템</option>
+  //                   <option>IT인프라</option>
+  //                   <option>QA장비</option>
+  //                 </Select>
+  //               </Span>
+  //             </Col>
+  //             <Col xs={2} md={1}>
+  //               <SRButton>IT서비스 요청</SRButton>
+  //             </Col>
+  //           </Row>
+  //         </FirstRowhWrapper>
+  //         <Span>
+  //           ·
+  //           <Select>
+  //             <option>제목</option>
+  //             <option>작성자</option>
+  //           </Select>
+  //           <Input size="40" onChange={keywordHandler} />
+  //         </Span>
+  //         <Span>· 문의 유형</Span>
+  //         <Span>
+  //           <button onClick={SearchHandler}>검색</button>
+  //         </Span>
+  //       </TopWrapper>
 
   return (
     <div>
       <TopContainer>
-        <TopWrapper>
-          <DateSearchWrapper>
-            <Span>요청/접수 기간</Span>
-            <Datepicker change={StartdatedHandler} />
-            <BetweenDate>~</BetweenDate>
-            <Datepicker change={FinishDateHandler} />
+        <TopFirstRowhWrapper>
+          <Row>
+            <Col sm={2}>
+              <SearchBlock>
+                · 서비스 상태
+                <Select>
+                  <option>접수대기</option>
+                  <option>접수완료</option>
+                  <option>변경관리 처리중</option>
+                </Select>
+              </SearchBlock>
+            </Col>
+            <Col sm={9}>
+              <SearchBlock>
+                · 요청/접수 기간
+                <Datepicker change={StartdatedHandler} />
+                <BetweenDate>~</BetweenDate>
+                <Datepicker change={FinishDateHandler} />
+              </SearchBlock>
+            </Col>
 
-            <MarginforButton />
+            <Col sm={1}>
+              <Button variant="primary" size="sm" id="margin_top_button">
+                IT 서비스 요청
+              </Button>
+            </Col>
+          </Row>
+        </TopFirstRowhWrapper>
+        <SecondRowWrapper>
+          <Row>
+            <Col sm={2}>
+              <SearchBlock>
+                · 문의 대상
+                <Select>
+                  <option>업무시스템</option>
+                  <option>IT인프라</option>
+                  <option>QA장비</option>
+                </Select>
+              </SearchBlock>
+            </Col>
+            <Col sm={4}>
+              <SearchBlock>
+                ·
+                <Select>
+                  <option>제목</option>
+                  <option>작성자</option>
+                </Select>
+                <Input size="40" onChange={keywordHandler} />
+                <Button variant="secondary" size="sm" id="maring_left_button">
+                  검색
+                </Button>
+              </SearchBlock>
+            </Col>
 
-            <Button variant="primary" size="sm" onClick={console.log(Requests)}>
-              IT 서비스 요청/콘솔확인
-            </Button>
-          </DateSearchWrapper>
-
-          <Span />
-          <Span>
-            제목
-            <input></input>
-          </Span>
-
-          <SearchButton>검색</SearchButton>
-        </TopWrapper>
+            <Col sm={6} />
+          </Row>
+        </SecondRowWrapper>
       </TopContainer>
       <TableContainer>
         <Table striped bordered hover>
@@ -162,8 +244,8 @@ function ServiceRequestPage() {
           </thead>
 
           <tbody>
-            {Requests.map((request) => (
-              <tr>
+            {Requests.map((request, index) => (
+              <tr key={index}>
                 <td>{request.REQ_SEQ}</td>
                 <td>{request.CSR_STATUS}</td>
                 <td>{request.TARGET_CODE}</td>

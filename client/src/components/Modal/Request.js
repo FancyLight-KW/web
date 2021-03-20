@@ -33,6 +33,7 @@ function Request() {
   const [TargetCode, setTargetCode] = useState("업무시스템");
   const [SystemGroupCode, setSystemGroupCode] = useState("test");
   const [TMApprovalReqYN, setTMApprovalReqYN] = useState("N");
+  const [CheckboxData, setCheckboxData] = useState("false");
   const [Title, setTitle] = useState("");
   const [Content, setContent] = useState("");
   const [File, setFile] = useState("");
@@ -64,8 +65,14 @@ function Request() {
   };
 
   const tMApporvalonChange = (e) => {
-    setTMApprovalReqYN(!TMApprovalReqYN);
-    console.log(TMApprovalReqYN);
+    setCheckboxData(!CheckboxData);
+    if (CheckboxData) {
+      setTMApprovalReqYN("Y");
+    } else {
+      setTMApprovalReqYN("N");
+    }
+
+    //console.log(TMApprovalReqYN);
   };
 
   const titleHandler = (e) => {
@@ -101,7 +108,7 @@ function Request() {
 
     const formData = new FormData();
 
-    let body = {
+    let body = JSON.stringify({
       TARGET_CODE: TargetCode,
       SYSTEM_GROUP_CODE: SystemGroupCode,
       TM_APPROVAL_REQ_YN: TMApprovalReqYN,
@@ -111,13 +118,13 @@ function Request() {
       CORP_CODE: 법인코드,
       CSR_STATUS: CSR진행상태,
       IMSI_YN: 임시저장,
-    };
+    });
 
     formData.append("imagefile", File);
     formData.append("body", JSON.stringify(body));
 
     console.log(formData);
-    //console.log(body);
+    console.log(body);
 
     axios
       .post("http://localhost:5000/requests/newRequest/", formData)
@@ -219,7 +226,6 @@ function Request() {
               onChange={fileHandler}
             ></input>
             <Form.Text muted>(첨부 가능 파일 확장자: jpg, gif, png)</Form.Text>
-            <button onClick={Submit}>클릭</button>
           </Col>
         </Form.Group>
 

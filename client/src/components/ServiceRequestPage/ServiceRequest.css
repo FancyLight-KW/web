@@ -1,3 +1,13 @@
 #thCenterAlign {
   vertical-align: middle;
 }
+#padding_zero {
+  padding-right: 0;
+  padding-left: 0;
+}
+#maring_left_button {
+  margin-left: 57px;
+}
+#margin_top_button {
+  margin-top: 10px;
+}
