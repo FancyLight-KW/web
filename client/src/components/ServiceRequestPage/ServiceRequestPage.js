@@ -3,7 +3,9 @@ import { Table, Button, Row, Col } from "react-bootstrap";
 import styled, { css } from "styled-components";
 import "./ServiceRequest.css";
 import Datepicker from "../Datepicker";
+import { Link } from "react-router-dom";
 import axios from "axios";
+import searchImg from "../../assets/Search.png";
 
 const TopContainer = styled.div`
   height: 100px;
@@ -35,16 +37,6 @@ const BetweenDate = styled.span`
   font-size: 14px;
 `;
 
-const TopWrapper = styled.div`
-  margin-top: 10px;
-  display: flex;
-  flex-flow: wrap;
-`;
-
-const SRButton = styled(Button)`
-  margin-left: 500px;
-`;
-
 const Select = styled.select`
   margin-left: 10px;
 `;
@@ -53,92 +45,83 @@ const Input = styled.input`
 `;
 
 function ServiceRequestPage() {
+  // const [FilteredRequests, setFilterdRequests] = useState([]);
   const [Requests, setRequests] = useState([]);
+  const [Query, setQuery] = useState(
+    "http://localhost:5000/requests/getAllRequest?"
+  );
 
   const [StartDate, setStartDate] = useState("");
   const [FinishDate, setFinishDate] = useState("");
+  const [CSRStatus, setCSRStatus] = useState("");
+  const [TargetCode, setTargetCode] = useState("");
+  const [SearchType, setSearchType] = useState("title");
   const [Keyword, setKeyword] = useState("");
 
   const SearchHandler = () => {
+    const queryKeyword =
+      SearchType === "title"
+        ? Keyword === ""
+          ? ``
+          : `&title=${Keyword}`
+        : Keyword === ""
+        ? ``
+        : `&user=${Keyword}`;
+
+    //  console.log(queryKeyword);
+    const queryTargetCode = `&targetcode=${TargetCode}`;
+    const queryCSRStatus = `&csrstatus=${CSRStatus}`;
     const queryDate =
       StartDate === ""
         ? FinishDate === ""
           ? ``
-          : `&finishDate=${FinishDate}`
+          : `&endDate=${FinishDate}`
         : FinishDate === ""
         ? `&startDate=${StartDate}`
-        : `&startDate=${StartDate}&finishDate=${FinishDate}`;
-    console.log(queryDate);
+        : `&startDate=${StartDate}&endDate=${FinishDate}`;
+    //  console.log(queryDate);
 
-    const queryKeyword = Keyword ? `keyword=${Keyword}` : ``;
-    console.log(queryKeyword);
-
-    const searchAPI = `http://localhost:5000/requests/searchRequest/?${queryDate}`;
+    const searchAPI = `http://localhost:5000/requests/searchRequest/?${queryKeyword}${queryTargetCode}${queryCSRStatus}${queryDate}`;
+    setQuery(searchAPI);
     console.log(searchAPI);
-    // http://localhost:5000/requests/searchRequest/?keyword=제목&searchparam=title&startDate=20210310
+    // http://localhost:5000/requests/searchRequest/?user=sehwagod&title=제목&targetcode=QA장비&csrstatus=완료&startDate=20210311&endDate=20210317
   };
 
   useEffect(() => {
-    const endpoint = "http://localhost:5000/requests/getAllRequest";
-    fetchRequests(endpoint);
-  }, []);
+    // const endpoint = "http://localhost:5000/requests/getAllRequest?";
+    fetchRequests(Query);
+  }, [Query]);
 
-  const fetchRequests = (endpoint) => {
-    axios.get(endpoint).then((response) => {
+  const fetchRequests = (Query) => {
+    axios.get(Query).then((response) => {
       console.log(response);
-      // setRequests(...response.data);
-      setRequests([...Requests, ...response.data]);
+      setRequests([...response.data]);
     });
   };
 
   const StartdatedHandler = (date) => {
     setStartDate(date);
-    console.log(StartDate);
+    // console.log(StartDate);
   };
   const FinishDateHandler = (date) => {
     setFinishDate(date);
-    console.log(FinishDate);
+    //  console.log(FinishDate);
   };
   const keywordHandler = (e) => {
     setKeyword(e.target.value);
   };
+  const searchTypeHandler = (e) => {
+    setSearchType(e.target.value);
+  };
+  const csrStatusSearchHandler = (e) => {
+    setCSRStatus(e.target.value);
+    //  console.log(e.target.value);
+  };
 
-  // <TopWrapper>
-  //         <FirstRowhWrapper>
-  //           <Row>
-  //             <Col xs={16} md={11}>
-  //               <Span>· 요청/접수 기간</Span>
-  //               <Datepicker change={StartdatedHandler} />
-  //               <BetweenDate>~</BetweenDate>
-  //               <Datepicker change={FinishDateHandler} />
-  //               <Span>
-  //                 {" "}
-  //                 · 문의 대상
-  //                 <Select>
-  //                   <option>업무시스템</option>
-  //                   <option>IT인프라</option>
-  //                   <option>QA장비</option>
-  //                 </Select>
-  //               </Span>
-  //             </Col>
-  //             <Col xs={2} md={1}>
-  //               <SRButton>IT서비스 요청</SRButton>
-  //             </Col>
-  //           </Row>
-  //         </FirstRowhWrapper>
-  //         <Span>
-  //           ·
-  //           <Select>
-  //             <option>제목</option>
-  //             <option>작성자</option>
-  //           </Select>
-  //           <Input size="40" onChange={keywordHandler} />
-  //         </Span>
-  //         <Span>· 문의 유형</Span>
-  //         <Span>
-  //           <button onClick={SearchHandler}>검색</button>
-  //         </Span>
-  //       </TopWrapper>
+  const targetCodeSearchHandler = (e) => {
+    setTargetCode(e.target.value);
+    //  console.log(e.target.value);
+  };
 
   return (
     <div>
@@ -148,10 +131,14 @@ function ServiceRequestPage() {
             <Col sm={2}>
               <SearchBlock>
                 · 서비스 상태
-                <Select>
-                  <option>접수대기</option>
-                  <option>접수완료</option>
-                  <option>변경관리 처리중</option>
+                <Select onChange={csrStatusSearchHandler}>
+                  <option value="" selected>
+                    전체
+                  </option>
+                  <option value="접수대기">접수대기</option>
+                  <option value="접수완료">접수완료</option>
+                  <option value="변경관리 처리중">변경관리 처리중</option>
+                  <option value="처리 지연중">처리 지연중</option>
                 </Select>
               </SearchBlock>
             </Col>
@@ -165,9 +152,11 @@ function ServiceRequestPage() {
             </Col>
 
             <Col sm={1}>
-              <Button variant="primary" size="sm" id="margin_top_button">
-                IT 서비스 요청
-              </Button>
+              <Link to="/itsr">
+                <Button variant="primary" size="sm" id="margin_top_button">
+                  IT 서비스 요청
+                </Button>
+              </Link>
             </Col>
           </Row>
         </TopFirstRowhWrapper>
@@ -176,22 +165,31 @@ function ServiceRequestPage() {
             <Col sm={2}>
               <SearchBlock>
                 · 문의 대상
-                <Select>
-                  <option>업무시스템</option>
-                  <option>IT인프라</option>
-                  <option>QA장비</option>
+                <Select onChange={targetCodeSearchHandler}>
+                  <option value="" selected>
+                    전체
+                  </option>
+                  <option value="업무시스템">업무시스템</option>
+                  <option value="IT인프라">IT인프라</option>
+                  <option value="OA장비">OA장비</option>
                 </Select>
               </SearchBlock>
             </Col>
             <Col sm={4}>
               <SearchBlock>
                 ·
-                <Select>
-                  <option>제목</option>
-                  <option>작성자</option>
+                <Select onChange={searchTypeHandler}>
+                  <option value="title">제목</option>
+                  <option value="user">작성자</option>
                 </Select>
                 <Input size="40" onChange={keywordHandler} />
-                <Button variant="secondary" size="sm" id="maring_left_button">
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  id="maring_left_button"
+                  onClick={SearchHandler}
+                >
+                  <img src={searchImg} width="18" height="17" />
                   검색
                 </Button>
               </SearchBlock>
@@ -205,25 +203,25 @@ function ServiceRequestPage() {
         <Table striped bordered hover>
           <thead>
             <tr>
-              <th RowSpan="2" id="thCenterAlign">
+              <th rowSpan="2" id="thCenterAlign">
                 No
               </th>
-              <th RowSpan="2" id="thCenterAlign">
+              <th rowSpan="2" id="thCenterAlign">
                 서비스상태
               </th>
-              <th RowSpan="2" id="thCenterAlign">
+              <th rowSpan="2" id="thCenterAlign">
                 문의대상
               </th>
-              <th RowSpan="2" id="thCenterAlign">
+              <th rowSpan="2" id="thCenterAlign">
                 시스템명1
               </th>
-              <th RowSpan="2" id="thCenterAlign">
+              <th rowSpan="2" id="thCenterAlign">
                 시스템명2
               </th>
-              <th RowSpan="2" id="thCenterAlign">
+              <th rowSpan="2" id="thCenterAlign">
                 문의유형
               </th>
-              <th RowSpan="2" id="thCenterAlign">
+              <th rowSpan="2" id="thCenterAlign">
                 제목
               </th>
 
@@ -255,7 +253,7 @@ function ServiceRequestPage() {
                 <td>{request.TITLE}</td>
                 <td></td>
                 <td></td>
-                <td></td>
+                <td>{request.REQ_FINISH_DATE}</td>
                 <td></td>
                 <td></td>
                 <td></td>

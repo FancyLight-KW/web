@@ -2,19 +2,9 @@ import React from "react";
 import "./Landing.css";
 import styled, { css } from "styled-components";
 import { Row, Col, Card, CardGroup } from "react-bootstrap";
-import ITServiceImg from "../../assets/itsp.png";
+import { Link } from "react-router-dom";
+import ITServiceImg from "../../assets/ITSP.png";
 
-// <div
-//   style={{
-//     display: "flex",
-//     justifyContent: "center",
-//     alignItems: "center",
-//     width: "100%",
-//     height: "100%",
-//   }}
-// >
-//   <h2>시작페이지</h2>
-// </div>
 const LandingWrapper = styled.div`
   overflow: hidden;
 `;
@@ -73,7 +63,9 @@ function LandingPage() {
           </Col>
 
           <Col xs={3} md={2} id="padding-zero">
-            <FastSRBox id="padding-zero"> 빠른 요청/접수</FastSRBox>
+            <Link to="/itsr">
+              <FastSRBox id="padding-zero"> 빠른 요청/접수</FastSRBox>
+            </Link>
           </Col>
           <Col xs={3} md={2} id="padding-zero">
             <MySRBox>내 요청목록</MySRBox>
@@ -92,7 +84,7 @@ function LandingPage() {
                   </Card.Subtitle>
                   <Card.Text>
                     Some quick example text to build on the card title and make
-                    up the bulk of the card's content.
+                    up the bulk of the card's contents.
                   </Card.Text>
                 </Card.Body>
               </Card>
