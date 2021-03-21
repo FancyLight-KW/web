@@ -28,6 +28,9 @@ const Datepicker = ({ change }) => {
   };
 
   const dateChanger = (date) => {
+    if (date === null) {
+      return "";
+    }
     let year = date.getFullYear();
     let month = date.getMonth() + 1;
     let day = date.getDate();
