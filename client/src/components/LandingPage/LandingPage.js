@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./Landing.css";
 import styled, { css } from "styled-components";
 import { Row, Col, Card, CardGroup } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import ITServiceImg from "../../assets/ITSP.png";
+import axios from "axios";
 
 const LandingWrapper = styled.div`
   overflow: hidden;
@@ -47,11 +48,28 @@ const MySRBox = styled.div`
   font-size: large;
 `;
 
-// <TextContainer>
-//               <h5>Welcome to </h5>
-//               <h2>IT Servic Portal</h2>
-//             </TextContainer>
 function LandingPage() {
+  const [CSRInfos, setCSRInfos] = useState([]);
+
+  useEffect(() => {
+    // const endpoint = "http://localhost:5000/requests/getAllRequest?";
+    axios.get("http://localhost:5000/getCSR_COUNT").then((response) => {
+      console.log(response);
+      setCSRInfos(response.data);
+    });
+  }, []);
+
+  // {CSRInfos.map((info, index) => (
+  //   <Card style={{ width: "14rem" }} key={index}>
+  //     <Card.Body>
+  //       <Card.Subtitle className="mb-2 text-muted">
+  //         Card Subtitle
+  //       </Card.Subtitle>
+  //       <Card.Text>{info}</Card.Text>
+  //     </Card.Body>
+  //   </Card>
+  // ))}
+
   return (
     <LandingWrapper>
       <FirstRowContainer>
@@ -80,61 +98,9 @@ function LandingPage() {
                 <Card.Body>
                   <Card.Title>Card Title</Card.Title>
                   <Card.Subtitle className="mb-2 text-muted">
-                    Card Subtitle
+                    접수완료
                   </Card.Subtitle>
-                  <Card.Text>
-                    Some quick example text to build on the card title and make
-                    up the bulk of the card's contents.
-                  </Card.Text>
-                </Card.Body>
-              </Card>
-
-              <Card style={{ width: "14rem" }}>
-                <Card.Body>
-                  <Card.Title>Card Title</Card.Title>
-                  <Card.Subtitle className="mb-2 text-muted">
-                    Card Subtitle
-                  </Card.Subtitle>
-                  <Card.Text>
-                    Some quick example text to build on the card title and make
-                    up the bulk of the card's content.
-                  </Card.Text>
-                </Card.Body>
-              </Card>
-              <Card style={{ width: "14rem" }}>
-                <Card.Body>
-                  <Card.Title>Card Title</Card.Title>
-                  <Card.Subtitle className="mb-2 text-muted">
-                    Card Subtitle
-                  </Card.Subtitle>
-                  <Card.Text>
-                    Some quick example text to build on the card title and make
-                    up the bulk of the card's content.
-                  </Card.Text>
-                </Card.Body>
-              </Card>
-              <Card style={{ width: "14rem" }}>
-                <Card.Body>
-                  <Card.Title>Card Title</Card.Title>
-                  <Card.Subtitle className="mb-2 text-muted">
-                    Card Subtitle
-                  </Card.Subtitle>
-                  <Card.Text>
-                    Some quick example text to build on the card title and make
-                    up the bulk of the card's content.
-                  </Card.Text>
-                </Card.Body>
-              </Card>
-              <Card style={{ width: "14rem" }}>
-                <Card.Body>
-                  <Card.Title>Card Title</Card.Title>
-                  <Card.Subtitle className="mb-2 text-muted">
-                    Card Subtitle
-                  </Card.Subtitle>
-                  <Card.Text>
-                    Some quick example text to build on the card title and make
-                    up the bulk of the card's content.
-                  </Card.Text>
+                  <Card.Text>{CSRInfos.완료}건</Card.Text>
                 </Card.Body>
               </Card>
             </CardGroup>
