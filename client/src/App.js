@@ -7,6 +7,7 @@ import LandingPage from "./components/LandingPage/LandingPage";
 import RegisterPage from "./components/RegisterPage/RegisterPage";
 import LoginPage from "./components/LoginPage/LoginPage";
 import NavBar from "./components/NavBar/NavBar";
+import Footer from "./components/Footer";
 import ServiceRequestPage from "./components/ServiceRequestPage/ServiceRequestPage";
 import ITSRPage from "./components/ITSRPage/ITSRpage";
 
@@ -24,6 +25,7 @@ function App() {
           <Route exact path="/" component={LandingPage} />
         </Switch>
       </div>
+      <Footer />
     </Router>
   );
 }
