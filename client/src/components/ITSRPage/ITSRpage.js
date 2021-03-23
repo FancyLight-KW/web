@@ -121,7 +121,7 @@ function ITSRPage() {
     });
 
     formData.append("imagefile", File);
-    formData.append("body", JSON.stringify(body));
+    formData.append("body", body);
 
     console.log(formData);
     console.log(body);

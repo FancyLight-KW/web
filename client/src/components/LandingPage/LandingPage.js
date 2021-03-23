@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./Landing.css";
+import "./LandingPage.css";
 import styled, { css } from "styled-components";
 import { Row, Col, Card, CardGroup } from "react-bootstrap";
 import { Link } from "react-router-dom";
@@ -18,12 +18,6 @@ const SecondRowContainer = styled.div`
 `;
 const ThridRowContainer = styled.div`
   height: 200px;
-`;
-const TextContainer = styled.div`
-  height: 100px;
-  margin-left: 100px;
-  line-height: 100px;
-  font-weight: bold;
 `;
 const ImageContainer = styled.div`
   background-color: #e0f6ff;
@@ -47,13 +41,30 @@ const MySRBox = styled.div`
   font-weight: bold;
   font-size: large;
 `;
+const LiBox = styled.div`
+  text-align: start;
+  margin-top: 12.5px;
+  margin-left: 10px;
+  font-size: 15px;
+`;
+const OABox = styled.div`
+  text-align: center;
+  font-size: 23px;
+  font-weight: 300px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+`;
+const RestBox = styled.div`
+  text-align: center;
+  font-size: 12px;
+`;
 
 function LandingPage() {
   const [CSRInfos, setCSRInfos] = useState([]);
 
   useEffect(() => {
     // const endpoint = "http://localhost:5000/requests/getAllRequest?";
-    axios.get("http://localhost:5000/getCSR_COUNT").then((response) => {
+    axios.get("http://localhost:5000/csrstatus").then((response) => {
       console.log(response);
       setCSRInfos(response.data);
     });
@@ -93,26 +104,115 @@ function LandingPage() {
       <SecondRowContainer>
         <Row>
           <Col xs={12} md={8}>
-            <CardGroup>
-              <Card style={{ width: "14rem" }}>
+            <CardGroup style={{ height: "200px" }}>
+              <Card
+                style={{
+                  width: "14rem",
+                  backgroundColor: "#ffffb6",
+                }}
+              >
                 <Card.Body>
-                  <Card.Title>Card Title</Card.Title>
-                  <Card.Subtitle className="mb-2 text-muted">
-                    접수완료
-                  </Card.Subtitle>
-                  <Card.Text>{CSRInfos.완료}건</Card.Text>
+                  <Card.Title id="bold">결제 건수</Card.Title>
+
+                  <Card.Text>
+                    <div id="text_yellow">{CSRInfos.CSR진행상태}</div>
+                    <div id="text_gray">건</div>
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+
+              <Card style={{ width: "14rem", backgroundColor: "#f2f4f6" }}>
+                <Card.Body>
+                  <Card.Title id="bold">접수 대기중</Card.Title>
+
+                  <Card.Text>
+                    <div id="text_black">{CSRInfos.접수}</div>
+                    <div id="text_gray">건</div>
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+              <Card style={{ width: "14rem", backgroundColor: "#e5f5e5" }}>
+                <Card.Body>
+                  <Card.Title id="bold">접수완료</Card.Title>
+
+                  <Card.Text>
+                    <div id="text_green">{CSRInfos.완료}</div>
+                    <div id="text_gray">건</div>
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+
+              <Card style={{ width: "14rem", backgroundColor: "#dbf5fe" }}>
+                <Card.Body>
+                  <Card.Title id="bold"> 요청 처리중</Card.Title>
+
+                  <Card.Text>
+                    <div id="text_blue">{CSRInfos.진행}</div>
+                    <div id="text_gray">건</div>
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+              <Card style={{ width: "14rem", backgroundColor: "#fff0ee" }}>
+                <Card.Body>
+                  <Card.Title id="bold"> 처리 지연중</Card.Title>
+
+                  <Card.Text>
+                    <div id="text_red">0</div>
+                    <div id="text_gray">건</div>
+                  </Card.Text>
                 </Card.Body>
               </Card>
             </CardGroup>
           </Col>
-          <Col xs={6} md={4}>
-            ?
+
+          <Col xs={6} md={4} id="padding-zero">
+            <CardGroup style={{ height: "200px" }}>
+              <Card
+                style={{
+                  width: "14rem",
+                }}
+              >
+                <Card.Body>
+                  <OABox> OA 서비스 센터 </OABox>
+
+                  <RestBox>
+                    PC/노트북 워크스테이션 활용
+                    <br />
+                    전산소모품 지급, 전산장비 대여
+                    <br />
+                    IP발급, 인터넷/영상회의/메신저 활용 등
+                    <br />
+                    <div style={{ color: "red" }}>
+                      {" "}
+                      긴급건 제외, IT서비스포털 접수 필요
+                    </div>
+                  </RestBox>
+                </Card.Body>
+              </Card>
+              <Card>
+                <LiBox>
+                  <li>오토웨이 지원(031-369-9980)</li>
+                </LiBox>
+                <LiBox>
+                  <li>동탄/판교(031-369-9980)</li>
+                </LiBox>
+                <LiBox>
+                  <li>성연(041-661-7325)</li>
+                </LiBox>
+                <LiBox>
+                  <li>지곡(041-661-3712)</li>
+                </LiBox>
+                <LiBox>
+                  <li>화성(031-369-5100)</li>
+                </LiBox>
+              </Card>
+            </CardGroup>
           </Col>
         </Row>
       </SecondRowContainer>
       <ThridRowContainer>
         <Row>
-          <Col>1 of 1</Col>
+          <Col>?????????</Col>
         </Row>
       </ThridRowContainer>
     </LandingWrapper>

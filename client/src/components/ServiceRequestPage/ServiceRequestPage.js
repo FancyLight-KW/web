@@ -253,7 +253,7 @@ function ServiceRequestPage() {
                 <td>{request.TITLE}</td>
                 <td></td>
                 <td></td>
-                <td>{request.REQ_FINISH_DATE}</td>
+                <td>{request.createdAt.split("T")[0]}</td>
                 <td></td>
                 <td></td>
                 <td></td>
