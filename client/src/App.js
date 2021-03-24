@@ -13,20 +13,28 @@ import ITSRPage from "./components/ITSRPage/ITSRpage";
 
 function App() {
   return (
-    <Router>
-      <NavBar />
-      <div>
-        <Switch>
-          <Route exact path="/signup" component={RegisterPage} />
-          <Route exact path="/login" component={LoginPage} />
-          <Route exact path="/servicerequest" component={ServiceRequestPage} />
-          <Route exact path="/test" component={Testpage} />
-          <Route exact path="/itsr" component={ITSRPage} />
-          <Route exact path="/" component={LandingPage} />
-        </Switch>
+    <div className="page-container">
+      <div className="content-wrap">
+        <Router>
+          <NavBar />
+          <div>
+            <Switch>
+              <Route exact path="/signup" component={RegisterPage} />
+              <Route exact path="/login" component={LoginPage} />
+              <Route
+                exact
+                path="/servicerequest"
+                component={ServiceRequestPage}
+              />
+              <Route exact path="/test" component={Testpage} />
+              <Route exact path="/itsr" component={ITSRPage} />
+              <Route exact path="/" component={LandingPage} />
+            </Switch>
+          </div>
+        </Router>
       </div>
       <Footer />
-    </Router>
+    </div>
   );
 }
 
