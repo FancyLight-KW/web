@@ -1,18 +1,29 @@
 import React from "react";
+import chatbotimg from "../../assets/Chatbot.jpg";
 
 function Footer() {
   return (
     <div
       style={{
-        height: "50px",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        fontSize: "1rem",
+        width: "100%",
+        position: "relative",
+        bottom: "0",
+        width: "100%",
       }}
     >
-      <p> Footer </p>
+      <div style={{ display: "flex", justifyContent: "flex-end" }}>
+        <img src={chatbotimg} width="80" height="80" />
+      </div>
+
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          fontSize: "x-small",
+        }}
+      >
+        <p>&copy;{new Date().getFullYear()} FANCY LIGHT</p>
+      </div>
     </div>
   );
 }

@@ -115,7 +115,9 @@ function LandingPage() {
                   <Card.Title id="bold">결제 건수</Card.Title>
 
                   <Card.Text>
-                    <div id="text_yellow">{CSRInfos.CSR진행상태}</div>
+                    <div id="text_yellow">
+                      {CSRInfos.CSR진행상태 ? CSRInfos.CSR진행상태 : "0"}
+                    </div>
                     <div id="text_gray">건</div>
                   </Card.Text>
                 </Card.Body>
@@ -126,7 +128,9 @@ function LandingPage() {
                   <Card.Title id="bold">접수 대기중</Card.Title>
 
                   <Card.Text>
-                    <div id="text_black">{CSRInfos.접수}</div>
+                    <div id="text_black">
+                      {CSRInfos.접수 ? CSRInfos.접수 : "0"}
+                    </div>
                     <div id="text_gray">건</div>
                   </Card.Text>
                 </Card.Body>
@@ -136,7 +140,9 @@ function LandingPage() {
                   <Card.Title id="bold">접수완료</Card.Title>
 
                   <Card.Text>
-                    <div id="text_green">{CSRInfos.완료}</div>
+                    <div id="text_green">
+                      {CSRInfos.완료 ? CSRInfos.완료 : "0"}
+                    </div>
                     <div id="text_gray">건</div>
                   </Card.Text>
                 </Card.Body>
@@ -147,7 +153,9 @@ function LandingPage() {
                   <Card.Title id="bold"> 요청 처리중</Card.Title>
 
                   <Card.Text>
-                    <div id="text_blue">{CSRInfos.진행}</div>
+                    <div id="text_blue">
+                      {CSRInfos.진행 ? CSRInfos.진행 : "0"}
+                    </div>
                     <div id="text_gray">건</div>
                   </Card.Text>
                 </Card.Body>
@@ -212,7 +220,7 @@ function LandingPage() {
       </SecondRowContainer>
       <ThridRowContainer>
         <Row>
-          <Col>?????????</Col>
+          <Col></Col>
         </Row>
       </ThridRowContainer>
     </LandingWrapper>
