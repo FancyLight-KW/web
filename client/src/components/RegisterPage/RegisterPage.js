@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { registerUser } from "../../actions/user";
 
-import axios from "axios";
-
 function RegisterPage() {
   const dispatch = useDispatch();
 
