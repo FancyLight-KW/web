@@ -1,17 +1,15 @@
-.marginleft {
-  margin-left: 12px;
+#thCenterAlign {
+  vertical-align: middle;
 }
-.checkbox {
-  vertical-align: text-top;
+#padding_zero {
+  padding-right: 0;
+  padding-left: 0;
 }
-.redText {
-  color: crimson;
+#searchButton {
+  margin-left: 91px;
+  height: 30px;
 }
-label {
-  vertical-align: -1px;
-}
-.labelColor {
-  background-color: whitesmoke;
-  color: #0069c0;
-  font-weight: bold;
+#itsrButton {
+  margin-top: 8px;
+  margin-right: 5px;
 }

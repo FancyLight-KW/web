@@ -1,49 +1,68 @@
-var express = require("express");
-var router = express.Router();
-const sql = require("../models/mysql.connection.js");
-const user = require("../controllers/user.controller.js");
+const express = require("express");
+const router = express.Router();
+const user = require("../controllers/Users/Users.controller");
+const login = require("../controllers/Users/Users.login.controller");
+const passport = require("passport");
+const index = require("../controllers/index/index.controller");
 
-//testcode
-// router.post('/register', (req, res) => {
-
-//   const email = req.body.email;
-//   const name = req.body.name;
-//   const password = req.body.password;
-
-//   sql.query(
-//     "INSERT INTO User_ID_PWD (User_ID, User_PWD) VALUES (?,?)",
-//     [email, password],
-//     (err, result) => {
-//       console.log(err);
-//     }
-//   );
-// });
-
+//라우팅
 router.post("/register", user.create);
+router.post("/login", login.login);
+router.get("/logout", login.logout);
 
-router.post("/login", (req, res) => {
-  const email = req.body.email;
-  const password = req.body.password;
+// router.get("/login", (req, res) => {
+//   if(req.isAuthenticated()){
+//     res.redirect('/')
+//   }
+//   res.render('login');
+// })
 
-  sql.query(
-    "SELECT * FROM User_ID_PWD WHERE User_ID = ? AND User_PWD = ?",
-    [email, password],
-    (err, result) => {
-      if (err) {
-        res.send({ err: err });
-      }
-
-      if (result.length > 0) {
-        res.send(result);
-      } else {
-        res.send({ message: "Wrong username/password combination!" });
-      }
+router.post(
+  "/login",
+  (req, res, next) => {
+    if (req.isAuthenticated()) {
+      console.log("Already logined");
+    } else {
+      console.log("new login!");
+      passport.authenticate("local", {
+        successRedirect: "/",
+        failureRedirect: "/login",
+        failureFlash: true,
+      })(req, res, next);
     }
-  );
-});
+  },
+  (req, res) => {
+    if (req.isAuthenticated()) {
+      console.log("auth success");
+      console.log(req.user);
+    } else [console.log("auth fail")];
+  }
+);
+
+// router.post('/login', passport.authenticate('local',{
+//   successRedirect: '/',
+//   failureRedirect: '/login',
+//   failureFlash: true,
+//   }),
+//   (req, res) => {
+//   console.log("req.user : "+ JSON.stringify(req.session.passport));
+//   res.send({
+//     user: req.session.passport
+//   });
+// });
 /* GET home page. */
-router.get("/", function (req, res, next) {
-  res.render("index", { title: "Express" });
+// 여기에 쿠키, 세션정보 확인 해야할 듯
+router.get("/", (req, res) => {
+  console.log("auth: " + req.isAuthenticated());
+  if (req.isAuthenticated()) {
+    res.send({
+      session: req.session,
+    });
+  } else {
+    res.send(req.session.passport);
+  }
 });
+
+router.get("/csrstatus", index.countCSR_STATUS);
 
 module.exports = router;

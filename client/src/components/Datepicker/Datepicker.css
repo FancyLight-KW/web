@@ -1,0 +1,6 @@
+.react-datepicker__day-name,
+.react-datepicker__day {
+  width: 1.5em;
+  line-height: 1.9em;
+  margin: 0.166em;
+}

@@ -1,11 +1,9 @@
 import React from "react";
 import "./NavBar.css";
 import { Navbar, Nav, NavDropdown, Button } from "react-bootstrap";
-import Logo from "../../800px-Hyundai_Transys_logo.png";
+import Logo from "../../assets/800px-Hyundai_Transys_logo.png";
 import { Link } from "react-router-dom";
 // import { withRouter } from "react-router-dom";
-
-//
 
 function NavBar() {
   return (
@@ -19,7 +17,7 @@ function NavBar() {
               height="30"
               className="d-inline-block align-top"
             />
-            <label class="logo-text">IT Service Portal</label>
+            <label className="logo-text">IT Service Portal</label>
           </Navbar.Brand>
 
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -41,53 +39,32 @@ function NavBar() {
       </div>
 
       <div>
-        <Navbar collapseOnSelect expand="lg" variant="dark" className="Nav">
-          <NavDropdown title="요청/접수" id="collasible-nav-dropdown">
-            <NavDropdown.Item href="/servicerequest">
+        <Navbar collapseOnSelect expand="lg" variant="dark" id="NavSecondRow">
+          <Nav.Link id="collasible-nav">
+            <Link to="/servicerequest" id="textcolorwhite">
               요청/접수
-            </NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.2">
+            </Link>
+          </Nav.Link>
+          <Nav.Link id="collasible-nav">
+            <Link to="" id="textcolorwhite">
               요청/접수(처리자)
-            </NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.3">처리이력정보</NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.4">
+            </Link>
+          </Nav.Link>
+          <Nav.Link id="collasible-nav">
+            <Link to="" id="textcolorwhite">
+              처리이력정보
+            </Link>
+          </Nav.Link>
+          <Nav.Link id="collasible-nav">
+            <Link to="" id="textcolorwhite">
               처리이력정보(관리자)
-            </NavDropdown.Item>
-            <NavDropdown.Divider />
-            <NavDropdown.Item href="#action/3.5">나의 결재함</NavDropdown.Item>
-          </NavDropdown>
-
-          <NavDropdown title="장애관리" id="collasible-nav-dropdown">
-            <NavDropdown.Item href="#action/3.1">장애관리</NavDropdown.Item>
-          </NavDropdown>
-
-          <NavDropdown title="변경관리" id="collasible-nav-dropdown">
-            <NavDropdown.Item href="#action/3.1">변경관리</NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.2">
-              나의 결재함(변경)
-            </NavDropdown.Item>
-          </NavDropdown>
-
-          <NavDropdown title="통계정보" id="collasible-nav-dropdown">
-            <NavDropdown.Item href="#action/3.1">
-              서비스요청 적기접수율
-            </NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.2">
-              서비스요청 적기처리율
-            </NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.3">
-              서비스 만족도
-            </NavDropdown.Item>
-          </NavDropdown>
-
-          <NavDropdown title="게시판" id="collasible-nav-dropdown">
-            <NavDropdown.Item href="#action/3.1">공지사항</NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.2">IT정책</NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.3">질의응답</NavDropdown.Item>
-
-            <NavDropdown.Item href="#action/3.4">FAQ</NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.3">자료실</NavDropdown.Item>
-          </NavDropdown>
+            </Link>
+          </Nav.Link>
+          <Nav.Link id="collasible-nav">
+            <Link to="" id="textcolorwhite">
+              나의 결재함
+            </Link>
+          </Nav.Link>
         </Navbar>
       </div>
     </>

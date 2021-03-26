@@ -1,142 +1,271 @@
-import React, { useState } from "react";
-import "./ServiceRequest.css";
-import { Row, Col } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import { Table, Button, Row, Col } from "react-bootstrap";
 import styled, { css } from "styled-components";
-import Form from "react-bootstrap/Form";
-import { Radio } from "antd";
-import Checkbox from "antd/lib/checkbox/Checkbox";
+import "./ServiceRequest.css";
+import Datepicker from "../Datepicker";
+import { Link } from "react-router-dom";
+import axios from "axios";
+import searchImg from "../../assets/Search.png";
 
-// border: 1px solid black;
-const RateBlock = styled.div`
+const TopContainer = styled.div`
+  display: flex;
+  height: 100px;
+  background-color: aliceblue;
+  color: #0069c0;
+  font-weight: bold;
+  flex-direction: column;
+`;
+const TopFirstRowhWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  height: 50%;
+`;
+const SecondRowWrapper = styled.div`
+  display: flex;
+  height: 50%;
+`;
+const SearchBlock = styled.div`
+  display: flex;
+  margin-top: 10px;
+  margin-left: 15px;
+`;
+const TableContainer = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 30px;
-  padding: 30px;
   border-radius: 5px;
+  border-top: solid #0069c0;
 `;
-const RadioBlock = styled.div`
-  position: relative;
-  top: 8px;
+const BetweenDate = styled.span`
+  padding-left: 10px;
+  padding-top: 3px;
+  font-size: 14px;
+`;
+const Select = styled.select`
+  margin-left: 10px;
+  height: 27px;
+`;
+const Input = styled.input`
+  margin-left: 8px;
+  height: 28px;
 `;
 
 function ServiceRequestPage() {
-  const [value, setValue] = useState(1);
+  // const [FilteredRequests, setFilterdRequests] = useState([]);
+  const [Requests, setRequests] = useState([]);
+  const [Query, setQuery] = useState(
+    "http://localhost:5000/requests/getAllRequest?"
+  );
 
-  const onChange = (e) => {
-    console.log("radio checked", e.target.value);
-    setValue(e.target.value);
+  const [StartDate, setStartDate] = useState("");
+  const [FinishDate, setFinishDate] = useState("");
+  const [CSRStatus, setCSRStatus] = useState("");
+  const [TargetCode, setTargetCode] = useState("");
+  const [SearchType, setSearchType] = useState("title");
+  const [Keyword, setKeyword] = useState("");
+
+  const SearchHandler = () => {
+    const queryKeyword =
+      SearchType === "title"
+        ? Keyword === ""
+          ? ``
+          : `&title=${Keyword}`
+        : Keyword === ""
+        ? ``
+        : `&user=${Keyword}`;
+
+    //  console.log(queryKeyword);
+    const queryTargetCode = `&targetcode=${TargetCode}`;
+    const queryCSRStatus = `&csrstatus=${CSRStatus}`;
+    const queryDate =
+      StartDate === ""
+        ? FinishDate === ""
+          ? ``
+          : `&endDate=${FinishDate}`
+        : FinishDate === ""
+        ? `&startDate=${StartDate}`
+        : `&startDate=${StartDate}&endDate=${FinishDate}`;
+    //  console.log(queryDate);
+
+    const searchAPI = `http://localhost:5000/requests/searchRequest/?${queryKeyword}${queryTargetCode}${queryCSRStatus}${queryDate}`;
+    setQuery(searchAPI);
+    console.log(searchAPI);
+    // http://localhost:5000/requests/searchRequest/?user=sehwagod&title=제목&targetcode=QA장비&csrstatus=완료&startDate=20210311&endDate=20210317
   };
 
-  const onSubmitHandler = (e) => {
-    e.preventDefault();
+  useEffect(() => {
+    // const endpoint = "http://localhost:5000/requests/getAllRequest?";
+    fetchRequests(Query);
+  }, [Query]);
+
+  const fetchRequests = (Query) => {
+    axios.get(Query).then((response) => {
+      console.log(response);
+      setRequests([...response.data]);
+    });
+  };
+
+  const StartdatedHandler = (date) => {
+    setStartDate(date);
+    // console.log(StartDate);
+  };
+  const FinishDateHandler = (date) => {
+    setFinishDate(date);
+    //  console.log(FinishDate);
+  };
+  const keywordHandler = (e) => {
+    setKeyword(e.target.value);
+  };
+  const searchTypeHandler = (e) => {
+    setSearchType(e.target.value);
+  };
+  const csrStatusSearchHandler = (e) => {
+    setCSRStatus(e.target.value);
+    //  console.log(e.target.value);
+  };
+
+  const targetCodeSearchHandler = (e) => {
+    setTargetCode(e.target.value);
+    //  console.log(e.target.value);
   };
 
   return (
-    <RateBlock>
-      <form onSubmit={onSubmitHandler}>
-        <Form.Group as={Row} controlId="normalForm">
-          <Form.Label column sm="1" className="labelColor">
-            문의대상
-          </Form.Label>
-          <label className="marginleft" />
-          <RadioBlock>
-            <Radio.Group onChange={onChange} value={value}>
-              <Radio value={1}>업무시스템</Radio>
-              <label className="marginleft" />
-              <Radio value={2}>IT인프라 </Radio>
-              <label className="marginleft" />
-              <Radio value={3}>QA장비 </Radio>
-            </Radio.Group>
-          </RadioBlock>
-        </Form.Group>
-        <Form.Group as={Row} controlId="normalForm">
-          <Form.Label column sm="1" className="labelColor">
-            시스템명
-          </Form.Label>
-          <Col sm="3">
-            <Form.Control as="select">
-              <option>0</option>
-              <option>1</option>
-            </Form.Control>
-          </Col>
-        </Form.Group>
-        <Form.Group as={Row} controlId="normalForm">
-          <Form.Label column sm="1" className="labelColor">
-            팀장 승인
-          </Form.Label>
-          <label className="marginleft" />
-          <RadioBlock>
-            <Checkbox></Checkbox>
-            <label className="marginleft">
-              체크박스를 선택하시면 팀장에게 승인요청이 됩니다.
-            </label>
-            <Form.Text className="redText">
-              ※ 승인 필요 사항 : 업무프로세스 변경에 따른 시스템 개선, 중요
-              데이터의 변경, 투자 필요 사항
-            </Form.Text>
-          </RadioBlock>
-        </Form.Group>
+    <>
+      <TopContainer>
+        <TopFirstRowhWrapper>
+          <div style={{ display: "flex", width: "90%" }}>
+            <SearchBlock>
+              · 서비스 상태
+              <Select onChange={csrStatusSearchHandler}>
+                <option value="" selected>
+                  전체
+                </option>
+                <option value="접수대기">접수대기</option>
+                <option value="접수완료">접수완료</option>
+                <option value="변경관리 처리중">변경관리 처리중</option>
+                <option value="처리 지연중">처리 지연중</option>
+              </Select>
+            </SearchBlock>
 
-        <br></br>
+            <SearchBlock>
+              · 요청/접수 기간
+              <Datepicker change={StartdatedHandler} />
+              <BetweenDate>~</BetweenDate>
+              <Datepicker change={FinishDateHandler} />
+            </SearchBlock>
+          </div>
 
-        <Form.Group as={Row} controlId="normalForm">
-          <Form.Label column sm="1" className="labelColor">
-            제목
-          </Form.Label>
-          <Col sm="10">
-            <Form.Control type="text" />
-          </Col>
-        </Form.Group>
+          <div
+            style={{
+              display: "flex",
+              width: "10%",
+              justifyContent: "flex-end",
+            }}
+          >
+            <Link to="/itsr">
+              <Button variant="primary" size="sm" id="itsrButton">
+                IT 서비스 요청
+              </Button>
+            </Link>
+          </div>
+        </TopFirstRowhWrapper>
+        <SecondRowWrapper>
+          <SearchBlock>
+            · 문의 대상
+            <Select onChange={targetCodeSearchHandler}>
+              <option value="" selected>
+                전체
+              </option>
+              <option value="업무시스템">업무시스템</option>
+              <option value="IT인프라">IT인프라</option>
+              <option value="OA장비">OA장비</option>
+            </Select>
+          </SearchBlock>
 
-        <br></br>
+          <SearchBlock>
+            ·
+            <Select onChange={searchTypeHandler}>
+              <option value="title">제목</option>
+              <option value="user">작성자</option>
+            </Select>
+            <Input size="40" onChange={keywordHandler} />
+            <Button
+              variant="secondary"
+              size="sm"
+              id="searchButton"
+              onClick={SearchHandler}
+            >
+              <img src={searchImg} width="18" height="17" />
+              검색
+            </Button>
+          </SearchBlock>
+        </SecondRowWrapper>
+      </TopContainer>
+      <TableContainer>
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th rowSpan="2" id="thCenterAlign">
+                No
+              </th>
+              <th rowSpan="2" id="thCenterAlign">
+                서비스상태
+              </th>
+              <th rowSpan="2" id="thCenterAlign">
+                문의대상
+              </th>
+              <th rowSpan="2" id="thCenterAlign">
+                시스템명1
+              </th>
+              <th rowSpan="2" id="thCenterAlign">
+                시스템명2
+              </th>
+              <th rowSpan="2" id="thCenterAlign">
+                문의유형
+              </th>
+              <th rowSpan="2" id="thCenterAlign">
+                제목
+              </th>
 
-        <Form.Group as={Row} controlId="normalForm">
-          <Form.Label column sm="1" className="labelColor">
-            요청내용
-          </Form.Label>
-          <Col sm="10">
-            <Form.Control as="textarea" rows={5} />
-          </Col>
-        </Form.Group>
+              <th colSpan="3">서비스 요청</th>
+              <th colSpan="2">서비스 접수</th>
+              <th colSpan="3">서비스 검토/처리</th>
+            </tr>
+            <tr>
+              <th>부서</th>
+              <th>성명</th>
+              <th>요청등록일</th>
+              <th>성명</th>
+              <th>접수일</th>
+              <th>설명</th>
+              <th>예상완료일</th>
+              <th>처리완료일</th>
+            </tr>
+          </thead>
 
-        <Form.Group as={Row} controlId="normalForm">
-          <Form.Label column sm="1" className="labelColor">
-            요청만료일
-          </Form.Label>
-          <Col sm="1">
-            <Form.Control type="text" placeholder="2021/01/01" />
-          </Col>
-        </Form.Group>
-
-        <br></br>
-
-        <Form.Group as={Row}>
-          <Form.Label column sm="1" className="labelColor">
-            첨부파일
-          </Form.Label>
-          <Col sm="5">
-            <Form.File id="formcheck-api-regular">
-              <Form.File.Input />
-            </Form.File>
-            <Form.Text muted>
-              (첨부 가능 파일 확장자: jpg, doc, docx){" "}
-            </Form.Text>
-          </Col>
-        </Form.Group>
-
-        <Form.Group as={Row}>
-          <Form.Label column sm="1">
-            요청자
-          </Form.Label>
-        </Form.Group>
-
-        <Form.Group as={Row}>
-          <Form.Label column sm="1">
-            요청자이름
-          </Form.Label>
-        </Form.Group>
-      </form>
-    </RateBlock>
+          <tbody>
+            {Requests.map((request, index) => (
+              <tr key={index}>
+                <td>{request.REQ_SEQ}</td>
+                <td>{request.CSR_STATUS}</td>
+                <td>{request.TARGET_CODE}</td>
+                <td></td>
+                <td></td>
+                <td>{request.REQ_TYPE_CODE}</td>
+                <td>{request.TITLE}</td>
+                <td></td>
+                <td></td>
+                <td>{request.createdAt.split("T")[0]}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </TableContainer>
+    </>
   );
 }
 
