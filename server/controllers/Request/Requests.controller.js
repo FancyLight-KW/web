@@ -3,7 +3,21 @@ const Sequelize = require("sequelize");
 const moment = require("../../config/moment.config");
 
 const Op = Sequelize.Op;
+const pagenation = (page, query) => {
+  const PAGE_SIZE = 15;
+  let pageNum = page ? page : 1;
+  let offset = 0;
 
+  if (pageNum > 1) {
+    offset = PAGE_SIZE * (pageNum - 1);
+  }
+
+  return {
+    offset: offset,
+    limit: PAGE_SIZE,
+    where: query,
+  };
+};
 // 요청 생성
 exports.create = (req, res) => {
   let body = JSON.parse(req.body.body);
@@ -45,32 +59,7 @@ exports.create = (req, res) => {
 
 // 모든 요청 가져오기
 exports.findAll = (req, res) => {
-  const PAGE_SIZE = 15;
-  let pageNum = req.query.page ? req.query.page : 1;
-  let offset = 0;
-
-  if (pageNum > 1) {
-    offset = PAGE_SIZE * (pageNum - 1);
-  }
-
-  models.Requests.findAll({
-    offset: offset,
-    limit: PAGE_SIZE,
-  })
-    .then((result) => {
-      res.send(result);
-    })
-    .catch((err) => {
-      res.send(err);
-    });
-};
-
-exports.findOne = (req, res) => {
-  models.Requests.findOne({
-    where: {
-      REG_USER_ID: req.params.userId,
-    },
-  })
+  models.Requests.findAll(pagenation(req.query.page))
     .then((result) => {
       res.send(result);
     })
@@ -164,11 +153,11 @@ exports.findRequest = (req, res) => {
   query["TARGET_CODE"] = like(targetCode);
   query["CSR_STATUS"] = like(csrStatus);
 
-  let startDate = req.query.startDate
-    ? moment(req.query.startDate).format("YYYY-MM-DD HH:mm:ss")
+  let startDate = queryparam.startDate
+    ? moment(queryparam.startDate).format("YYYY-MM-DD HH:mm:ss")
     : moment(0).format("YYYY-MM-DD HH:mm:ss");
-  let endDate = req.query.endDate
-    ? moment(req.query.endDate).format("YYYY-MM-DD 23:59:59")
+  let endDate = queryparam.endDate
+    ? moment(queryparam.endDate).format("YYYY-MM-DD 23:59:59")
     : moment().format("YYYY-MM-DD HH:mm:ss");
 
   query["createdAt"] = {
@@ -176,9 +165,7 @@ exports.findRequest = (req, res) => {
   };
 
   console.log(query);
-  models.Requests.findAll({
-    where: query,
-  })
+  models.Requests.findAll(pagenation(queryparam.page, query))
     .then((result) => {
       res.send(result);
     })
