@@ -10,7 +10,7 @@ exports.create = (req, res) => {
   if (!body) {
     res.status(400).send({ message: "no data!" });
   }
-  console.log(body)
+  console.log(body);
   let query = {
     //REQ_SEQ: body.REQ_SEQ,
     TITLE: body.TITLE,
@@ -30,22 +30,33 @@ exports.create = (req, res) => {
   };
 
   if (req.file) {
-    query['REQ_IMG_PATH'] = "/uploads/" + req.file.filename;
+    query["REQ_IMG_PATH"] = "/uploads/" + req.file.filename;
   }
-  console.log(query)
+  console.log(query);
   models.Requests.create(query)
     .then((result) => {
       res.send(result);
     })
     .catch((err) => {
-      console.log(err)
+      console.log(err);
       res.send(err);
     });
 };
 
 // 모든 요청 가져오기
 exports.findAll = (req, res) => {
-  models.Requests.findAll()
+  const PAGE_SIZE = 15;
+  let pageNum = req.query.page ? req.query.page : 1;
+  let offset = 0;
+
+  if (pageNum > 1) {
+    offset = PAGE_SIZE * (pageNum - 1);
+  }
+
+  models.Requests.findAll({
+    offset: offset,
+    limit: PAGE_SIZE,
+  })
     .then((result) => {
       res.send(result);
     })
@@ -139,19 +150,19 @@ exports.delete = (req, res) => {
 
 exports.findRequest = (req, res) => {
   let queryparam = req.query;
-  let title = queryparam.title ?  queryparam.title : ""
+  let title = queryparam.title ? queryparam.title : "";
   let user = queryparam.user ? queryparam.user : "";
   let targetCode = queryparam.targetcode ? queryparam.targetcode : "";
   let csrStatus = queryparam.csrstatus ? queryparam.csrstatus : "";
   //console.log(keyword, search);
   const like = (keyword) => {
-    return { [Op.like]: `%${keyword}%` }
-  }
+    return { [Op.like]: `%${keyword}%` };
+  };
   let query = {};
-  query['REG_USER_ID'] = like(user)
-  query['TITLE'] = like(title)
-  query['TARGET_CODE'] = like(targetCode);
-  query['CSR_STATUS'] = like(csrStatus);
+  query["REG_USER_ID"] = like(user);
+  query["TITLE"] = like(title);
+  query["TARGET_CODE"] = like(targetCode);
+  query["CSR_STATUS"] = like(csrStatus);
 
   let startDate = req.query.startDate
     ? moment(req.query.startDate).format("YYYY-MM-DD HH:mm:ss")
