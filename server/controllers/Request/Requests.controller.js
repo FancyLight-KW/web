@@ -20,7 +20,9 @@ const pagenation = (page, query) => {
 };
 // 요청 생성
 exports.create = (req, res) => {
+  console.warn(req.body);
   let body = JSON.parse(req.body.body);
+  console.warn(body);
   if (!body) {
     res.status(400).send({ message: "no data!" });
   }
