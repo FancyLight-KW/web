@@ -27,7 +27,7 @@ const MarginBlock = styled.div`
 
 function ITSRPage() {
   const 법인코드 = "법인코드";
-  const CSR진행상태 = "CSR진행상태";
+  const CSR진행상태 = "접수";
   const 임시저장 = "w";
 
   const [TargetCode, setTargetCode] = useState("업무시스템");
