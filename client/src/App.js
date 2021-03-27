@@ -4,12 +4,16 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 import Testpage from "./Testpage";
 import LandingPage from "./components/LandingPage/LandingPage";
-import RegisterPage from "./components/RegisterPage/RegisterPage";
-import LoginPage from "./components/LoginPage/LoginPage";
+//import RegisterPage from "./components/RegisterPage/RegisterPage";
+//import LoginPage from "./components/LoginPage/LoginPage";
 import NavBar from "./components/NavBar/NavBar";
 import Footer from "./components/Footer";
 import ServiceRequestPage from "./components/ServiceRequestPage/ServiceRequestPage";
 import ITSRPage from "./components/ITSRPage/ITSRpage";
+{
+  /* <Route exact path="/signup" component={RegisterPage} />
+<Route exact path="/login" component={LoginPage} /> */
+}
 
 function App() {
   return (
@@ -19,8 +23,6 @@ function App() {
           <NavBar />
           <div>
             <Switch>
-              <Route exact path="/signup" component={RegisterPage} />
-              <Route exact path="/login" component={LoginPage} />
               <Route
                 exact
                 path="/servicerequest"

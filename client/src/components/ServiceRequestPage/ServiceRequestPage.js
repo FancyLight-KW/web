@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Table, Button, Row, Col } from "react-bootstrap";
+import { Table, Button } from "react-bootstrap";
 import styled, { css } from "styled-components";
 import "./ServiceRequest.css";
 import Datepicker from "../Datepicker";
@@ -53,7 +53,7 @@ function ServiceRequestPage() {
   // const [FilteredRequests, setFilterdRequests] = useState([]);
   const [Requests, setRequests] = useState([]);
   const [Query, setQuery] = useState(
-    "http://localhost:5000/requests/getAllRequest?"
+    "http://localhost:5000/requests/getAllRequest?page=1"
   );
 
   const [StartDate, setStartDate] = useState("");
