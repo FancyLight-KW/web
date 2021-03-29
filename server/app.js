@@ -6,11 +6,8 @@ const bodyParser = require("body-parser");
 const logger = require("morgan");
 const cors = require("cors");
 
-// session modules
-const session = require('express-session');
-const passport = require('passport');
 const models = require("./models/index.js");
-const passportConfig = require('./config/passport.config');
+const passportConfig = require("./config/passport.config");
 
 require("dotenv").config();
 
@@ -43,22 +40,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/uploads", express.static("uploads"));
 app.use(cors());
-//세션 환경 세팅
 
-app.use(session({
-  saveUninitialized: false,
-  resave: false,
-  secret: process.env.COOKIE_SECRET,
-  cookie: {
-    maxAge: 1000 * 60 * 10 //유효시간 10분
-  },
-}));
-passportConfig(passport);
-app.use(passport.initialize()); // passport 구동
-app.use(passport.session()); // 세션 연결
-
-const flash = require('connect-flash')
-app.use(flash());
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/requests", requestsRouter);

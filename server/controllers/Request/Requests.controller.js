@@ -20,12 +20,22 @@ const pagenation = (page, query) => {
 };
 // 요청 생성
 exports.create = (req, res) => {
+<<<<<<< HEAD
   console.log("req.body: ", JSON.stringify(req.body));
+=======
+  console.log("input: ", req.body.body);
+  console.log("img: ", req.files)
+>>>>>>> df2edd2fe2120b719e351128dc23367af4fb002e
   let body = JSON.parse(req.body.body);
+
+  while(typeof body != 'object'){
+    body = JSON.parse(body);
+  }
+  
   if (!body) {
     res.status(400).send({ message: "no data!" });
   }
-  console.log(body);
+
   let query = {
     //REQ_SEQ: body.REQ_SEQ,
     TITLE: body.TITLE,
@@ -47,14 +57,14 @@ exports.create = (req, res) => {
   if (req.file) {
     query["REQ_IMG_PATH"] = "/uploads/" + req.file.filename;
   }
-  console.log(query);
+  console.log("query: ", query);
   models.Requests.create(query)
     .then((result) => {
       res.send(result);
     })
     .catch((err) => {
       console.log(err);
-      res.send(err);
+      res.status(500).send(err);
     });
 };
 
