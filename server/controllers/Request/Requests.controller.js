@@ -21,13 +21,13 @@ const pagenation = (page, query) => {
 // 요청 생성
 exports.create = (req, res) => {
   console.log("input: ", req.body.body);
-  console.log("img: ", req.files)
+  console.log("img: ", req.files);
   let body = JSON.parse(req.body.body);
 
-  while(typeof body != 'object'){
+  while (typeof body != "object") {
     body = JSON.parse(body);
   }
-  
+
   if (!body) {
     res.status(400).send({ message: "no data!" });
   }
