@@ -22,10 +22,6 @@ const pagenation = (page, query) => {
 exports.create = (req, res) => {
 <<<<<<< HEAD
   console.log("req.body: ", JSON.stringify(req.body));
-=======
-  console.log("input: ", req.body.body);
-  console.log("img: ", req.files)
->>>>>>> df2edd2fe2120b719e351128dc23367af4fb002e
   let body = JSON.parse(req.body.body);
 
   while(typeof body != 'object'){
