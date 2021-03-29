@@ -8,6 +8,7 @@ exports.authChecker = (req, res, next) => {
       if (err) {
         res.status(401).json({ error: "Auth Error from authChecker" });
       } else {
+        console.log("auth success");
         next();
       }
     });

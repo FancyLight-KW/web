@@ -7,14 +7,12 @@ const logger = require("morgan");
 const cors = require("cors");
 
 const models = require("./models/index.js");
-const passportConfig = require("./config/passport.config");
 
 require("dotenv").config();
 
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const requestsRouter = require("./routes/request");
-const uploadRouter = require("./routes/upload");
 const app = express();
 
 models.sequelize
@@ -44,8 +42,6 @@ app.use(cors());
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/requests", requestsRouter);
-
-app.use("/upload", uploadRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
