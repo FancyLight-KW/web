@@ -13,6 +13,7 @@ require("dotenv").config();
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const requestsRouter = require("./routes/request");
+const authRouter = require("./routes/auth");
 const app = express();
 
 models.sequelize
@@ -42,6 +43,7 @@ app.use(cors());
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/requests", requestsRouter);
+app.use("/auth", authRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

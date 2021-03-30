@@ -6,6 +6,7 @@ import Datepicker from "../Datepicker";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import searchImg from "../../assets/Search.png";
+import cookie from "react-cookies";
 
 const TopContainer = styled.div`
   display: flex;
@@ -98,10 +99,16 @@ function ServiceRequestPage() {
   }, [Query]);
 
   const fetchRequests = (Query) => {
-    axios.get(Query).then((response) => {
-      console.log(response);
-      setRequests([...response.data]);
-    });
+    axios
+      .get(Query, {
+        headers: {
+          Authorization: `Bearer ${cookie.load("token")}`,
+        },
+      })
+      .then((response) => {
+        console.log(response);
+        setRequests([...response.data]);
+      });
   };
 
   const StartdatedHandler = (date) => {
