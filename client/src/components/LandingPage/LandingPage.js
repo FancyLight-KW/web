@@ -61,14 +61,24 @@ const RestBox = styled.div`
 
 function LandingPage() {
   const [CSRInfos, setCSRInfos] = useState([]);
+  const [CSRCount, setCSRCount] = useState("0");
 
   useEffect(() => {
     // const endpoint = "http://localhost:5000/requests/getAllRequest?";
     axios.get("http://localhost:5000/csrstatus").then((response) => {
       console.log(response);
       setCSRInfos(response.data);
+      countCSR(response.data);
     });
   }, []);
+
+  const countCSR = (val) => {
+    let count = 0;
+    Object.values(val).forEach((e) => {
+      count += e;
+    });
+    setCSRCount(count);
+  };
 
   // {CSRInfos.map((info, index) => (
   //   <Card style={{ width: "14rem" }} key={index}>
@@ -115,9 +125,7 @@ function LandingPage() {
                   <Card.Title id="bold">결제 건수</Card.Title>
 
                   <Card.Text>
-                    <div id="text_yellow">
-                      {CSRInfos.CSR진행상태 ? CSRInfos.CSR진행상태 : "0"}
-                    </div>
+                    <div id="text_yellow">{CSRCount}</div>
                     <div id="text_gray">건</div>
                   </Card.Text>
                 </Card.Body>
@@ -129,7 +137,7 @@ function LandingPage() {
 
                   <Card.Text>
                     <div id="text_black">
-                      {CSRInfos.접수 ? CSRInfos.접수 : "0"}
+                      {CSRInfos.접수대기 ? CSRInfos.접수대기 : "0"}
                     </div>
                     <div id="text_gray">건</div>
                   </Card.Text>

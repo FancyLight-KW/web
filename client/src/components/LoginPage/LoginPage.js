@@ -36,15 +36,17 @@ function LoginPage() {
     };
 
     dispatch(loginUser(body)).then((response) => {
-      console.log("payload: " + JSON.stringify(response.payload))
-      if (response.payload.message) {
-        alert("이메일 혹은 비밀번호가 다릅니다.");
+      console.log(
+        "payload: " + JSON.stringify(response.payload) + response.payload
+      );
+      if (JSON.stringify(response.payload.resultCode === "0")) {
+        alert(response.payload.User_id + "님 환영합니다.");
+      } else if (JSON.stringify(response.payload.resultCode === "1")) {
+        alert(JSON.stringify(response.payload.message));
       } else {
-        alert("로그인 완료.");
       }
     });
   };
-
   // axios
   //   .post("http://localhost:5000/login", {
   //     email: Email,

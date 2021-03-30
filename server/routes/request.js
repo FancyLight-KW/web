@@ -5,7 +5,11 @@ const upload = require("./middleware/fileupload");
 const auth = require("./middleware/jwt.auth");
 
 router.post("/newRequest", upload.single("imagefile"), request.create);
+<<<<<<< HEAD
 router.get("/getAllRequest", auth.authChecker, request.findAll);
+=======
+router.get("/getAllRequest", request.findAll);
+>>>>>>> 553039a19267df86f7a1438cd2f17b8d7b8c204d
 router.get("/count", request.findRequestCount);
 router.get("/searchRequest", request.findRequest);
 router.put("/updateRequest/:requestId", request.update);
