@@ -155,10 +155,10 @@ function LoginModal({
       console.log(
         "payload: " + JSON.stringify(response.payload) + response.payload
       );
-      if (JSON.stringify(response.payload.resultCode === "0")) {
+      if (JSON.stringify(response.payload.resultCode) === "0") {
         alert(response.payload.User_id + "님 환영합니다.");
         onClose();
-      } else if (JSON.stringify(response.payload.resultCode === "1")) {
+      } else if (JSON.stringify(response.payload.resultCode) === "1") {
         alert(JSON.stringify(response.payload.message));
       } else {
       }
