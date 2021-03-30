@@ -20,14 +20,13 @@ const pagenation = (page, query) => {
 };
 // 요청 생성
 exports.create = (req, res) => {
-  console.log("input: ", req.body.body);
-  console.log("img: ", req.files)
+  console.log("req.body: ", JSON.stringify(req.body));
   let body = JSON.parse(req.body.body);
 
-  while(typeof body != 'object'){
+  while (typeof body != "object") {
     body = JSON.parse(body);
   }
-  
+
   if (!body) {
     res.status(400).send({ message: "no data!" });
   }
@@ -62,6 +61,14 @@ exports.create = (req, res) => {
       console.log(err);
       res.status(500).send(err);
     });
+};
+
+exports.findRequestCount = (req, res) => {
+  models.Requests.findAll().then((result) => {
+    res.send({
+      length: result.length,
+    });
+  });
 };
 
 // 모든 요청 가져오기
