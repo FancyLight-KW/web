@@ -54,7 +54,7 @@ function ServiceRequestPage() {
   // const [FilteredRequests, setFilterdRequests] = useState([]);
   const [Requests, setRequests] = useState([]);
   const [Query, setQuery] = useState(
-    "http://localhost:5000/requests/getAllRequest?page=1"
+    "http://localhost:5000/requests/" //get All request
   );
 
   const [StartDate, setStartDate] = useState("");
@@ -87,7 +87,7 @@ function ServiceRequestPage() {
         : `&startDate=${StartDate}&endDate=${FinishDate}`;
     //  console.log(queryDate);
 
-    const searchAPI = `http://localhost:5000/requests/searchRequest/?${queryKeyword}${queryTargetCode}${queryCSRStatus}${queryDate}`;
+    const searchAPI = `http://localhost:5000/requests/search?${queryKeyword}${queryTargetCode}${queryCSRStatus}${queryDate}`;
     setQuery(searchAPI);
     console.log(searchAPI);
     // http://localhost:5000/requests/searchRequest/?user=sehwagod&title=제목&targetcode=QA장비&csrstatus=완료&startDate=20210311&endDate=20210317
