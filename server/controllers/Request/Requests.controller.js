@@ -1,8 +1,8 @@
 const models = require("../../models");
 const Sequelize = require("sequelize");
 const moment = require("../../config/moment.config");
-
 const Op = Sequelize.Op;
+
 const pagenation = (page, query) => {
   const PAGE_SIZE = 15;
   let pageNum = page ? page : 1;
@@ -44,7 +44,7 @@ exports.create = (req, res) => {
     CSR_STATUS: body.CSR_STATUS,
     IMSI_YN: body.IMSI_YN,
     REQ_FINISH_DATE: body.REQ_FINISH_DATE,
-    REG_USER_ID: "sehwagod",
+    REG_USER_ID: body.REG_USER_ID,
     //REG_DATE: moment().format('YYYYMMDD-HH:mm:ss'),
     MOD_USER_ID: body.MOD_USER_ID,
   };
@@ -73,7 +73,7 @@ exports.findRequestCount = (req, res) => {
 
 // 모든 요청 가져오기
 exports.findAll = (req, res) => {
-  models.Requests.findAll(pagenation(req.query.page))
+  models.Requests.findAll()
     .then((result) => {
       res.send(result);
     })
@@ -108,7 +108,7 @@ exports.update = (req, res) => {
       REG_USER_ID: body.REG_USER_ID,
       REG_DATE: body.REG_DATE,
       MOD_USER_ID: body.MOD_USER_ID,
-      updatedAt: nowDate,
+      //updatedAt: nowDate,
     },
     {
       where: {
@@ -179,7 +179,9 @@ exports.findRequest = (req, res) => {
   };
 
   console.log(query);
-  models.Requests.findAll(pagenation(queryparam.page, query))
+  models.Requests.findAll({
+    where: query,
+  })
     .then((result) => {
       res.send(result);
     })

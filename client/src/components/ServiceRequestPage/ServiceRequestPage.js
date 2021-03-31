@@ -6,6 +6,7 @@ import Datepicker from "../Datepicker";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import searchImg from "../../assets/Search.png";
+import cookie from "react-cookies";
 
 const TopContainer = styled.div`
   display: flex;
@@ -53,7 +54,7 @@ function ServiceRequestPage() {
   // const [FilteredRequests, setFilterdRequests] = useState([]);
   const [Requests, setRequests] = useState([]);
   const [Query, setQuery] = useState(
-    "http://localhost:5000/requests/getAllRequest?page=1"
+    "http://localhost:5000/requests/" //get All request
   );
 
   const [StartDate, setStartDate] = useState("");
@@ -86,7 +87,7 @@ function ServiceRequestPage() {
         : `&startDate=${StartDate}&endDate=${FinishDate}`;
     //  console.log(queryDate);
 
-    const searchAPI = `http://localhost:5000/requests/searchRequest/?${queryKeyword}${queryTargetCode}${queryCSRStatus}${queryDate}`;
+    const searchAPI = `http://localhost:5000/requests/search?${queryKeyword}${queryTargetCode}${queryCSRStatus}${queryDate}`;
     setQuery(searchAPI);
     console.log(searchAPI);
     // http://localhost:5000/requests/searchRequest/?user=sehwagod&title=제목&targetcode=QA장비&csrstatus=완료&startDate=20210311&endDate=20210317
@@ -98,10 +99,16 @@ function ServiceRequestPage() {
   }, [Query]);
 
   const fetchRequests = (Query) => {
-    axios.get(Query).then((response) => {
-      console.log(response);
-      setRequests([...response.data]);
-    });
+    axios
+      .get(Query, {
+        headers: {
+          Authorization: `Bearer ${cookie.load("token")}`,
+        },
+      })
+      .then((response) => {
+        console.log(response);
+        setRequests([...response.data]);
+      });
   };
 
   const StartdatedHandler = (date) => {

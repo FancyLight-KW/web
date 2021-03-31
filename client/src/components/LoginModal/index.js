@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { loginUser } from "../../actions/user";
 import Logo from "../../assets/800px-Hyundai_Transys_logo.png";
 // import CloseButton from "./CloseButton";
+import cookie from "react-cookies";
 
 const ModalWrapper = styled.div`
   box-sizing: border-box;
@@ -155,10 +156,13 @@ function LoginModal({
       console.log(
         "payload: " + JSON.stringify(response.payload) + response.payload
       );
-      if (JSON.stringify(response.payload.resultCode === "0")) {
+      if (JSON.stringify(response.payload.resultCode) === "0") {
         alert(response.payload.User_id + "님 환영합니다.");
+        cookie.save("token", response.payload.token, {
+          path: "/",
+        });
         onClose();
-      } else if (JSON.stringify(response.payload.resultCode === "1")) {
+      } else if (JSON.stringify(response.payload.resultCode) === "1") {
         alert(JSON.stringify(response.payload.message));
       } else {
       }
