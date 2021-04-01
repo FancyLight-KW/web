@@ -14,6 +14,7 @@ const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const requestsRouter = require("./routes/request");
 const authRouter = require("./routes/auth");
+const jwtAuth = require("./routes/middleware/jwt.auth");
 const app = express();
 
 models.sequelize
@@ -41,9 +42,10 @@ app.use("/uploads", express.static("uploads"));
 app.use(cors());
 
 app.use("/", indexRouter);
+app.use("/auth", authRouter);
+app.use(jwtAuth.authChecker);
 app.use("/users", usersRouter);
 app.use("/requests", requestsRouter);
-app.use("/auth", authRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
