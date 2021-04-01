@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../actions/user";
+import { authUser } from "../../actions/auth";
 import Logo from "../../assets/800px-Hyundai_Transys_logo.png";
 // import CloseButton from "./CloseButton";
 import cookie from "react-cookies";
+import jwt_decode from "jwt-decode";
 
 const ModalWrapper = styled.div`
   box-sizing: border-box;
@@ -153,14 +155,15 @@ function LoginModal({
     };
 
     dispatch(loginUser(body)).then((response) => {
-      console.log(
-        "payload: " + JSON.stringify(response.payload) + response.payload
-      );
       if (JSON.stringify(response.payload.resultCode) === "0") {
-        alert(response.payload.User_id + "님 환영합니다.");
         cookie.save("token", response.payload.token, {
           path: "/",
         });
+        const decoded = jwt_decode(response.payload.token);
+        dispatch(authUser(decoded));
+        alert(decoded.User_name + "님 환영합니다.");
+        //  console.log(decoded);
+
         onClose();
       } else if (JSON.stringify(response.payload.resultCode) === "1") {
         alert(JSON.stringify(response.payload.message));

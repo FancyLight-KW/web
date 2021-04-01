@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Table, Button } from "react-bootstrap";
 import styled, { css } from "styled-components";
 import "./ServiceRequest.css";
-import Datepicker from "../Datepicker";
+import Datepicker from "../../components/Datepicker";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import searchImg from "../../assets/Search.png";
@@ -54,7 +54,7 @@ function ServiceRequestPage() {
   // const [FilteredRequests, setFilterdRequests] = useState([]);
   const [Requests, setRequests] = useState([]);
   const [Query, setQuery] = useState(
-    "http://localhost:5000/requests/getAllRequest?page=1"
+    "http://localhost:5000/requests/" //get All request
   );
 
   const [StartDate, setStartDate] = useState("");
@@ -94,6 +94,7 @@ function ServiceRequestPage() {
   };
 
   useEffect(() => {
+    //console.log(cookie.load("token"));
     // const endpoint = "http://localhost:5000/requests/getAllRequest?";
     fetchRequests(Query);
   }, [Query]);
