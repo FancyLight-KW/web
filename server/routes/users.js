@@ -14,7 +14,7 @@ router.post("/", user.create);
 
 // 모든 유저 출력
 router.get("/", user.findAll);
-
+router.get("/list", user.userList);
 // ID를 인자로 받아 출력
 router.get("/:userId", user.findOne);
 

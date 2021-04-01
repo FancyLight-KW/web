@@ -1,0 +1,41 @@
+#padding-zero {
+  padding-right: 0;
+  padding-left: 0;
+}
+#bold {
+  font-weight: 600;
+}
+#text_yellow {
+  display: inline-flex;
+  font-size: 60px;
+  color: #bfbf34;
+}
+#text_black {
+  display: inline-flex;
+  font-size: 60px;
+}
+#text_green {
+  display: inline-flex;
+  font-size: 60px;
+  color: #65b67f;
+}
+#text_blue {
+  display: inline-flex;
+  font-size: 60px;
+  color: #488dc0;
+}
+#text_red {
+  display: inline-flex;
+  font-size: 60px;
+  color: #f9816c;
+}
+#text_gray {
+  margin-top: 38px;
+  display: inline-flex;
+  color: #727272;
+  font-size: 28px;
+}
+.card-text {
+  display: flex;
+  justify-content: flex-end;
+}

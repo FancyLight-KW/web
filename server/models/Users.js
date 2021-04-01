@@ -1,6 +1,6 @@
 const Sequelize = require("sequelize");
 module.exports = function (sequelize, DataTypes) {
-  var Users = sequelize.define(
+  const Users = sequelize.define(
     "Users",
     {
       User_id: {

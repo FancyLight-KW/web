@@ -1,26 +1,50 @@
 const models = require("../../models");
-const bcrypt = require("./encrypt");
+const bcrypt = require("../../config/password.encrypt");
 
 // 새 유저 생성
 exports.create = (req, res) => {
-  if (!req.body) {
+  let body = req.body;
+
+  if (!body) {
     res.status(400).send({
       message: "유저가 없습니다.",
     });
   }
 
-  models.Users.create({
-    User_id: req.body.User_id,
-    User_password: bcrypt.encrypt(req.body.User_password),
-    User_name: req.body.User_name,
-  })
-    .then((result) => {
-      console.log(`새 유저 생성 성공 : ${req.body.User_id}`);
-      res.send(result);
-    })
-    .catch((err) => {
-      console.log(`유저 생성 실패: ${err}`);
-    });
+  models.Users.findOne({
+    where: {
+      User_id: body.User_id,
+    },
+  }).then((result) => {
+    //console.log(result);
+    if (result != null) {
+      res.send({
+        message: "ID already existed",
+        registerSuccess: false,
+        resultCode: 1,
+      });
+    } else {
+      models.Users.create({
+        User_id: body.User_id,
+        User_password: bcrypt.encrypt(body.User_password),
+        User_name: body.User_name,
+      })
+        .then((result) => {
+          console.log(`새 유저 생성 성공 : ${body.User_id}`);
+          res.send({
+            registerSuccess: true,
+            resultCode: 0,
+          });
+        })
+        .catch((err) => {
+          console.log(`유저 생성 실패: ${err}`);
+          res.send({
+            registerSuccess: false,
+            resultCode: 2,
+          });
+        });
+    }
+  });
 };
 
 // 모든 유저 목록 send
@@ -34,11 +58,22 @@ exports.findAll = (req, res) => {
     });
 };
 
+exports.userList = (req, res) => {
+  models.Users.findAll({
+    attributes: ["User_id"],
+  })
+    .then((result) => {
+      res.send(Array.from(result, (x) => x["User_id"]));
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+};
 // 유저 id로 회원 찾음
 exports.findOne = (req, res) => {
   models.Users.findOne({
     where: {
-      User_id: req.body.User_id,
+      User_id: req.params.userId,
     },
   })
     .then((result) => {

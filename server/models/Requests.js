@@ -1,6 +1,6 @@
 const Sequelize = require("sequelize");
 module.exports = function (sequelize, DataTypes) {
-  var Requests = sequelize.define(
+  const Requests = sequelize.define(
     "Requests",
     {
       REQ_SEQ: {
@@ -67,12 +67,12 @@ module.exports = function (sequelize, DataTypes) {
           key: "User_id",
         },
       },
-      REG_DATE: {
-        type: DataTypes.STRING(14),
-        allowNull: true,
-      },
       MOD_USER_ID: {
         type: DataTypes.STRING(50),
+        allowNull: true,
+      },
+      REQ_IMG_PATH: {
+        type: DataTypes.STRING(100),
         allowNull: true,
       },
       updatedAt: {

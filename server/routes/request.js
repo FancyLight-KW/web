@@ -1,10 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const request = require("../controllers/Request/Requests.controller");
+const upload = require("./middleware/fileupload");
 
-router.post("/newRequest/", request.create);
-router.get("/getAllRequest/", request.findAll);
-router.get("/getRequest/:userId", request.findOne);
-router.put("/updateRequest/:requestId", request.update);
-router.delete("/deleteRequest/:requestId", request.delete);
+router.post("/", upload.single("imagefile"), request.create);
+router.get("/", request.findAll);
+router.get("/count", request.findRequestCount);
+router.get("/search", request.findRequest);
+router.put("/:requestId", upload.single("imagefile"), request.update);
+router.delete("/:requestId", request.delete);
 module.exports = router;

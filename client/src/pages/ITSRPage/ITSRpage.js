@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import "./Request.css";
+import "./ITSRPage.css";
 import { Row, Col } from "react-bootstrap";
 import styled, { css } from "styled-components";
 import Form from "react-bootstrap/Form";
 import { Radio } from "antd";
 import Checkbox from "antd/lib/checkbox/Checkbox";
 import axios from "axios";
+import Datepicker from "../../components/Datepicker";
 
 // border: 1px solid black;
 const RateBlock = styled.div`
@@ -19,18 +20,37 @@ const RadioBlock = styled.div`
   position: relative;
   top: 8px;
 `;
+const MarginBlock = styled.div`
+  position: relative;
+  top: 5px;
+`;
 
-function Request() {
+function ITSRPage() {
   const 법인코드 = "법인코드";
-  const CSR진행상태 = "CSR진행상태";
+  const CSR진행상태 = "접수";
   const 임시저장 = "w";
 
   const [TargetCode, setTargetCode] = useState("업무시스템");
   const [SystemGroupCode, setSystemGroupCode] = useState("test");
-  const [TMApprovalReqYN, setTMApprovalReqYN] = useState("true");
+  const [TMApprovalReqYN, setTMApprovalReqYN] = useState("N");
+  const [CheckboxData, setCheckboxData] = useState("false");
   const [Title, setTitle] = useState("");
   const [Content, setContent] = useState("");
-  const [ReqFinishDate, setReqFinishDate] = useState("");
+  const [File, setFile] = useState("");
+  // const fileRef = useRef();
+
+  const dateChanger = (date) => {
+    let year = date.getFullYear();
+    let month = date.getMonth() + 1;
+    let day = date.getDate();
+
+    month = month > 9 ? month : "0" + month;
+    day = day > 9 ? day : "0" + day;
+
+    return String(year + month + day);
+  };
+
+  const [ReqFinishDate, setReqFinishDate] = useState(dateChanger(new Date()));
 
   // const [RegUserID, setRegUserID] = useState("");
 
@@ -45,8 +65,14 @@ function Request() {
   };
 
   const tMApporvalonChange = (e) => {
-    setTMApprovalReqYN(!TMApprovalReqYN);
-    console.log(TMApprovalReqYN);
+    setCheckboxData(!CheckboxData);
+    if (CheckboxData) {
+      setTMApprovalReqYN("Y");
+    } else {
+      setTMApprovalReqYN("N");
+    }
+
+    //console.log(TMApprovalReqYN);
   };
 
   const titleHandler = (e) => {
@@ -57,14 +83,32 @@ function Request() {
     setContent(e.target.value);
   };
 
-  const finishDateHandler = (e) => {
-    setReqFinishDate(e.target.value);
+  const finishDateHandler = (date) => {
+    setReqFinishDate(date);
+    // console.log(ReqFinishDate);
+  };
+
+  //   let file = new FormData();
+
+  const fileHandler = (e) => {
+    // let file = e.target.files[0];
+    // console.log(file.name);
+
+    setFile(e.target.files[0]);
+    //console.log(File);
+    //setFile(e.target.files[0]);
+  };
+
+  const Submit = (e) => {
+    e.preventDefault();
   };
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
 
-    let body = {
+    const formData = new FormData();
+
+    let body = JSON.stringify({
       TARGET_CODE: TargetCode,
       SYSTEM_GROUP_CODE: SystemGroupCode,
       TM_APPROVAL_REQ_YN: TMApprovalReqYN,
@@ -74,10 +118,16 @@ function Request() {
       CORP_CODE: 법인코드,
       CSR_STATUS: CSR진행상태,
       IMSI_YN: 임시저장,
-    };
+    });
+
+    formData.append("imagefile", File);
+    formData.append("body", body);
+
+    console.log(formData);
+    console.log(body);
 
     axios
-      .post("http://localhost:5000/requests/newRequest/", body)
+      .post("http://localhost:5000/requests/newRequest/", formData)
       .then((response) => {
         console.log(response);
       });
@@ -97,7 +147,7 @@ function Request() {
               <label className="marginleft" />
               <Radio value={"IT인프라"}>IT인프라 </Radio>
               <label className="marginleft" />
-              <Radio value={"QA장비"}>QA장비 </Radio>
+              <Radio value={"OA장비"}>OA장비 </Radio>
             </Radio.Group>
           </RadioBlock>
         </Form.Group>
@@ -155,8 +205,10 @@ function Request() {
           <Form.Label column sm="1" className="labelColor">
             요청만료일
           </Form.Label>
-          <Col sm="2" onChange={finishDateHandler}>
-            <Form.Control type="text" placeholder="20210101" />
+          <Col sm="2">
+            <MarginBlock>
+              <Datepicker change={finishDateHandler} />
+            </MarginBlock>
           </Col>
         </Form.Group>
 
@@ -167,10 +219,13 @@ function Request() {
             첨부파일
           </Form.Label>
           <Col sm="5">
-            <Form.File id="formcheck-api-regular">
-              <Form.File.Input />
-            </Form.File>
-            <Form.Text muted>(첨부 가능 파일 확장자: jpg, doc, docx)</Form.Text>
+            <input
+              type="file"
+              name="imagefile"
+              accept=".gif, .jpg, .png"
+              onChange={fileHandler}
+            ></input>
+            <Form.Text muted>(첨부 가능 파일 확장자: jpg, gif, png)</Form.Text>
           </Col>
         </Form.Group>
 
@@ -192,4 +247,4 @@ function Request() {
   );
 }
 
-export default Request;
+export default ITSRPage;

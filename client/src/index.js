@@ -7,9 +7,7 @@ import { Provider } from "react-redux";
 import { applyMiddleware, createStore } from "redux";
 import promiseMiddleware from "redux-promise";
 import ReduxThunk from "redux-thunk";
-
 import rootReducer from "./reducers/index";
-
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const createStoreWithMiddleware = applyMiddleware(
@@ -27,7 +25,6 @@ ReactDOM.render(
   >
     <App />
   </Provider>,
-
   document.getElementById("root")
 );
 

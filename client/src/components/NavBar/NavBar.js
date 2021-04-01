@@ -1,11 +1,77 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./NavBar.css";
 import { Navbar, Nav, NavDropdown, Button } from "react-bootstrap";
-import Logo from "../../800px-Hyundai_Transys_logo.png";
+import Logo from "../../assets/800px-Hyundai_Transys_logo.png";
 import { Link } from "react-router-dom";
-// import { withRouter } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { useHistory } from "react-router";
+import LoginModal from "../LoginModal";
+import RegisterModal from "../RegisterModal";
+import cookie from "react-cookies";
+import { logOutUser } from "../../actions/auth";
+import jwt_decode from "jwt-decode";
+import styled from "styled-components";
+
+const StyledSpan = styled.span`
+  display: flex;
+  align-items: center;
+  margin-right: 40px;
+  color: rgb(116, 116, 123);
+  font-size: 16px;
+  letter-spacing: -0.3px;
+`;
 
 function NavBar() {
+  //  let dispatch = useDispatch();
+  let history = useHistory();
+  const [LoginModalVisible, setLoginModalVisible] = useState(false);
+  const [RegisterModalVisible, setRegisterModalVisible] = useState(false);
+  const [authenticated, setAuthenticated] = useState(false);
+  const [userName, setUserName] = useState("");
+  const [userLastLogin, setUserLastLogin] = useState(null);
+
+  const userInfos = useSelector((state) => state.auth.userInfos);
+
+  console.log("UserInfo:" + JSON.stringify(userInfos) + userInfos);
+
+  useEffect(() => {
+    if (cookie.load("token")) {
+      setAuthenticated(true);
+      setUserName(
+        JSON.stringify(jwt_decode(cookie.load("token")).User_name).split('"')[1]
+      );
+      setUserLastLogin(
+        JSON.stringify(jwt_decode(cookie.load("token")).User_lastlogin).split(
+          '"'
+        )[1]
+      );
+    } else {
+      setAuthenticated(false);
+    }
+    //  console.log(cookie.load("token"));
+  }, [userInfos]);
+
+  //  console.log(authenticated);
+
+  const loginOpenModal = () => {
+    setLoginModalVisible(true);
+  };
+  const loginCloseModal = () => {
+    setLoginModalVisible(false);
+  };
+  const registerOpenModal = () => {
+    setRegisterModalVisible(true);
+  };
+  const registerCloseModal = () => {
+    setRegisterModalVisible(false);
+  };
+  const logOut = () => {
+    cookie.remove("token");
+    setAuthenticated(false);
+    //  dispatch(logOutUser());
+    history.push("/");
+  };
+
   return (
     <>
       <div>
@@ -17,22 +83,60 @@ function NavBar() {
               height="30"
               className="d-inline-block align-top"
             />
-            <label class="logo-text">IT Service Portal</label>
+            <label className="logo-text">IT Service Portal</label>
           </Navbar.Brand>
 
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="mr-auto"></Nav>
             <Nav>
-              <Link to="/login">
-                <Button variant="outline-secondary">Sign in</Button>
-              </Link>
+              {authenticated ? (
+                <>
+                  <StyledSpan>{userName}</StyledSpan>
+                  <StyledSpan>
+                    최근 로그인:
+                    <h9 style={{ color: "#0069c0", marginLeft: "5px" }}>
+                      {userLastLogin}
+                    </h9>
+                  </StyledSpan>
+                </>
+              ) : (
+                <Button
+                  variant="outline-secondary"
+                  onClick={registerOpenModal}
+                  style={{ marginRight: "5px" }}
+                >
+                  회원가입
+                </Button>
+              )}
 
-              <span className="left-margin"></span>
+              {authenticated ? (
+                <Button variant="outline-secondary" onClick={logOut}>
+                  로그아웃
+                </Button>
+              ) : (
+                <Button variant="outline-secondary" onClick={loginOpenModal}>
+                  로그인
+                </Button>
+              )}
 
-              <Link to="/signup">
-                <Button variant="outline-secondary">Sign up</Button>
-              </Link>
+              {LoginModalVisible && (
+                <LoginModal
+                  visible={LoginModalVisible}
+                  closable={true}
+                  maskClosable={true}
+                  onClose={loginCloseModal}
+                />
+              )}
+
+              {RegisterModalVisible && (
+                <RegisterModal
+                  visible={RegisterModalVisible}
+                  closable={true}
+                  maskClosable={true}
+                  onClose={registerCloseModal}
+                />
+              )}
             </Nav>
           </Navbar.Collapse>
         </Navbar>
@@ -40,58 +144,38 @@ function NavBar() {
 
       <div>
         <Navbar collapseOnSelect expand="lg" variant="dark" id="NavSecondRow">
-          <NavDropdown title="요청/접수" id="collasible-nav-dropdown">
-            <NavDropdown.Item href="/servicerequest" id="DropdownWidth">
-              요청/접수
-            </NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.2">
+          <Nav.Link id="collasible-nav">
+            {authenticated ? (
+              <Link to="/servicerequest" id="textcolorwhite">
+                요청/접수
+              </Link>
+            ) : (
+              <Link to="/" id="textcolorwhite">
+                {" "}
+                요청/접수
+              </Link>
+            )}
+          </Nav.Link>
+          <Nav.Link id="collasible-nav">
+            <Link to="" id="textcolorwhite">
               요청/접수(처리자)
-            </NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.3">처리이력정보</NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.4">
+            </Link>
+          </Nav.Link>
+          <Nav.Link id="collasible-nav">
+            <Link to="" id="textcolorwhite">
+              처리이력정보
+            </Link>
+          </Nav.Link>
+          <Nav.Link id="collasible-nav">
+            <Link to="" id="textcolorwhite">
               처리이력정보(관리자)
-            </NavDropdown.Item>
-            <NavDropdown.Divider />
-            <NavDropdown.Item href="#action/3.5">나의 결재함</NavDropdown.Item>
-          </NavDropdown>
-
-          <NavDropdown title="장애관리" id="collasible-nav-dropdown">
-            <NavDropdown.Item href="#action/3.1" id="DropdownWidth">
-              장애관리
-            </NavDropdown.Item>
-          </NavDropdown>
-
-          <NavDropdown title="변경관리" id="collasible-nav-dropdown">
-            <NavDropdown.Item href="#action/3.1" id="DropdownWidth">
-              변경관리
-            </NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.2">
-              나의 결재함(변경)
-            </NavDropdown.Item>
-          </NavDropdown>
-
-          <NavDropdown title="통계정보" id="collasible-nav-dropdown">
-            <NavDropdown.Item href="#action/3.1" id="DropdownWidth">
-              서비스요청 적기접수율
-            </NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.2">
-              서비스요청 적기처리율
-            </NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.3">
-              서비스 만족도
-            </NavDropdown.Item>
-          </NavDropdown>
-
-          <NavDropdown title="게시판" id="collasible-nav-dropdown">
-            <NavDropdown.Item href="#action/3.1" id="DropdownWidth">
-              공지사항
-            </NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.2">IT정책</NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.3">질의응답</NavDropdown.Item>
-
-            <NavDropdown.Item href="#action/3.4">FAQ</NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.3">자료실</NavDropdown.Item>
-          </NavDropdown>
+            </Link>
+          </Nav.Link>
+          <Nav.Link id="collasible-nav">
+            <Link to="" id="textcolorwhite">
+              나의 결재함
+            </Link>
+          </Nav.Link>
         </Navbar>
       </div>
     </>
