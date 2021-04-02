@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Table, Button } from "react-bootstrap";
 import styled, { css } from "styled-components";
-import "./ServiceRequest.css";
+import "./SRAgentPage.css";
 import Datepicker from "../../components/Datepicker";
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -10,20 +10,26 @@ import cookie from "react-cookies";
 
 const TopContainer = styled.div`
   display: flex;
-  height: 100px;
+  height: 140px;
   background-color: aliceblue;
   color: #0069c0;
   font-weight: bold;
   flex-direction: column;
 `;
+const PageNameWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  height: 33%;
+  align-items: center;
+`;
 const TopFirstRowhWrapper = styled.div`
   display: flex;
   width: 100%;
-  height: 50%;
+  height: 33%;
 `;
 const SecondRowWrapper = styled.div`
   display: flex;
-  height: 50%;
+  height: 33%;
 `;
 const SearchBlock = styled.div`
   display: flex;
@@ -50,7 +56,7 @@ const Input = styled.input`
   height: 28px;
 `;
 
-function ServiceRequestPage() {
+function SRAgentPage() {
   // const [FilteredRequests, setFilterdRequests] = useState([]);
   const [Requests, setRequests] = useState([]);
   const [Query, setQuery] = useState(
@@ -139,29 +145,17 @@ function ServiceRequestPage() {
   return (
     <>
       <TopContainer>
-        <TopFirstRowhWrapper>
-          <div style={{ display: "flex", width: "90%" }}>
-            <SearchBlock>
-              · 서비스 상태
-              <Select onChange={csrStatusSearchHandler}>
-                <option value="" selected>
-                  전체
-                </option>
-                <option value="접수대기">접수대기</option>
-                <option value="접수완료">접수완료</option>
-                <option value="변경관리 처리중">변경관리 처리중</option>
-                <option value="처리 지연중">처리 지연중</option>
-              </Select>
-            </SearchBlock>
-
-            <SearchBlock>
-              · 요청/접수 기간
-              <Datepicker change={StartdatedHandler} />
-              <BetweenDate>~</BetweenDate>
-              <Datepicker change={FinishDateHandler} />
-            </SearchBlock>
+        <PageNameWrapper>
+          <div
+            style={{
+              display: "flex",
+              width: "90%",
+            }}
+          >
+            <span style={{ marginLeft: "16px", fontSize: "18px" }}>
+              ※ 요청/접수(처리자)
+            </span>
           </div>
-
           <div
             style={{
               display: "flex",
@@ -175,6 +169,27 @@ function ServiceRequestPage() {
               </Button>
             </Link>
           </div>
+        </PageNameWrapper>
+        <TopFirstRowhWrapper>
+          <SearchBlock>
+            · 서비스 상태
+            <Select onChange={csrStatusSearchHandler}>
+              <option value="" selected>
+                전체
+              </option>
+              <option value="접수대기">접수대기</option>
+              <option value="접수완료">접수완료</option>
+              <option value="변경관리 처리중">변경관리 처리중</option>
+              <option value="처리 지연중">처리 지연중</option>
+            </Select>
+          </SearchBlock>
+
+          <SearchBlock>
+            · 요청/접수 기간
+            <Datepicker change={StartdatedHandler} />
+            <BetweenDate>~</BetweenDate>
+            <Datepicker change={FinishDateHandler} />
+          </SearchBlock>
         </TopFirstRowhWrapper>
         <SecondRowWrapper>
           <SearchBlock>
@@ -277,4 +292,4 @@ function ServiceRequestPage() {
   );
 }
 
-export default ServiceRequestPage;
+export default SRAgentPage;
