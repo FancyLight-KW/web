@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./ITSRPage.css";
 import { Row, Col } from "react-bootstrap";
 import styled, { css } from "styled-components";
@@ -7,6 +7,8 @@ import { Radio } from "antd";
 import Checkbox from "antd/lib/checkbox/Checkbox";
 import axios from "axios";
 import Datepicker from "../../components/Datepicker";
+import cookie from "react-cookies";
+import jwt_decode from "jwt-decode";
 
 // border: 1px solid black;
 const RateBlock = styled.div`
@@ -38,6 +40,9 @@ function ITSRPage() {
   const [Content, setContent] = useState("");
   const [File, setFile] = useState("");
   // const fileRef = useRef();
+  const userID = JSON.stringify(jwt_decode(cookie.load("token")).User_id).split(
+    '"'
+  )[1];
 
   const dateChanger = (date) => {
     let year = date.getFullYear();
@@ -118,6 +123,7 @@ function ITSRPage() {
       CORP_CODE: 법인코드,
       CSR_STATUS: CSR진행상태,
       IMSI_YN: 임시저장,
+      REG_USER_ID: userID,
     });
 
     formData.append("imagefile", File);
@@ -127,10 +133,16 @@ function ITSRPage() {
     console.log(body);
 
     axios
-      .post("http://localhost:5000/requests/newRequest/", formData)
+      .post("http://localhost:5000/requests", formData, {
+        headers: {
+          Authorization: `Bearer ${cookie.load("token")}`,
+        },
+      })
       .then((response) => {
         console.log(response);
       });
+
+    alert("요청이 접수되었습니다.");
   };
 
   return (
