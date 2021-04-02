@@ -5,7 +5,8 @@ import "./App.css";
 import cookie from "react-cookies";
 import Testpage from "./Testpage";
 import LandingPage from "./pages/LandingPage/LandingPage";
-import ServiceRequestPage from "./pages/ServiceRequestPage/ServiceRequestPage";
+import SRPage from "./pages/SRPage/SRPage";
+import SRAgentPage from "./pages/SRAgentPage/SRAgentPage";
 import ITSRPage from "./pages/ITSRPage/ITSRpage";
 import NavBar from "./components/NavBar/NavBar";
 import Footer from "./components/Footer";
@@ -35,7 +36,7 @@ function App() {
 
               <ProtectedRoute
                 authenticated={authenticated}
-                component={ServiceRequestPage}
+                component={SRPage}
                 path="/servicerequest"
                 exact
               />
@@ -45,6 +46,7 @@ function App() {
                 path="/itsr"
                 exact
               />
+              <Route exact path="/sragent" component={SRAgentPage} />
 
               <Route exact path="/test" component={Testpage} />
             </Switch>

@@ -8,8 +8,8 @@ import { useHistory } from "react-router";
 import LoginModal from "../LoginModal";
 import RegisterModal from "../RegisterModal";
 import cookie from "react-cookies";
-import { logOutUser } from "../../actions/auth";
 import jwt_decode from "jwt-decode";
+// import { logOutUser } from "../../actions/auth";
 import styled from "styled-components";
 
 const StyledSpan = styled.span`
@@ -29,10 +29,10 @@ function NavBar() {
   const [authenticated, setAuthenticated] = useState(false);
   const [userName, setUserName] = useState("");
   const [userLastLogin, setUserLastLogin] = useState(null);
-
+  const [userLevel, setUserLevel] = useState(null);
   const userInfos = useSelector((state) => state.auth.userInfos);
 
-  console.log("UserInfo:" + JSON.stringify(userInfos) + userInfos);
+  // console.log("UserInfo:" + JSON.stringify(userInfos) + userInfos);
 
   useEffect(() => {
     if (cookie.load("token")) {
@@ -45,13 +45,25 @@ function NavBar() {
           '"'
         )[1]
       );
-    } else {
-      setAuthenticated(false);
+
+      if (
+        JSON.stringify(jwt_decode(cookie.load("token")).User_position) === "1"
+      ) {
+        setUserLevel(1); // user
+      } else if (
+        JSON.stringify(jwt_decode(cookie.load("token")).User_position) === "2"
+      ) {
+        setUserLevel(2); // agent
+      } else {
+        setUserLevel(3); // admin
+      }
+
+      console.log(JSON.stringify(jwt_decode(cookie.load("token"))));
+      console.log("user=" + userLevel);
     }
-    //  console.log(cookie.load("token"));
   }, [userInfos]);
 
-  //  console.log(authenticated);
+  console.log(authenticated);
 
   const loginOpenModal = () => {
     setLoginModalVisible(true);
@@ -92,6 +104,7 @@ function NavBar() {
             <Nav>
               {authenticated ? (
                 <>
+                  <StyledSpan>{userLevel === 1 ? "사원" : "요원"}</StyledSpan>
                   <StyledSpan>{userName}</StyledSpan>
                   <StyledSpan>
                     최근 로그인:
@@ -157,7 +170,7 @@ function NavBar() {
             )}
           </Nav.Link>
           <Nav.Link id="collasible-nav">
-            <Link to="" id="textcolorwhite">
+            <Link to="/sragent" id="textcolorwhite">
               요청/접수(처리자)
             </Link>
           </Nav.Link>
