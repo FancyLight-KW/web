@@ -1,16 +1,57 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./NavBar.css";
 import { Navbar, Nav, NavDropdown, Button } from "react-bootstrap";
 import Logo from "../../assets/800px-Hyundai_Transys_logo.png";
 import { Link } from "react-router-dom";
-import styled from "styled-components";
-// import { withRouter } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { useHistory } from "react-router";
 import LoginModal from "../LoginModal";
 import RegisterModal from "../RegisterModal";
+import cookie from "react-cookies";
+import { logOutUser } from "../../actions/auth";
+import jwt_decode from "jwt-decode";
+import styled from "styled-components";
+
+const StyledSpan = styled.span`
+  display: flex;
+  align-items: center;
+  margin-right: 40px;
+  color: rgb(116, 116, 123);
+  font-size: 16px;
+  letter-spacing: -0.3px;
+`;
 
 function NavBar() {
+  //  let dispatch = useDispatch();
+  let history = useHistory();
   const [LoginModalVisible, setLoginModalVisible] = useState(false);
   const [RegisterModalVisible, setRegisterModalVisible] = useState(false);
+  const [authenticated, setAuthenticated] = useState(false);
+  const [userName, setUserName] = useState("");
+  const [userLastLogin, setUserLastLogin] = useState(null);
+
+  const userInfos = useSelector((state) => state.auth.userInfos);
+
+  console.log("UserInfo:" + JSON.stringify(userInfos) + userInfos);
+
+  useEffect(() => {
+    if (cookie.load("token")) {
+      setAuthenticated(true);
+      setUserName(
+        JSON.stringify(jwt_decode(cookie.load("token")).User_name).split('"')[1]
+      );
+      setUserLastLogin(
+        JSON.stringify(jwt_decode(cookie.load("token")).User_lastlogin).split(
+          '"'
+        )[1]
+      );
+    } else {
+      setAuthenticated(false);
+    }
+    //  console.log(cookie.load("token"));
+  }, [userInfos]);
+
+  //  console.log(authenticated);
 
   const loginOpenModal = () => {
     setLoginModalVisible(true);
@@ -24,16 +65,12 @@ function NavBar() {
   const registerCloseModal = () => {
     setRegisterModalVisible(false);
   };
-
-  //   <Link to="/login">
-  //   <Button variant="outline-secondary">Sign in</Button>
-  // </Link>
-
-  // <span className="left-margin"></span>
-
-  // <Link to="/signup">
-  //   <Button variant="outline-secondary">Sign up</Button>
-  // </Link>
+  const logOut = () => {
+    cookie.remove("token");
+    setAuthenticated(false);
+    //  dispatch(logOutUser());
+    history.push("/");
+  };
 
   return (
     <>
@@ -53,13 +90,36 @@ function NavBar() {
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="mr-auto"></Nav>
             <Nav>
-              <Button
-                variant="outline-secondary"
-                onClick={loginOpenModal}
-                style={{ marginRight: "3px" }}
-              >
-                로그인
-              </Button>
+              {authenticated ? (
+                <>
+                  <StyledSpan>{userName}</StyledSpan>
+                  <StyledSpan>
+                    최근 로그인:
+                    <h9 style={{ color: "#0069c0", marginLeft: "5px" }}>
+                      {userLastLogin}
+                    </h9>
+                  </StyledSpan>
+                </>
+              ) : (
+                <Button
+                  variant="outline-secondary"
+                  onClick={registerOpenModal}
+                  style={{ marginRight: "5px" }}
+                >
+                  회원가입
+                </Button>
+              )}
+
+              {authenticated ? (
+                <Button variant="outline-secondary" onClick={logOut}>
+                  로그아웃
+                </Button>
+              ) : (
+                <Button variant="outline-secondary" onClick={loginOpenModal}>
+                  로그인
+                </Button>
+              )}
+
               {LoginModalVisible && (
                 <LoginModal
                   visible={LoginModalVisible}
@@ -68,9 +128,6 @@ function NavBar() {
                   onClose={loginCloseModal}
                 />
               )}
-              <Button variant="outline-secondary" onClick={registerOpenModal}>
-                회원가입
-              </Button>
 
               {RegisterModalVisible && (
                 <RegisterModal
@@ -88,9 +145,16 @@ function NavBar() {
       <div>
         <Navbar collapseOnSelect expand="lg" variant="dark" id="NavSecondRow">
           <Nav.Link id="collasible-nav">
-            <Link to="/servicerequest" id="textcolorwhite">
-              요청/접수
-            </Link>
+            {authenticated ? (
+              <Link to="/servicerequest" id="textcolorwhite">
+                요청/접수
+              </Link>
+            ) : (
+              <Link to="/" id="textcolorwhite">
+                {" "}
+                요청/접수
+              </Link>
+            )}
           </Nav.Link>
           <Nav.Link id="collasible-nav">
             <Link to="" id="textcolorwhite">
