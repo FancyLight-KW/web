@@ -6,14 +6,14 @@ const bodyParser = require("body-parser");
 const logger = require("morgan");
 const cors = require("cors");
 
-const models = require("./models/index.js");
+const models = require("./src/DB/models/index");
 
 require("dotenv").config();
 
-const indexRouter = require("./routes/index");
-const usersRouter = require("./routes/users");
-const requestsRouter = require("./routes/request");
-const authRouter = require("./routes/auth");
+const indexRouter = require("./routes/index/index");
+const usersRouter = require("./routes/users/users");
+const requestsRouter = require("./routes/request/request");
+const authRouter = require("./routes/auth/auth");
 const jwtAuth = require("./routes/middleware/jwt.auth");
 const app = express();
 
@@ -28,7 +28,7 @@ models.sequelize
   });
 
 // view engine setup
-app.set("views", path.join(__dirname, "views"));
+app.set("views", path.join(__dirname, "src/views"));
 app.set("view engine", "ejs");
 
 app.use(logger("dev"));
