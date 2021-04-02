@@ -12,10 +12,9 @@ exports.countCSR_STATUS = (req, res) => {
     group: ["CSR_STATUS"],
   }).then((result) => {
     let j = {};
-    //console.log(result);
+    console.log(result);
     Object.keys(result).forEach((i) => {
-      //   console.log(result[i].dataValues.CSR_STATUS, result[i].dataValues.cnt);
-      j[result[i].dataValues.CSR_STATUS] = result[i].dataValues.cnt;
+      j[result[i].CSR_STATUS] = result[i].cnt;
     });
     res.send(j);
   });
