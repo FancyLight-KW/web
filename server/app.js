@@ -5,17 +5,15 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const logger = require("morgan");
 const cors = require("cors");
-
 const models = require("./src/DB/models/index");
-
 require("dotenv").config();
 
-const indexRouter = require("./routes/index/index");
-const usersRouter = require("./routes/users/users");
-const requestsRouter = require("./routes/request/request");
-const authRouter = require("./routes/auth/auth");
-const jwtAuth = require("./routes/middleware/jwt.auth");
 const app = express();
+const indexRouter = require("./src/routes/index/index");
+const usersRouter = require("./src/routes/users/users");
+const requestsRouter = require("./src/routes/request/request");
+const authRouter = require("./src/routes/auth/auth");
+const jwtAuth = require("./src/routes/middleware/jwt.auth");
 
 models.sequelize
   .sync()
