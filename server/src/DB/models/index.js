@@ -15,12 +15,12 @@ if (config.use_env_variable) {
     dialect: config.dialect,
     dialectOptions: {
       // for reading
-      useUTC: false,
+      useUTC: true,
       dateString: true,
       typeCast: true,
       //timezone: config.timezone,
     },
-    timezone: config.timezone, // for writing
+    timezone: "+09:00", // for writing
   });
 } else {
   sequelize = new Sequelize(config.database, config.username, config.password, {
@@ -28,12 +28,12 @@ if (config.use_env_variable) {
     dialect: config.dialect,
     dialectOptions: {
       // for reading
-      useUTC: false,
+      useUTC: true,
       dateString: true,
       typeCast: true,
       //timezone: config.timezone,
     },
-    timezone: config.timezone, // for writing
+    timezone: "+09:00", // for writing
   });
 }
 
