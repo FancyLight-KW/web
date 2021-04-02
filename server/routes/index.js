@@ -25,8 +25,8 @@ router.post(
     } else {
       console.log("new login!");
       passport.authenticate("local", {
-        successRedirect: "/",
-        failureRedirect: "/login",
+        //successRedirect: "/",
+        //failureRedirect: "/login",
         failureFlash: true,
       })(req, res, next);
     }
