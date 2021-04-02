@@ -77,7 +77,7 @@ function Message(props) {
                 //description={props.text + <Clock format={'HH:mm'} timezone={'US/pacific'}/>}
                 
             />
-            <div style={{bottom:"150px"}}>{currentTime.toLocaleTimeString()}</div>
+            <p style={{bottom:"150px"}}>{currentTime.toLocaleTimeString()}</p>
             </List.Item> 
             </Layout>
             </div>

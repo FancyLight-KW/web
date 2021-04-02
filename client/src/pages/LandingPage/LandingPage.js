@@ -5,6 +5,8 @@ import { Row, Col, Card, CardGroup } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import ITServiceImg from "../../assets/ITSP.png";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import cookie from "react-cookies";
 
 const LandingWrapper = styled.div`
   overflow: hidden;
@@ -60,26 +62,37 @@ const RestBox = styled.div`
 `;
 
 function LandingPage() {
+  let dispatch = useDispatch();
   const [CSRInfos, setCSRInfos] = useState([]);
+  const [CSRCount, setCSRCount] = useState("0");
+  const [authenticated, setAuthenticated] = useState(false);
+  //  const userInfos = useSelector((state) => state.auth.userInfos);
+
+  useEffect(() => {
+    if (cookie.load("token")) {
+      setAuthenticated(true);
+    } else {
+      setAuthenticated(false);
+    }
+    console.log(cookie.load("token"));
+  }, []);
 
   useEffect(() => {
     // const endpoint = "http://localhost:5000/requests/getAllRequest?";
     axios.get("http://localhost:5000/csrstatus").then((response) => {
-      console.log(response);
+      //  console.log(response);
       setCSRInfos(response.data);
+      countCSR(response.data);
     });
   }, []);
 
-  // {CSRInfos.map((info, index) => (
-  //   <Card style={{ width: "14rem" }} key={index}>
-  //     <Card.Body>
-  //       <Card.Subtitle className="mb-2 text-muted">
-  //         Card Subtitle
-  //       </Card.Subtitle>
-  //       <Card.Text>{info}</Card.Text>
-  //     </Card.Body>
-  //   </Card>
-  // ))}
+  const countCSR = (val) => {
+    let count = 0;
+    Object.values(val).forEach((e) => {
+      count += e;
+    });
+    setCSRCount(count);
+  };
 
   return (
     <LandingWrapper>
@@ -92,9 +105,15 @@ function LandingPage() {
           </Col>
 
           <Col xs={3} md={2} id="padding-zero">
-            <Link to="/itsr">
-              <FastSRBox id="padding-zero"> 빠른 요청/접수</FastSRBox>
-            </Link>
+            {cookie.load("token") ? (
+              <Link to="/itsr">
+                <FastSRBox id="padding-zero"> 빠른 요청/접수</FastSRBox>
+              </Link>
+            ) : (
+              <Link to="/">
+                <FastSRBox id="padding-zero"> 빠른 요청/접수</FastSRBox>
+              </Link>
+            )}
           </Col>
           <Col xs={3} md={2} id="padding-zero">
             <MySRBox>내 요청목록</MySRBox>
@@ -115,9 +134,7 @@ function LandingPage() {
                   <Card.Title id="bold">결제 건수</Card.Title>
 
                   <Card.Text>
-                    <div id="text_yellow">
-                      {CSRInfos.CSR진행상태 ? CSRInfos.CSR진행상태 : "0"}
-                    </div>
+                    <div id="text_yellow">{CSRCount}</div>
                     <div id="text_gray">건</div>
                   </Card.Text>
                 </Card.Body>
@@ -129,7 +146,7 @@ function LandingPage() {
 
                   <Card.Text>
                     <div id="text_black">
-                      {CSRInfos.접수 ? CSRInfos.접수 : "0"}
+                      {CSRInfos.접수대기 ? CSRInfos.접수대기 : "0"}
                     </div>
                     <div id="text_gray">건</div>
                   </Card.Text>

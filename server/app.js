@@ -6,18 +6,15 @@ const bodyParser = require("body-parser");
 const logger = require("morgan");
 const cors = require("cors");
 
-// session modules
-const session = require('express-session');
-const passport = require('passport');
 const models = require("./models/index.js");
-const passportConfig = require('./config/passport.config');
 
 require("dotenv").config();
 
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const requestsRouter = require("./routes/request");
-const uploadRouter = require("./routes/upload");
+const authRouter = require("./routes/auth");
+const jwtAuth = require("./routes/middleware/jwt.auth");
 const app = express();
 
 models.sequelize
@@ -43,31 +40,21 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/uploads", express.static("uploads"));
 app.use(cors());
-//세션 환경 세팅
 
-app.use(session({
-  saveUninitialized: false,
-  resave: false,
-  secret: process.env.COOKIE_SECRET,
-  cookie: {
-    maxAge: 1000 * 60 * 10 //유효시간 10분
-  },
-}));
-passportConfig(passport);
-app.use(passport.initialize()); // passport 구동
-app.use(passport.session()); // 세션 연결
-
-const flash = require('connect-flash')
-app.use(flash());
 app.use("/", indexRouter);
+app.use("/auth", authRouter);
+app.use(jwtAuth.authChecker);
 app.use("/users", usersRouter);
 app.use("/requests", requestsRouter);
 
+<<<<<<< HEAD
 app.use("/upload", uploadRouter);
 
 //
 app.use('/api/dialogflow', require('./routes/dialogflow'));
 
+=======
+>>>>>>> 947c456989cea221751f22465c6f3d040830ff64
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
   next(createError(404));
