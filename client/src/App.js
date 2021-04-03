@@ -8,6 +8,7 @@ import LandingPage from "./pages/LandingPage/LandingPage";
 import SRPage from "./pages/SRPage/SRPage";
 import SRAgentPage from "./pages/SRAgentPage/SRAgentPage";
 import ITSRPage from "./pages/ITSRPage/ITSRpage";
+import MyPaymentPage from "./pages/MyPaymentPage/MyPaymentPage";
 import NavBar from "./components/NavBar/NavBar";
 import Footer from "./components/Footer";
 import ProtectedRoute from "./ProtectedRoute";
@@ -47,6 +48,7 @@ function App() {
                 exact
               />
               <Route exact path="/sragent" component={SRAgentPage} />
+              <Route exact path="/mypayment" component={MyPaymentPage} />
 
               <Route exact path="/test" component={Testpage} />
             </Switch>
