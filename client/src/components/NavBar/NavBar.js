@@ -56,10 +56,10 @@ function NavBar() {
         setUserLevel(2); // agent
       } else {
         setUserLevel(3); // admin
+        console.log(
+          JSON.stringify(jwt_decode(cookie.load("token")).User_position)
+        );
       }
-
-      console.log(JSON.stringify(jwt_decode(cookie.load("token"))));
-      console.log("user=" + userLevel);
     }
   }, [userInfos]);
 
@@ -104,7 +104,13 @@ function NavBar() {
             <Nav>
               {authenticated ? (
                 <>
-                  <StyledSpan>{userLevel === 1 ? "사원" : "요원"}</StyledSpan>
+                  <StyledSpan>
+                    {userLevel === 1
+                      ? "사원"
+                      : userLevel === 2
+                      ? "요원"
+                      : "관리자"}
+                  </StyledSpan>
                   <StyledSpan>{userName}</StyledSpan>
                   <StyledSpan>
                     최근 로그인:
@@ -185,7 +191,7 @@ function NavBar() {
             </Link>
           </Nav.Link>
           <Nav.Link id="collasible-nav">
-            <Link to="" id="textcolorwhite">
+            <Link to="/mypayment" id="textcolorwhite">
               나의 결재함
             </Link>
           </Nav.Link>
