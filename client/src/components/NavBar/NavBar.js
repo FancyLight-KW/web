@@ -34,7 +34,7 @@ function NavBar() {
 
   // console.log("UserInfo:" + JSON.stringify(userInfos) + userInfos);
   const location = useLocation();
-  console.log(location.pathname);
+  //console.log(location.pathname);
 
   useEffect(() => {
     if (cookie.load("token")) {
@@ -58,14 +58,11 @@ function NavBar() {
         setUserLevel(2); // agent
       } else {
         setUserLevel(3); // admin
-        console.log(
-          JSON.stringify(jwt_decode(cookie.load("token")).User_position)
-        );
       }
     }
   }, [userInfos]);
 
-  console.log(authenticated);
+  //console.log(authenticated);
 
   const loginOpenModal = () => {
     setLoginModalVisible(true);
@@ -181,7 +178,7 @@ function NavBar() {
             )}
           </Nav.Link>
 
-          {userLevel === 1 ? (
+          {authenticated && userLevel === 1 ? (
             <Nav.Link id="collasible-nav">
               <Link to="/mysr" id="textcolorwhite">
                 나의 요청목록

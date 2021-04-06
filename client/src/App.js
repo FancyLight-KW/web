@@ -23,7 +23,7 @@ function App() {
     if (cookie.load("token")) {
       setAuthenticated(true);
     }
-    console.log(cookie.load("token"));
+    // console.log(cookie.load("token"));
   }, [userInfos]);
 
   // console.log(authenticated);

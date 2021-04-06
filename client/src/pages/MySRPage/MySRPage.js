@@ -95,7 +95,7 @@ function MySRPage() {
     const userID = JSON.stringify(
       jwt_decode(cookie.load("token")).User_id
     ).split('"')[1];
-    console.log(JSON.stringify(jwt_decode(cookie.load("token"))));
+    //  console.log(JSON.stringify(jwt_decode(cookie.load("token"))));
 
     axios
       .get(`http://localhost:5000/requests/search?user=${userID}`, {
