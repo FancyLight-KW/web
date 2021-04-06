@@ -13,11 +13,14 @@
   margin-left: 10px;
 }
 #collasible-nav {
-  width: 300px;
+  width: 200px;
+}
+#dropDown-nav {
+  width: 200px;
+  color: white;
 }
 #NavSecondRow {
   background-color: #0069c0;
-  justify-content: space-between;
 }
 
 .left-margin {

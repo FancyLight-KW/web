@@ -4,7 +4,7 @@ import { Navbar, Nav, NavDropdown, Button } from "react-bootstrap";
 import Logo from "../../assets/800px-Hyundai_Transys_logo.png";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { useHistory } from "react-router";
+import { useHistory, useLocation, useParams } from "react-router";
 import LoginModal from "../LoginModal";
 import RegisterModal from "../RegisterModal";
 import cookie from "react-cookies";
@@ -33,6 +33,8 @@ function NavBar() {
   const userInfos = useSelector((state) => state.auth.userInfos);
 
   // console.log("UserInfo:" + JSON.stringify(userInfos) + userInfos);
+  const location = useLocation();
+  console.log(location.pathname);
 
   useEffect(() => {
     if (cookie.load("token")) {
@@ -81,6 +83,10 @@ function NavBar() {
     cookie.remove("token");
     setAuthenticated(false);
     //  dispatch(logOutUser());
+
+    if (location.pathname === "/") {
+      window.location.reload();
+    }
     history.push("/");
   };
 
@@ -170,31 +176,50 @@ function NavBar() {
               </Link>
             ) : (
               <Link to="/" id="textcolorwhite">
-                {" "}
                 요청/접수
               </Link>
             )}
           </Nav.Link>
-          <Nav.Link id="collasible-nav">
-            <Link to="/sragent" id="textcolorwhite">
-              요청/접수(처리자)
-            </Link>
-          </Nav.Link>
-          <Nav.Link id="collasible-nav">
-            <Link to="" id="textcolorwhite">
-              처리이력정보
-            </Link>
-          </Nav.Link>
-          <Nav.Link id="collasible-nav">
-            <Link to="" id="textcolorwhite">
-              처리이력정보(관리자)
-            </Link>
-          </Nav.Link>
-          <Nav.Link id="collasible-nav">
-            <Link to="/mypayment" id="textcolorwhite">
-              나의 결재함
-            </Link>
-          </Nav.Link>
+
+          {userLevel === 1 ? (
+            <Nav.Link id="collasible-nav">
+              <Link to="/mysr" id="textcolorwhite">
+                나의 요청목록
+              </Link>
+            </Nav.Link>
+          ) : userLevel === 2 ? (
+            <NavDropdown title="요원용" id="dropDown-nav">
+              <NavDropdown.Item>
+                <Link style={{ color: "black" }}>요청</Link>
+              </NavDropdown.Item>
+              <NavDropdown.Item href="#action/3.3">?</NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item href="#action/3.5">
+                나의 작업목록
+              </NavDropdown.Item>
+            </NavDropdown>
+          ) : userLevel === 3 ? (
+            <NavDropdown title="관리자용" id="dropDown-nav">
+              <NavDropdown.Item>
+                <Link style={{ color: "black" }}>요청</Link>
+              </NavDropdown.Item>
+              <NavDropdown.Item href="#action/3.3">?</NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item href="#action/3.5">
+                <Link to="/" style={{ color: "black" }}>
+                  나의 결재함
+                </Link>
+              </NavDropdown.Item>
+            </NavDropdown>
+          ) : (
+            <Nav.Link id="collasible-nav">
+              <Link to="/" id="textcolorwhite">
+                나의 요청목록
+              </Link>
+            </Nav.Link>
+          )}
+
+          <Nav.Link id="collasible-nav"></Nav.Link>
         </Navbar>
       </div>
     </>
