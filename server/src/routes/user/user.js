@@ -1,5 +1,5 @@
 const express = require("express");
-const user = require("./Users.controller.js");
+const user = require("./user.controller.js");
 const router = express.Router();
 
 // 모든 유저 출력

@@ -24,7 +24,7 @@ const pagenation = (page, query) => {
 };
 // 요청 생성
 exports.create = (req, res) => {
-  console.log("req.body: ", JSON.stringify(req.body));
+  console.log("req.body: ", JSON.stringify(req.user));
   let body = JSON.parse(req.body.body);
 
   while (typeof body != "object") {
@@ -48,7 +48,7 @@ exports.create = (req, res) => {
     CSR_STATUS: body.CSR_STATUS,
     IMSI_YN: body.IMSI_YN,
     REQ_FINISH_DATE: body.REQ_FINISH_DATE,
-    REG_USER_ID: body.REG_USER_ID,
+    REG_USER_ID: req.user.User_id,
     //REG_DATE: moment().format('YYYYMMDD-HH:mm:ss'),
     MOD_USER_ID: body.MOD_USER_ID,
   };

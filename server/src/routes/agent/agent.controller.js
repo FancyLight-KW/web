@@ -3,7 +3,7 @@ const models = require("../../DB/models");
 exports.findAllUSerDisposeRequest = (req, res) => {
   models.Requests.findAll({
     where: {
-      MOD_USER_ID: req.params.agentId,
+      MOD_USER_ID: req.user.User_id,
     },
   })
     .then((result) => {
