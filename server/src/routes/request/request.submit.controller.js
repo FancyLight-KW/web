@@ -1,7 +1,11 @@
-const models = require("../../models");
+const models = require("../../DB/models");
 const Sequelize = require("sequelize");
 const moment = require("../../config/moment.config");
 const Op = Sequelize.Op;
+
+const like = (keyword) => {
+  return { [Op.like]: `%${keyword}%` };
+};
 
 const pagenation = (page, query) => {
   const PAGE_SIZE = 15;
@@ -20,7 +24,7 @@ const pagenation = (page, query) => {
 };
 // 요청 생성
 exports.create = (req, res) => {
-  console.log("req.body: ", JSON.stringify(req.body));
+  console.log("req.body: ", JSON.stringify(req.user));
   let body = JSON.parse(req.body.body);
 
   while (typeof body != "object") {
@@ -44,7 +48,7 @@ exports.create = (req, res) => {
     CSR_STATUS: body.CSR_STATUS,
     IMSI_YN: body.IMSI_YN,
     REQ_FINISH_DATE: body.REQ_FINISH_DATE,
-    REG_USER_ID: body.REG_USER_ID,
+    REG_USER_ID: req.user.User_id,
     //REG_DATE: moment().format('YYYYMMDD-HH:mm:ss'),
     MOD_USER_ID: body.MOD_USER_ID,
   };
@@ -158,9 +162,7 @@ exports.findRequest = (req, res) => {
   let targetCode = queryparam.targetcode ? queryparam.targetcode : "";
   let csrStatus = queryparam.csrstatus ? queryparam.csrstatus : "";
   //console.log(keyword, search);
-  const like = (keyword) => {
-    return { [Op.like]: `%${keyword}%` };
-  };
+
   let query = {};
   query["REG_USER_ID"] = like(user);
   query["TITLE"] = like(title);
@@ -189,6 +191,22 @@ exports.findRequest = (req, res) => {
       console.log("find err");
       res.send({
         message: "Find Request Error",
+      });
+    });
+};
+
+exports.findAllUSersRequest = (req, res) => {
+  models.Requests.findAll({
+    where: {
+      REG_USER_ID: req.params.userId,
+    },
+  })
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "find error",
       });
     });
 };

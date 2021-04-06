@@ -1,8 +1,9 @@
 const bcrypt = require("bcrypt");
-const saltRounds = 10;
+require("dotenv").config();
+const saltRounds = process.env.SALT;
 
 exports.encrypt = (password) => {
-  return bcrypt.hashSync(password, saltRounds);
+  return bcrypt.hashSync(password, 10);
 };
 
 //비밀번호 확인

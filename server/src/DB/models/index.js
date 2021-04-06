@@ -5,7 +5,7 @@ const path = require("path");
 const Sequelize = require("sequelize");
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || "development";
-const config = require(__dirname + "/../config/config.js")[env];
+const config = require("../../config/db.config")[env];
 const db = {};
 
 let sequelize;
@@ -13,27 +13,35 @@ if (config.use_env_variable) {
   sequelize = new Sequelize(process.env[config.use_env_variable], {
     host: config.host,
     dialect: config.dialect,
-    dialectOptions: {
-      // for reading
-      useUTC: false,
-      dateString: true,
-      typeCast: true,
-      //timezone: config.timezone,
+    charset: "utf8",
+    collate: "utf8_general_ci",
+    query: {
+      raw: true,
     },
-    timezone: config.timezone, // for writing
+    logging: true,
+    dialectOptions: {
+      useUTC: false, //for reading from database
+      dateStrings: true,
+      typeCast: true,
+    },
+    timezone: "+09:00", //for writing to database
   });
 } else {
   sequelize = new Sequelize(config.database, config.username, config.password, {
     host: config.host,
     dialect: config.dialect,
-    dialectOptions: {
-      // for reading
-      useUTC: false,
-      dateString: true,
-      typeCast: true,
-      //timezone: config.timezone,
+    charset: "utf8",
+    collate: "utf8_general_ci",
+    query: {
+      raw: true,
     },
-    timezone: config.timezone, // for writing
+    logging: true,
+    dialectOptions: {
+      useUTC: false, //for reading from database
+      dateStrings: true,
+      typeCast: true,
+    },
+    timezone: "+09:00", //for writing to database
   });
 }
 

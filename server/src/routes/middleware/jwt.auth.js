@@ -4,15 +4,15 @@ exports.authChecker = (req, res, next) => {
   if (req.headers.authorization) {
     const token = req.headers.authorization.split("Bearer ")[1];
 
-    jwt.verify(token, process.env.SECRET, (err) => {
+    jwt.verify(token, process.env.SECRET, (err, decoded) => {
       if (err) {
-        res.status(401).json({ error: "Auth Error from authChecker" });
+        res.status(401).json({ message: "Auth Error from authChecker" });
       } else {
-        console.log("auth success");
+        req.user = decoded;
         next();
       }
     });
   } else {
-    res.status(401).json({ error: "Auth Error from authChecker" });
+    res.status(401).json({ message: "Auth Error from authChecker" });
   }
 };
