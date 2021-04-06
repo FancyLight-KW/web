@@ -16,6 +16,7 @@ const requestsRouter = require("./routes/request");
 const authRouter = require("./routes/auth");
 const jwtAuth = require("./routes/middleware/jwt.auth");
 const app = express();
+//const dialogflowRouter = require('./routes/dialogflow');
 
 models.sequelize
   .sync()
@@ -47,14 +48,11 @@ app.use(jwtAuth.authChecker);
 app.use("/users", usersRouter);
 app.use("/requests", requestsRouter);
 
-<<<<<<< HEAD
-app.use("/upload", uploadRouter);
+//app.use("/upload", uploadRouter);
 
 //
 app.use('/api/dialogflow', require('./routes/dialogflow'));
 
-=======
->>>>>>> 947c456989cea221751f22465c6f3d040830ff64
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
   next(createError(404));

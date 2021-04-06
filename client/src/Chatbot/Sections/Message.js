@@ -5,6 +5,15 @@ import { RobotOutlined } from '@ant-design/icons'
 import { SmileOutlined } from '@ant-design/icons'
 import { Table, Row, Col } from "react-bootstrap";
 import "./Message.css"
+import { useHistory } from "react-router";
+import styles from "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css"
+import {
+    MainContainer,
+    ChatContainer,
+    MessageList,
+    Message,
+    MessageInput,
+} from "@chatscope/chat-ui-kit-react"
 //import Clock from "react-live-clock"
 
 const { Title }=Typography;
@@ -12,7 +21,7 @@ const { Header, Footer, Sider, Content }=Layout;
 
 
 
-function Message(props) {
+function Messages(props) {
     let currentTime = new Date();
 //<RobotOutlined style={{display:"flex", justifyContent:"flex-start"}} />
 //     <StyledLink to={to}>
@@ -33,7 +42,15 @@ function Message(props) {
 
     //const AvatarSrc = props.who ==='bot' ? <RobotOutlined /> : <SmileOutlined />
 
-    
+    //if(props.who == 'bot' && props.text == "요청 페이지로 이동합니다."){
+
+    //}
+
+    const AvatarSrc = props.who ==='bot' ? <Avatar src={RobotOutlined}/> : <Avatar src={SmileOutlined}/> 
+    const PositionSrc = props.who ==='bot' ? "flex-start" : "flex-end"
+    const SenderSrc = props.who ==='bot' ? "bot" : ""
+    //const MessageSrc = props.who ==='bot' ? <Icon type="robot" /> : <Icon type="smile" />  
+
     return (
         /*
         (props.who === 'bot') ? (
@@ -65,6 +82,48 @@ function Message(props) {
         // <th style={{bottom:"1"}}>
         //         {currentTime.toLocaleTimeString()}
         //     </th>
+
+
+        //(props.who === 'bot') ? (
+            <div style={{ position: "relative", height: "500px", justifyContent: {PositionSrc} }}>
+                <MainContainer>
+                    <ChatContainer>
+                        <MessageList>
+                        <Message
+                            model={{
+                                message: props.text,
+                                sentTime: "just now",
+                                sender: props.who,
+                            }}
+                        >
+                            avatar={<Avatar icon={AvatarSrc}/>}
+                            <Message.Header sender={SenderSrc} sentTime="just now" />
+                        </Message>
+                        </MessageList>
+                    </ChatContainer>
+                </MainContainer>
+            </div>
+       /* ) : (
+            <div style={{ position: "relative", height: "500px" }}>
+                <MainContainer>
+                    <ChatContainer>
+                        <MessageList>
+                        <Message
+                            style={{ justifyContent: "flex-end" }}
+                            model={{
+                                message: `${props.text}`,
+                                sentTime: "just now",
+                                sender: `${props.who}`,
+                            }}
+                        />
+                        </MessageList>
+                    </ChatContainer>
+                </MainContainer>
+            </div>
+        )
+        */
+////////////////////////////////////////////
+/*
         (props.who === 'bot') ? (
             
             <div class="arrow_box">
@@ -83,17 +142,21 @@ function Message(props) {
             </div>
             
         )
-    : ( <List.Item style ={{display:"flex", justifyContent:"flex-end", padding: '1rem'}}>
-        <th style={{bottom:0}}>
-                {currentTime.toLocaleTimeString()}
-            </th>
-        <List.Item.Meta style ={{justifyContent:"flex-end", backgroundColor: '#f56a00'}}
+    : ( 
+        
+        <List.Item style ={{display:"flex", justifyContent:"flex-end", padding: '1rem'}}>
+        <p style={{bottom:"150px"}}>{currentTime.toLocaleTimeString()}</p>
+        <div class="arrow_box">
+        <List.Item.Meta style ={{justifyContent:"flex-end"}}
             //avater={<Avatar icon={<SmileOutlined/>} />}
             //title={props.who, <SmileOutlined/>}
             description={props.text}
         />
-    </List.Item> )
-
+        </div>
+    </List.Item> 
+    )
+    */
+////////////////////////////////////////
     /*
     (props.who === 'bot') ? (
         <Row>
@@ -116,4 +179,4 @@ function Message(props) {
     )
 }
 
-export default Message
+export default Messages

@@ -2,15 +2,26 @@ import React, { useEffect, useRef } from 'react';
 import Axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { saveMessage } from '../actions/message_actions';
-import Message from './Sections/Message';
+import Message_local from './Sections/Message';
 import { List, Avatar } from 'antd';
 import { RobotOutlined } from '@ant-design/icons'
+import cookie from "react-cookies";
+import jwt_decode from "jwt-decode";
+import { useHistory } from "react-router";
+import styles from "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css"
+import {
+    MainContainer,
+    ChatContainer,
+    MessageList,
+    Message,
+    MessageInput,
+} from "@chatscope/chat-ui-kit-react"
 //import Card from "./Sections/Card";
 
-function Chatbot({message}) {
+function Chatbot() {
     const dispatch = useDispatch();
     const messagesFromRedux = useSelector(state => state.message.messages)
-
+    let history = useHistory();
     useEffect(() => {
 
         eventQuery('welcomeToMyWebsite')
@@ -39,7 +50,12 @@ function Chatbot({message}) {
         }
         try {
             //I will send request to the textQuery ROUTE 
-            const response = await Axios.post('http://localhost:5000/api/dialogflow/textQuery', textQueryVariables)
+            const response = await Axios.post('http://localhost:5000/api/dialogflow/textQuery', textQueryVariables,
+            {
+                headers: {
+                  Authorization: `Bearer ${cookie.load("token")}`,
+                },
+              })
 
             for (let content of response.data.fulfillmentMessages) {
 
@@ -77,7 +93,12 @@ function Chatbot({message}) {
         }
         try {
             //I will send request to the textQuery ROUTE 
-            const response = await Axios.post('http://localhost:5000/api/dialogflow/eventQuery', eventQueryVariables)
+            const response = await Axios.post('http://localhost:5000/api/dialogflow/eventQuery', eventQueryVariables,
+            {
+                headers: {
+                  Authorization: `Bearer ${cookie.load("token")}`,
+                },
+              })
             for (let content of response.data.fulfillmentMessages) {
 
                 let conversation = {
@@ -129,10 +150,14 @@ function Chatbot({message}) {
         console.log('message', message)
 
         // we need to give some condition here to separate message kinds 
-
+        
         // template for normal text 
         if (message.content && message.content.text && message.content.text.text) {
-            return <Message key={i} who={message.who} text={message.content.text.text} />
+            if(message.content.text.text == "요청 페이지로 이동합니다."){
+                history.push("/itsr");
+                message.content.text.text = "";
+            }
+            //return <Message_local key={i} who={message.who} text={message.content.text.text} />
         } //else if (message.content && message.content.payload.fields.card) {
 
         //     const AvatarSrc = message.who === 'bot' ? <RobotOutlined type="robot" /> : <RobotOutlined type="smile" />
@@ -185,8 +210,18 @@ function Chatbot({message}) {
                 
                 <div ref = {messagesEndRef}/>
             </div>
-            
-            <input
+            {/* <div style={{ position: "relative", height: "500px" }}>
+                
+                <MainContainer>
+                    <ChatContainer>
+                        
+                        <MessageInput placeholder="Type message here">
+                            onKeyPress={keyPressHanlder}
+                        </MessageInput>
+                    </ChatContainer>
+                </MainContainer>
+            </div> */}
+             <input
                 style={{
                     margin: 0, width: '100%', height: 50,
                     borderRadius: '4px', padding: '5px', fontSize: '1rem'
@@ -194,7 +229,7 @@ function Chatbot({message}) {
                 placeholder="Send a message..."
                 onKeyPress={keyPressHanlder}
                 type="text"
-            />
+            /> 
 
         </div>
     )
