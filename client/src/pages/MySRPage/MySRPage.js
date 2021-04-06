@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Table, Button } from "react-bootstrap";
 import styled, { css } from "styled-components";
-import "./MyPaymentPage.css";
+import "./MySRPage.css";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import cookie from "react-cookies";
@@ -47,7 +47,7 @@ const Input = styled.input`
   height: 28px;
 `;
 
-function MyPaymentPage() {
+function MySRPage() {
   // const [FilteredRequests, setFilterdRequests] = useState([]);
   const [Requests, setRequests] = useState([]);
 
@@ -152,7 +152,7 @@ function MyPaymentPage() {
         <PageNameWrapper>
           <>
             <span style={{ marginLeft: "16px", fontSize: "18px" }}>
-              ※ 나의 결재함
+              ※ 나의 요청목록
             </span>
           </>
         </PageNameWrapper>
@@ -226,4 +226,4 @@ function MyPaymentPage() {
   );
 }
 
-export default MyPaymentPage;
+export default MySRPage;

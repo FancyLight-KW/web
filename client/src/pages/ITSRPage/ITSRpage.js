@@ -40,9 +40,9 @@ function ITSRPage() {
   const [Content, setContent] = useState("");
   const [File, setFile] = useState("");
   // const fileRef = useRef();
-  const userID = JSON.stringify(jwt_decode(cookie.load("token")).User_id).split(
-    '"'
-  )[1];
+  //const userID = JSON.stringify(jwt_decode(cookie.load("token")).User_id).split(
+  //  '"'
+  //)[1];
 
   const dateChanger = (date) => {
     let year = date.getFullYear();
@@ -121,9 +121,9 @@ function ITSRPage() {
       CONTENT: Content,
       REQ_FINISH_DATE: ReqFinishDate,
       CORP_CODE: 법인코드,
-      CSR_STATUS: CSR진행상태,
+      CSR_STATUS: "접수대기",
       IMSI_YN: 임시저장,
-      REG_USER_ID: userID,
+      //  REG_USER_ID: userID,
     });
 
     formData.append("imagefile", File);
