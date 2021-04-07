@@ -24,7 +24,6 @@ exports.myInProgressRequest = (req, res) => {
     .catch((err) => {
       res.status(500).send({
         message: "mypage error",
-        error: err,
       });
     });
 };
@@ -34,9 +33,15 @@ exports.myFinishedRequest = (req, res) => {
   models.Requests.findAll({
     where: {
       REG_USER_ID: req.user.User_id,
-      CSR_STATUS: "완료",
+      CSR_STATUS: "처리완료",
     },
-  }).then((result) => {
-    res.send(result);
-  });
+  })
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "done request error",
+      });
+    });
 };
