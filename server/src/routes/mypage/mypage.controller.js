@@ -1,6 +1,5 @@
 const models = require("../../DB/models");
 const Sequelize = require("sequelize");
-const moment = require("../../config/moment.config");
 const Op = Sequelize.Op;
 
 // 진행중인 요청

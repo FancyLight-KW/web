@@ -1,0 +1,29 @@
+{
+  "files": {
+    "main.css": "/static/css/main.45b074e2.chunk.css",
+    "main.js": "/static/js/main.e840cc84.chunk.js",
+    "main.js.map": "/static/js/main.e840cc84.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.a1717e85.js",
+    "runtime-main.js.map": "/static/js/runtime-main.a1717e85.js.map",
+    "static/css/2.f4a6a311.chunk.css": "/static/css/2.f4a6a311.chunk.css",
+    "static/js/2.ea8cbdad.chunk.js": "/static/js/2.ea8cbdad.chunk.js",
+    "static/js/2.ea8cbdad.chunk.js.map": "/static/js/2.ea8cbdad.chunk.js.map",
+    "static/js/3.c972ccf9.chunk.js": "/static/js/3.c972ccf9.chunk.js",
+    "static/js/3.c972ccf9.chunk.js.map": "/static/js/3.c972ccf9.chunk.js.map",
+    "index.html": "/index.html",
+    "static/css/2.f4a6a311.chunk.css.map": "/static/css/2.f4a6a311.chunk.css.map",
+    "static/css/main.45b074e2.chunk.css.map": "/static/css/main.45b074e2.chunk.css.map",
+    "static/js/2.ea8cbdad.chunk.js.LICENSE.txt": "/static/js/2.ea8cbdad.chunk.js.LICENSE.txt",
+    "static/media/800px-Hyundai_Transys_logo.02f14495.png": "/static/media/800px-Hyundai_Transys_logo.02f14495.png",
+    "static/media/Chatbot.ea6836df.jpg": "/static/media/Chatbot.ea6836df.jpg",
+    "static/media/ITSP.60d289d1.png": "/static/media/ITSP.60d289d1.png",
+    "static/media/favicon.6df13f0d.ico": "/static/media/favicon.6df13f0d.ico"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.a1717e85.js",
+    "static/css/2.f4a6a311.chunk.css",
+    "static/js/2.ea8cbdad.chunk.js",
+    "static/css/main.45b074e2.chunk.css",
+    "static/js/main.e840cc84.chunk.js"
+  ]
+}

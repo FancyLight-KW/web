@@ -10,6 +10,7 @@ require("dotenv").config();
 
 const app = express();
 const indexRouter = require("./src/routes/index/index");
+const indexRouter = require("./src/routes/mypage/mypage");
 const usersRouter = require("./src/routes/user/user");
 const requestsRouter = require("./src/routes/request/request");
 const agentRouter = require("./src/routes/agent/agent");
@@ -45,6 +46,7 @@ app.use("/", indexRouter);
 app.use("/auth", authRouter);
 app.use(jwtAuth.authChecker);
 app.use("/users", usersRouter);
+app.use("/mypage", mypageRouter);
 app.use("/requests", requestsRouter);
 app.use("/agent", agentRouter);
 app.use("/admin", adminRouter);
