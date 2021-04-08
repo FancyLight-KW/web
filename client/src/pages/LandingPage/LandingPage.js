@@ -7,6 +7,8 @@ import ITServiceImg from "../../assets/ITSP.png";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import cookie from "react-cookies";
+import dotenv from "dotenv";
+const env = dotenv.config();
 
 const LandingWrapper = styled.div`
   overflow: hidden;
@@ -85,8 +87,9 @@ function LandingPage() {
   }, []);
 
   useEffect(() => {
-    // const endpoint = "http://localhost:5000/requests/getAllRequest?";
-    axios.get("http://localhost:5000/csrstatus").then((response) => {
+    // const endpoint = `${process.env.REACT_APP_API_HOST}/requests/getAllRequest?`;
+    console.log(process.env.REACT_APP_API_HOST);
+    axios.get(`${process.env.REACT_APP_API_HOST}/csrstatus`).then((response) => {
       console.log(response);
       setCSRInfos(response.data);
       countCSR(response.data);
@@ -107,6 +110,7 @@ function LandingPage() {
         <Row>
           <Col xs={12} md={8}>
             <ImageContainer>
+              <label>{process.env.REACT_APP_API_HOST}</label>
               <img src={ITServiceImg} width="72%" height="300px"></img>
             </ImageContainer>
           </Col>
