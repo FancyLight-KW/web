@@ -8,9 +8,10 @@ import favicon from "./assets/favicon.ico";
 import Testpage from "./Testpage";
 import LandingPage from "./pages/LandingPage/LandingPage";
 import SRPage from "./pages/SRPage/SRPage";
-import SRAgentPage from "./pages/SRAgentPage/SRAgentPage";
 import ITSRPage from "./pages/ITSRPage/ITSRpage";
 import MySRPage from "./pages/MySRPage/MySRPage";
+import SRAgentPage from "./pages/SRAgentPage/SRAgentPage";
+import SRAdminPage from "./pages/SRAdminPage/SRAdminPage";
 import NavBar from "./components/NavBar/NavBar";
 import Footer from "./components/Footer";
 import ProtectedRoute from "./ProtectedRoute";
@@ -52,9 +53,9 @@ function App() {
                 path="/itsr"
                 exact
               />
-              <Route exact path="/sragent" component={SRAgentPage} />
               <Route exact path="/mysr" component={MySRPage} />
-
+              <Route exact path="/sragent" component={SRAgentPage} />
+              <Route exact path="/sradmin" component={SRAdminPage} />
               <Route exact path="/test" component={Testpage} />
             </Switch>
           </div>

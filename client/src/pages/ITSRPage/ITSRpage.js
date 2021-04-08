@@ -146,6 +146,17 @@ function ITSRPage() {
 
     alert("요청이 접수되었습니다.");
   };
+  //   <Form.Group as={Row}>
+  //   <Form.Label column sm="1">
+  //     요청자
+  //   </Form.Label>
+  // </Form.Group>
+
+  // <Form.Group as={Row}>
+  //   <Form.Label column sm="1">
+  //     요청자이름
+  //   </Form.Label>
+  // </Form.Group>
 
   return (
     <RateBlock>
@@ -241,18 +252,6 @@ function ITSRPage() {
             ></input>
             <Form.Text muted>(첨부 가능 파일 확장자: jpg, gif, png)</Form.Text>
           </Col>
-        </Form.Group>
-
-        <Form.Group as={Row}>
-          <Form.Label column sm="1">
-            요청자
-          </Form.Label>
-        </Form.Group>
-
-        <Form.Group as={Row}>
-          <Form.Label column sm="1">
-            요청자이름
-          </Form.Label>
         </Form.Group>
 
         <button>요청하기</button>

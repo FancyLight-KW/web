@@ -100,7 +100,7 @@ function MySRPage() {
     //  console.log(JSON.stringify(jwt_decode(cookie.load("token"))));
 
     axios
-      .get(`${process.env.REACT_APP_API_HOST}/requests/search?user=${userID}`, {
+      .get(`${process.env.REACT_APP_API_HOST}/mypage`, {
         headers: {
           Authorization: `Bearer ${cookie.load("token")}`,
         },

@@ -117,9 +117,17 @@ function NavBar() {
                   <StyledSpan>{userName}</StyledSpan>
                   <StyledSpan>
                     최근 로그인:
-                    <h9 style={{ color: "#0069c0", marginLeft: "5px" }}>
+                    <h6
+                      style={{
+                        color: "#0069c0",
+                        marginTop: "5.5px",
+                        marginLeft: "5px",
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                    >
                       {userLastLogin}
-                    </h9>
+                    </h6>
                   </StyledSpan>
                 </>
               ) : (
@@ -191,9 +199,7 @@ function NavBar() {
               </NavDropdown.Item>
               <NavDropdown.Item href="#action/3.3">?</NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.5">
-                나의 작업목록
-              </NavDropdown.Item>
+              <NavDropdown.Item href="sragent">나의 작업목록</NavDropdown.Item>
             </NavDropdown>
           ) : userLevel === 3 ? (
             <NavDropdown title="관리자용" id="dropDown-nav">
@@ -203,8 +209,8 @@ function NavBar() {
               <NavDropdown.Item href="#action/3.3">?</NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item href="#action/3.5">
-                <Link to="/" style={{ color: "black" }}>
-                  나의 결재함
+                <Link to="/sradmin" style={{ color: "black" }}>
+                  나의 결재목록
                 </Link>
               </NavDropdown.Item>
             </NavDropdown>
