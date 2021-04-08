@@ -9,6 +9,8 @@ import axios from "axios";
 import Datepicker from "../../components/Datepicker";
 import cookie from "react-cookies";
 import jwt_decode from "jwt-decode";
+import dotenv from "dotenv";
+dotenv.config();
 
 // border: 1px solid black;
 const RateBlock = styled.div`
@@ -133,7 +135,7 @@ function ITSRPage() {
     console.log(body);
 
     axios
-      .post("http://localhost:5000/requests", formData, {
+      .post(`${process.env.REACT_APP_API_HOST}/requests`, formData, {
         headers: {
           Authorization: `Bearer ${cookie.load("token")}`,
         },

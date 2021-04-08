@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import cookie from "react-cookies";
 import jwt_decode from "jwt-decode";
+import dotenv from "dotenv";
+dotenv.config();
 
 const TopContainer = styled.div`
   display: flex;
@@ -98,7 +100,7 @@ function MySRPage() {
     //  console.log(JSON.stringify(jwt_decode(cookie.load("token"))));
 
     axios
-      .get(`http://localhost:5000/requests/search?user=${userID}`, {
+      .get(`${process.env.REACT_APP_API_HOST}/requests/search?user=${userID}`, {
         headers: {
           Authorization: `Bearer ${cookie.load("token")}`,
         },

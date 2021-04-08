@@ -7,6 +7,8 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import searchImg from "../../assets/Search.png";
 import cookie from "react-cookies";
+import dotenv from "dotenv";
+dotenv.config();
 
 const TopContainer = styled.div`
   display: flex;
@@ -60,7 +62,7 @@ function SRPage() {
   // const [FilteredRequests, setFilterdRequests] = useState([]);
   const [Requests, setRequests] = useState([]);
   const [Query, setQuery] = useState(
-    "http://localhost:5000/requests/" //get All request
+    `${process.env.REACT_APP_API_HOST}/requests/` //get All request
   );
 
   const [StartDate, setStartDate] = useState("");
@@ -93,7 +95,7 @@ function SRPage() {
         : `&startDate=${StartDate}&endDate=${FinishDate}`;
     //  console.log(queryDate);
 
-    const searchAPI = `http://localhost:5000/requests/search?${queryKeyword}${queryTargetCode}${queryCSRStatus}${queryDate}`;
+    const searchAPI = `${process.env.REACT_APP_API_HOST}/requests/search?${queryKeyword}${queryTargetCode}${queryCSRStatus}${queryDate}`;
     setQuery(searchAPI);
     console.log(searchAPI);
     // http://localhost:5000/requests/searchRequest/?user=sehwagod&title=제목&targetcode=QA장비&csrstatus=완료&startDate=20210311&endDate=20210317
