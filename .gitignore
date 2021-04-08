@@ -19,4 +19,3 @@ server/uploads/*
 server/.prettierignore
 server/.prettierrc
 nginx/default.conf
-nginx/default.conf
