@@ -88,7 +88,6 @@ function LandingPage() {
 
   useEffect(() => {
     // const endpoint = `${process.env.REACT_APP_API_HOST}/requests/getAllRequest?`;
-    console.log(process.env.REACT_APP_API_HOST);
     axios.get(`${process.env.REACT_APP_API_HOST}/csrstatus`).then((response) => {
       console.log(response);
       setCSRInfos(response.data);
@@ -110,7 +109,6 @@ function LandingPage() {
         <Row>
           <Col xs={12} md={8}>
             <ImageContainer>
-              <label>{process.env.REACT_APP_API_HOST}</label>
               <img src={ITServiceImg} width="72%" height="300px"></img>
             </ImageContainer>
           </Col>
