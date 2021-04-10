@@ -1,7 +1,19 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import chatbotimg from "../../assets/Chatbot.jpg";
+import cookie from "react-cookies";
+import { useSelector } from "react-redux";
 
 function Footer() {
+  const [authenticated, setAuthenticated] = useState(false);
+  const userInfos = useSelector((state) => state.auth.userInfos);
+
+  useEffect(() => {
+    if (cookie.load("token")) {
+      setAuthenticated(true);
+    }
+    // console.log(cookie.load("token"));
+  }, [userInfos]);
+
   return (
     <div
       style={{
@@ -12,7 +24,7 @@ function Footer() {
       }}
     >
       <div style={{ display: "flex", justifyContent: "flex-end" }}>
-        <img src={chatbotimg} width="80" height="80" />
+        {authenticated ? <img src={chatbotimg} width="80" height="80" /> : null}
       </div>
 
       <div
