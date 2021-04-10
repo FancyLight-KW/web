@@ -1,11 +1,13 @@
 import axios from "axios";
+import dotenv from "dotenv";
+dotenv.config();
 
-export const LOGIN_USER = "login_user";
-export const REGISTER_USER = "register_user";
+export const LOGIN_USER = `login_user`;
+export const REGISTER_USER = `register_user`;
 
 export function loginUser(loginInfo) {
   const request = axios
-    .post("http://localhost:5000/login", loginInfo)
+    .post(`${process.env.REACT_APP_API_HOST}/auth/login`, loginInfo)
     .then((response) => response.data);
 
   return {
@@ -16,7 +18,7 @@ export function loginUser(loginInfo) {
 
 export function registerUser(registerInfo) {
   const request = axios
-    .post("http://localhost:5000/register", registerInfo)
+    .post(`${process.env.REACT_APP_API_HOST}/auth/register`, registerInfo)
     .then((response) => response.data);
 
   return {
