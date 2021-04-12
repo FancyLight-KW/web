@@ -1,15 +1,23 @@
 version: "3.4"
 
+networks:
+  backbone:
+    driver: bridge
+
 services:
   nginx:
     restart: always
     build:
       dockerfile: Dockerfile
       context: .
+    networks:
+      - backbone
+    depends_on:
+      - api_server
     ports:
       - "80:80"
 
-  server:
+  api_server:
     image: server
     build:
       context: server
@@ -18,5 +26,8 @@ services:
       - ./server/.env
     environment:
       NODE_ENV: development
+    networks:
+      - backbone
     ports:
-      - 5000:5000
+      - 5000
+    
