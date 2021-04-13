@@ -12,8 +12,8 @@ services:
       context: .
     networks:
       - backbone
-    volumes:
-      - ./nginx/logs:/var/log/nginx
+    # volumes:
+    #   - ./nginx/logs:/var/log/nginx
     depends_on:
       - api_server
     ports:

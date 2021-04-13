@@ -7,6 +7,3 @@ ADD ./client/build ./www
 COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
-
-CMD service nginx start
-CMD exec nginx -g 'daemon off;'
