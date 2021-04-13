@@ -54,7 +54,7 @@ exports.create = (req, res) => {
   };
 
   if (req.file) {
-    query["REQ_IMG_PATH"] = "/uploads/" + req.file.filename;
+    query["REQ_IMG_PATH"] = req.file.filename;
   }
   console.log("query: ", query);
   models.Requests.create(query)
@@ -85,6 +85,19 @@ exports.findAll = (req, res) => {
       res.send(err);
     });
 };
+
+exports.findImage = (req, res) => {
+  models.Requests.findAll({
+    where: {
+      REQ_SEQ: req.params.requestId
+    }
+  }).then((result) => {
+    console.log(result.REQ_SEQ)
+    res.send({
+      image: process.env.HOST + "/uploads/" + result.REQ_IMG_PATH,
+    })
+  })
+}
 
 exports.update = (req, res) => {
   if (!req.body) {
