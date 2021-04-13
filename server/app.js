@@ -16,6 +16,7 @@ const requestsRouter = require("./src/routes/request/request");
 const agentRouter = require("./src/routes/agent/agent");
 const adminRouter = require("./src/routes/admin/admin");
 const authRouter = require("./src/routes/auth/auth");
+const androidRouter = require("./src/routes/android/android");
 const jwtAuth = require("./src/routes/middleware/jwt.auth");
 
 models.sequelize
@@ -50,6 +51,7 @@ app.use("/mypage", mypageRouter);
 app.use("/requests", requestsRouter);
 app.use("/agent", agentRouter);
 app.use("/admin", adminRouter);
+app.use("/android", androidRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

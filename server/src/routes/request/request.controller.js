@@ -1,27 +1,13 @@
 const models = require("../../DB/models");
 const Sequelize = require("sequelize");
 const moment = require("../../config/moment.config");
+
 const Op = Sequelize.Op;
 
 const like = (keyword) => {
   return { [Op.like]: `%${keyword}%` };
 };
 
-const pagenation = (page, query) => {
-  const PAGE_SIZE = 15;
-  let pageNum = page ? page : 1;
-  let offset = 0;
-
-  if (pageNum > 1) {
-    offset = PAGE_SIZE * (pageNum - 1);
-  }
-
-  return {
-    offset: offset,
-    limit: PAGE_SIZE,
-    where: query,
-  };
-};
 // 요청 생성
 exports.create = (req, res) => {
   console.log("req.body: ", JSON.stringify(req.user));
@@ -89,15 +75,14 @@ exports.findAll = (req, res) => {
 exports.findImage = (req, res) => {
   models.Requests.findAll({
     where: {
-      REQ_SEQ: req.params.requestId
-    }
+      REQ_SEQ: req.params.requestId,
+    },
   }).then((result) => {
-    console.log(result.REQ_SEQ)
     res.send({
-      image: process.env.HOST + "/uploads/" + result.REQ_IMG_PATH,
-    })
-  })
-}
+      image: process.env.SERVER_HOST + "/uploads/" + result[0].REQ_IMG_PATH,
+    });
+  });
+};
 
 exports.update = (req, res) => {
   if (!req.body) {
@@ -107,8 +92,6 @@ exports.update = (req, res) => {
   }
 
   let body = req.body;
-  const nowDate = moment().format("YYYY-MM-DD HH:mm:ss");
-
   models.Requests.update(
     {
       TITLE: body.TITLE,
