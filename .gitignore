@@ -17,4 +17,3 @@ yarn-error.log*
 server/uploads/*
 server/.prettierignore
 server/.prettierrc
-/nginx/logs/*
