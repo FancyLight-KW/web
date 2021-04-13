@@ -1,5 +1,9 @@
 version: "3.4"
 
+networks:
+  backbone:
+    driver: bridge
+
 services:
   nginx:
     restart: always
@@ -15,7 +19,7 @@ services:
     ports:
       - "80:80"
 
-  server:
+  api_server:
     image: server
     build:
       context: server
