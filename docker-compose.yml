@@ -12,6 +12,8 @@ services:
       context: .
     networks:
       - backbone
+    volumes:
+      - ./nginx/logs:/var/log/nginx
     depends_on:
       - api_server
     ports:
@@ -26,8 +28,9 @@ services:
       - ./server/.env
     environment:
       NODE_ENV: development
+    volumes:
+      - ./server/uploads:/usr/src/app/uploads
     networks:
       - backbone
     ports:
       - 5000
-    
