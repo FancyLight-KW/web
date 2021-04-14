@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./ITSRPage.css";
-import { Row, Col } from "react-bootstrap";
+import { Row, Col, Button } from "react-bootstrap";
 import styled, { css } from "styled-components";
 import Form from "react-bootstrap/Form";
 import { Radio } from "antd";
@@ -253,8 +253,9 @@ function ITSRPage() {
             <Form.Text muted>(첨부 가능 파일 확장자: jpg, gif, png)</Form.Text>
           </Col>
         </Form.Group>
-
-        <button>요청하기</button>
+        <Button variant="primary" size="sm" id="marginReverse">
+          요청하기
+        </Button>
       </form>
     </RateBlock>
   );
