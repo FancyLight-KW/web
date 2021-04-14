@@ -3,6 +3,8 @@ import { Typography, Modal, Button } from 'antd';
 import { RobotOutlined } from '@ant-design/icons'
 import Chatbot from './Chatbot/Chatbot';
 import Messenger from './Chatbot/Messenger'
+import Chat from './Chatbot/Chat/App'
+//import "./Chatbot/Sections/modal.css"
 const { Title } = Typography;
 
 // test proxy
@@ -21,10 +23,11 @@ function Testpage() {
   return (
     <>
     <div>
-      <div style={{ display: 'flex', justifyContent: 'center', marginTop: '2rem' }}>
+      {/* <div style={{ display: 'flex', justifyContent: 'center', marginTop: '2rem' }}>
         <Title level={5} >TRANSYS BOT&nbsp;<RobotOutlined type="robot" /></Title>
-      </div>
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
+      </div> */}
+      {/* style={{ display: 'flex', justifyContent: 'center' }} */}
+      <div>
        
         <Chatbot />
 

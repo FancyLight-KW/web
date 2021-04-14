@@ -3,22 +3,27 @@ import Axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { saveMessage } from '../actions/message_actions';
 import Message_local from './Sections/Message';
-import { List, Avatar } from 'antd';
-import { RobotOutlined } from '@ant-design/icons'
+import PropTypes from "prop-types";
+import styled from "styled-components";
 import cookie from "react-cookies";
 import jwt_decode from "jwt-decode";
+import './Sections/Message.css'
+
 import { useHistory } from "react-router";
-import styles from "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css"
-import {
-    MainContainer,
-    ChatContainer,
-    MessageList,
-    Message,
-    MessageInput,
-} from "@chatscope/chat-ui-kit-react"
+import { Modal, Button } from 'antd';
+
+// import styles from "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
+// import {
+//   MainContainer,
+//   ChatContainer,
+//   MessageList,
+//   Message,
+//   MessageInput,
+// } from "@chatscope/chat-ui-kit-react";
 //import Card from "./Sections/Card";
 
 function Chatbot() {
+
     const dispatch = useDispatch();
     const messagesFromRedux = useSelector(state => state.message.messages)
     let history = useHistory();
@@ -44,6 +49,7 @@ function Chatbot() {
         dispatch(saveMessage(conversation))
         // console.log('text I sent', conversation)
 
+        
         // We need to take care of the message Chatbot sent 
         const textQueryVariables = {
             text
@@ -61,7 +67,7 @@ function Chatbot() {
 
                 conversation = {
                     who: 'bot',
-                    content: content
+                    content: content,
                 }
 
                 dispatch(saveMessage(conversation))
@@ -75,7 +81,7 @@ function Chatbot() {
                     text: {
                         text: " Error just occured, please check the problem"
                     }
-                }
+                },
             }
 
             dispatch(saveMessage(conversation))
@@ -86,7 +92,6 @@ function Chatbot() {
 
 
     const eventQuery = async (event) => {
-
         // We need to take care of the message Chatbot sent 
         const eventQueryVariables = {
             event
@@ -103,7 +108,7 @@ function Chatbot() {
 
                 let conversation = {
                     who: 'bot',
-                    content: content
+                    content: content,
                 }
 
                 dispatch(saveMessage(conversation))
@@ -117,7 +122,7 @@ function Chatbot() {
                     text: {
                         text: " Error just occured, please check the problem"
                     }
-                }
+                },
             }
             dispatch(saveMessage(conversation))
         }
@@ -157,7 +162,7 @@ function Chatbot() {
                 history.push("/itsr");
                 message.content.text.text = "";
             }
-            //return <Message_local key={i} who={message.who} text={message.content.text.text} />
+            return <Message_local key={i} who={message.who} text={message.content.text.text} moment={message.moment} />
         } //else if (message.content && message.content.payload.fields.card) {
 
         //     const AvatarSrc = message.who === 'bot' ? <RobotOutlined type="robot" /> : <RobotOutlined type="smile" />
@@ -198,19 +203,29 @@ function Chatbot() {
 
 
     return (
-        <div style={{
-            height: 700, width: 700,
-            border: '3px solid black', borderRadius: '7px'
-        }}>
-            <div
-                style={{ height: 644, width: '100%', overflow: 'auto' }}>
+        <>
+            <div>
+                <div className="chatSections">
+                    <div className="botContainer">
+                        <div className="messagesContainer">
+                            <div className="messagesSection">
+                                
+                                {renderMessage(messagesFromRedux)}
 
+                                <div ref={messagesEndRef} />
+                            </div>
+                        </div>
+                        <div className="chat-inputs">
+                            
+                            <input
 
-                {renderMessage(messagesFromRedux)}
-                
-                <div ref = {messagesEndRef}/>
-            </div>
-            {/* <div style={{ position: "relative", height: "500px" }}>
+                                className="messageInputField"
+                                placeholder="Send a message..."
+                                onKeyPress={keyPressHanlder}
+                                type="text"
+                            />
+                        </div>
+                        {/* <div style={{ position: "relative", height: "500px" }}>
                 
                 <MainContainer>
                     <ChatContainer>
@@ -221,18 +236,21 @@ function Chatbot() {
                     </ChatContainer>
                 </MainContainer>
             </div> */}
-             <input
-                style={{
-                    margin: 0, width: '100%', height: 50,
-                    borderRadius: '4px', padding: '5px', fontSize: '1rem'
-                }}
-                placeholder="Send a message..."
-                onKeyPress={keyPressHanlder}
-                type="text"
-            /> 
 
-        </div>
+                    </div>
+                </div>
+            </div>
+        </>
     )
+}
+Chatbot.propTypes = {
+    visible: PropTypes.bool,
+  };
+
+Modal.defaultProps = {
+    visible: false,
+    closable: true,
+    maskClosable: true,
 }
 
 export default Chatbot;

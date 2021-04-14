@@ -4,16 +4,21 @@ import { List, Avatar, Layout, Typography } from 'antd';
 import { RobotOutlined } from '@ant-design/icons'
 import { SmileOutlined } from '@ant-design/icons'
 import { Table, Row, Col } from "react-bootstrap";
-import "./Message.css"
+//import "./Message.css"
+import './style.css'
+import Moment from 'moment'
+import 'moment/locale/ko';
 import { useHistory } from "react-router";
-import styles from "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css"
-import {
-    MainContainer,
-    ChatContainer,
-    MessageList,
-    Message,
-    MessageInput,
-} from "@chatscope/chat-ui-kit-react"
+
+// import styles from "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css"
+// import {
+//     MainContainer,
+//     ChatContainer,
+//     MessageList,
+//     Message,
+//     MessageInput,
+// } from "@chatscope/chat-ui-kit-react"
+// import context from 'react-bootstrap/esm/AccordionContext';
 //import Clock from "react-live-clock"
 
 const { Title }=Typography;
@@ -50,8 +55,62 @@ function Messages(props) {
     const PositionSrc = props.who ==='bot' ? "flex-start" : "flex-end"
     const SenderSrc = props.who ==='bot' ? "bot" : ""
     //const MessageSrc = props.who ==='bot' ? <Icon type="robot" /> : <Icon type="smile" />  
-
+    
+    const nowTime = Moment().format('HH:mm');
     return (
+        <div className="messageCard">
+            {props.who === 'bot' ? (
+                <div>
+                    <div>
+                    
+                        
+                        
+                        
+                    
+                    </div>
+                    
+                    <div >
+                    <Avatar style={{ display: "flex", padding: '1rem', paddingLeft: '2rem', paddingRight:'4rem' }} ><RobotOutlined /></Avatar>
+                        <p className="botCard"
+                            style={{
+                                paddingLeft: "16px",
+                                paddingRight: "10px",
+                                fontFamily: "Montserrat",
+                                paddingTop: "10px",
+                                paddingBottom: "10px",
+                                fontWeight: 700,
+                                //innerWidth: "50px"
+                            }}
+                        >
+
+                            {props.text}
+
+                        </p>
+
+
+                    </div>
+                </div>
+            ) : (  
+                <div>
+                    {/* <div>
+                        <Avatar style={{ display: "flex", padding: "1rem", justifyContent:'flex-end' }} ><SmileOutlined /></Avatar>
+                    </div> */}
+                <div className="userCard">
+                    
+                    <p
+                        style={{
+                            paddingLeft: "16px",
+                            paddingRight: "10px",
+                            fontFamily: "Montserrat",
+                            fontWeight: 700
+                        }}
+                    >
+                        {props.text}
+                    </p>
+                </div>
+                </div>
+      )}
+    </div>
         /*
         (props.who === 'bot') ? (
             <Layout style={{justifyContent:"flex-start"}}>
@@ -84,6 +143,7 @@ function Messages(props) {
         //     </th>
 
 
+        /*
         //(props.who === 'bot') ? (
             <div style={{ position: "relative", height: "500px", justifyContent: {PositionSrc} }}>
                 <MainContainer>
@@ -103,6 +163,7 @@ function Messages(props) {
                     </ChatContainer>
                 </MainContainer>
             </div>
+            */
        /* ) : (
             <div style={{ position: "relative", height: "500px" }}>
                 <MainContainer>
