@@ -1,6 +1,9 @@
 .marginleft {
   margin-left: 12px;
 }
+#marginReverse {
+  margin-left: -12px;
+}
 .checkbox {
   vertical-align: text-top;
 }
