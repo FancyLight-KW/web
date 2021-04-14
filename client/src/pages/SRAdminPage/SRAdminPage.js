@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Table, Button } from "react-bootstrap";
 import styled, { css } from "styled-components";
-import "./SRPage.css";
+import "./SRAdminPage.css";
 import Datepicker from "../../components/Datepicker";
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -58,11 +58,11 @@ const Input = styled.input`
   height: 28px;
 `;
 
-function SRPage() {
+function SRAdminPage() {
   // const [FilteredRequests, setFilterdRequests] = useState([]);
   const [Requests, setRequests] = useState([]);
   const [Query, setQuery] = useState(
-    `${process.env.REACT_APP_API_HOST}/requests/` //get All request
+    `${process.env.REACT_APP_API_HOST}/admin` //get All request
   );
 
   const [StartDate, setStartDate] = useState("");
@@ -95,9 +95,9 @@ function SRPage() {
         : `&startDate=${StartDate}&endDate=${FinishDate}`;
     //  console.log(queryDate);
 
-    const searchAPI = `${process.env.REACT_APP_API_HOST}/requests/search?${queryKeyword}${queryTargetCode}${queryCSRStatus}${queryDate}`;
+    const searchAPI = `http://localhost:5000/requests/search?${queryKeyword}${queryTargetCode}${queryCSRStatus}${queryDate}`;
     setQuery(searchAPI);
-    console.log(searchAPI);
+    //   console.log(searchAPI);
     // http://localhost:5000/requests/searchRequest/?user=sehwagod&title=제목&targetcode=QA장비&csrstatus=완료&startDate=20210311&endDate=20210317
   };
 
@@ -122,11 +122,9 @@ function SRPage() {
 
   const StartdatedHandler = (date) => {
     setStartDate(date);
-    // console.log(StartDate);
   };
   const FinishDateHandler = (date) => {
     setFinishDate(date);
-    //  console.log(FinishDate);
   };
   const keywordHandler = (e) => {
     setKeyword(e.target.value);
@@ -136,12 +134,10 @@ function SRPage() {
   };
   const csrStatusSearchHandler = (e) => {
     setCSRStatus(e.target.value);
-    //  console.log(e.target.value);
   };
 
   const targetCodeSearchHandler = (e) => {
     setTargetCode(e.target.value);
-    //  console.log(e.target.value);
   };
 
   return (
@@ -155,7 +151,7 @@ function SRPage() {
             }}
           >
             <span style={{ marginLeft: "16px", fontSize: "18px" }}>
-              ※ 요청/접수
+              ※ 나의 결재목록
             </span>
           </div>
           <div
@@ -294,4 +290,4 @@ function SRPage() {
   );
 }
 
-export default SRPage;
+export default SRAdminPage;

@@ -7,6 +7,8 @@ import ITServiceImg from "../../assets/ITSP.png";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import cookie from "react-cookies";
+import dotenv from "dotenv";
+const env = dotenv.config();
 
 const LandingWrapper = styled.div`
   overflow: hidden;
@@ -67,6 +69,13 @@ function LandingPage() {
   const [CSRCount, setCSRCount] = useState("0");
   const [authenticated, setAuthenticated] = useState(false);
   //  const userInfos = useSelector((state) => state.auth.userInfos);
+  const csrStatusTypes = [
+    "결제 건수",
+    "접수 대기",
+    "접수완료",
+    "요청처리중",
+    "처리 지연중",
+  ];
 
   useEffect(() => {
     if (cookie.load("token")) {
@@ -74,13 +83,13 @@ function LandingPage() {
     } else {
       setAuthenticated(false);
     }
-    console.log(cookie.load("token"));
+    //   console.log(cookie.load("token"));
   }, []);
 
   useEffect(() => {
-    // const endpoint = "http://localhost:5000/requests/getAllRequest?";
-    axios.get("http://localhost:5000/csrstatus").then((response) => {
-      //  console.log(response);
+    // const endpoint = `${process.env.REACT_APP_API_HOST}/requests/getAllRequest?`;
+    axios.get(`${process.env.REACT_APP_API_HOST}/csrstatus`).then((response) => {
+      console.log(response);
       setCSRInfos(response.data);
       countCSR(response.data);
     });
@@ -131,7 +140,7 @@ function LandingPage() {
                 }}
               >
                 <Card.Body>
-                  <Card.Title id="bold">결제 건수</Card.Title>
+                  <Card.Title id="bold">{csrStatusTypes[0]}</Card.Title>
 
                   <Card.Text>
                     <div id="text_yellow">{CSRCount}</div>
@@ -142,7 +151,7 @@ function LandingPage() {
 
               <Card style={{ width: "14rem", backgroundColor: "#f2f4f6" }}>
                 <Card.Body>
-                  <Card.Title id="bold">접수 대기중</Card.Title>
+                  <Card.Title id="bold">{csrStatusTypes[1]}</Card.Title>
 
                   <Card.Text>
                     <div id="text_black">
@@ -154,7 +163,7 @@ function LandingPage() {
               </Card>
               <Card style={{ width: "14rem", backgroundColor: "#e5f5e5" }}>
                 <Card.Body>
-                  <Card.Title id="bold">접수완료</Card.Title>
+                  <Card.Title id="bold">{csrStatusTypes[2]}</Card.Title>
 
                   <Card.Text>
                     <div id="text_green">
@@ -167,7 +176,7 @@ function LandingPage() {
 
               <Card style={{ width: "14rem", backgroundColor: "#dbf5fe" }}>
                 <Card.Body>
-                  <Card.Title id="bold"> 요청 처리중</Card.Title>
+                  <Card.Title id="bold"> {csrStatusTypes[3]}</Card.Title>
 
                   <Card.Text>
                     <div id="text_blue">
@@ -179,7 +188,7 @@ function LandingPage() {
               </Card>
               <Card style={{ width: "14rem", backgroundColor: "#fff0ee" }}>
                 <Card.Body>
-                  <Card.Title id="bold"> 처리 지연중</Card.Title>
+                  <Card.Title id="bold"> {csrStatusTypes[4]}</Card.Title>
 
                   <Card.Text>
                     <div id="text_red">0</div>

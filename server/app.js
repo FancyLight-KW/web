@@ -10,11 +10,13 @@ require("dotenv").config();
 
 const app = express();
 const indexRouter = require("./src/routes/index/index");
+const mypageRouter = require("./src/routes/mypage/mypage");
 const usersRouter = require("./src/routes/user/user");
 const requestsRouter = require("./src/routes/request/request");
 const agentRouter = require("./src/routes/agent/agent");
 const adminRouter = require("./src/routes/admin/admin");
 const authRouter = require("./src/routes/auth/auth");
+const androidRouter = require("./src/routes/android/android");
 const jwtAuth = require("./src/routes/middleware/jwt.auth");
 
 models.sequelize
@@ -45,9 +47,11 @@ app.use("/", indexRouter);
 app.use("/auth", authRouter);
 app.use(jwtAuth.authChecker);
 app.use("/users", usersRouter);
+app.use("/mypage", mypageRouter);
 app.use("/requests", requestsRouter);
 app.use("/agent", agentRouter);
 app.use("/admin", adminRouter);
+app.use("/android", androidRouter);
 
 //app.use("/upload", uploadRouter);
 

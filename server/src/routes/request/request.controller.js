@@ -1,27 +1,13 @@
 const models = require("../../DB/models");
 const Sequelize = require("sequelize");
 const moment = require("../../config/moment.config");
+
 const Op = Sequelize.Op;
 
 const like = (keyword) => {
   return { [Op.like]: `%${keyword}%` };
 };
 
-const pagenation = (page, query) => {
-  const PAGE_SIZE = 15;
-  let pageNum = page ? page : 1;
-  let offset = 0;
-
-  if (pageNum > 1) {
-    offset = PAGE_SIZE * (pageNum - 1);
-  }
-
-  return {
-    offset: offset,
-    limit: PAGE_SIZE,
-    where: query,
-  };
-};
 // 요청 생성
 exports.create = (req, res) => {
   console.log("req.body: ", JSON.stringify(req.user));
@@ -54,7 +40,7 @@ exports.create = (req, res) => {
   };
 
   if (req.file) {
-    query["REQ_IMG_PATH"] = "/uploads/" + req.file.filename;
+    query["REQ_IMG_PATH"] = req.file.filename;
   }
   console.log("query: ", query);
   models.Requests.create(query)
@@ -86,6 +72,18 @@ exports.findAll = (req, res) => {
     });
 };
 
+exports.findImage = (req, res) => {
+  models.Requests.findAll({
+    where: {
+      REQ_SEQ: req.params.requestId,
+    },
+  }).then((result) => {
+    res.send({
+      image: process.env.SERVER_HOST + "/uploads/" + result[0].REQ_IMG_PATH,
+    });
+  });
+};
+
 exports.update = (req, res) => {
   if (!req.body) {
     res.status(400).send({
@@ -94,8 +92,6 @@ exports.update = (req, res) => {
   }
 
   let body = req.body;
-  const nowDate = moment().format("YYYY-MM-DD HH:mm:ss");
-
   models.Requests.update(
     {
       TITLE: body.TITLE,

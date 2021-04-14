@@ -34,7 +34,7 @@ function NavBar() {
 
   // console.log("UserInfo:" + JSON.stringify(userInfos) + userInfos);
   const location = useLocation();
-  console.log(location.pathname);
+  //console.log(location.pathname);
 
   useEffect(() => {
     if (cookie.load("token")) {
@@ -58,14 +58,11 @@ function NavBar() {
         setUserLevel(2); // agent
       } else {
         setUserLevel(3); // admin
-        console.log(
-          JSON.stringify(jwt_decode(cookie.load("token")).User_position)
-        );
       }
     }
   }, [userInfos]);
 
-  console.log(authenticated);
+  //console.log(authenticated);
 
   const loginOpenModal = () => {
     setLoginModalVisible(true);
@@ -120,9 +117,17 @@ function NavBar() {
                   <StyledSpan>{userName}</StyledSpan>
                   <StyledSpan>
                     최근 로그인:
-                    <h9 style={{ color: "#0069c0", marginLeft: "5px" }}>
+                    <h6
+                      style={{
+                        color: "#0069c0",
+                        marginTop: "5.5px",
+                        marginLeft: "5px",
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                    >
                       {userLastLogin}
-                    </h9>
+                    </h6>
                   </StyledSpan>
                 </>
               ) : (
@@ -181,7 +186,7 @@ function NavBar() {
             )}
           </Nav.Link>
 
-          {userLevel === 1 ? (
+          {authenticated && userLevel === 1 ? (
             <Nav.Link id="collasible-nav">
               <Link to="/mysr" id="textcolorwhite">
                 나의 요청목록
@@ -194,9 +199,7 @@ function NavBar() {
               </NavDropdown.Item>
               <NavDropdown.Item href="#action/3.3">?</NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.5">
-                나의 작업목록
-              </NavDropdown.Item>
+              <NavDropdown.Item href="sragent">나의 작업목록</NavDropdown.Item>
             </NavDropdown>
           ) : userLevel === 3 ? (
             <NavDropdown title="관리자용" id="dropDown-nav">
@@ -206,8 +209,8 @@ function NavBar() {
               <NavDropdown.Item href="#action/3.3">?</NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item href="#action/3.5">
-                <Link to="/" style={{ color: "black" }}>
-                  나의 결재함
+                <Link to="/sradmin" style={{ color: "black" }}>
+                  나의 결재목록
                 </Link>
               </NavDropdown.Item>
             </NavDropdown>

@@ -9,6 +9,8 @@ import axios from "axios";
 import Datepicker from "../../components/Datepicker";
 import cookie from "react-cookies";
 import jwt_decode from "jwt-decode";
+import dotenv from "dotenv";
+dotenv.config();
 
 // border: 1px solid black;
 const RateBlock = styled.div`
@@ -133,7 +135,7 @@ function ITSRPage() {
     console.log(body);
 
     axios
-      .post("http://localhost:5000/requests", formData, {
+      .post(`${process.env.REACT_APP_API_HOST}/requests`, formData, {
         headers: {
           Authorization: `Bearer ${cookie.load("token")}`,
         },
@@ -144,6 +146,17 @@ function ITSRPage() {
 
     alert("요청이 접수되었습니다.");
   };
+  //   <Form.Group as={Row}>
+  //   <Form.Label column sm="1">
+  //     요청자
+  //   </Form.Label>
+  // </Form.Group>
+
+  // <Form.Group as={Row}>
+  //   <Form.Label column sm="1">
+  //     요청자이름
+  //   </Form.Label>
+  // </Form.Group>
 
   return (
     <RateBlock>
@@ -239,18 +252,6 @@ function ITSRPage() {
             ></input>
             <Form.Text muted>(첨부 가능 파일 확장자: jpg, gif, png)</Form.Text>
           </Col>
-        </Form.Group>
-
-        <Form.Group as={Row}>
-          <Form.Label column sm="1">
-            요청자
-          </Form.Label>
-        </Form.Group>
-
-        <Form.Group as={Row}>
-          <Form.Label column sm="1">
-            요청자이름
-          </Form.Label>
         </Form.Group>
 
         <button>요청하기</button>
