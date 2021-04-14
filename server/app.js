@@ -56,7 +56,7 @@ app.use("/android", androidRouter);
 //app.use("/upload", uploadRouter);
 
 //
-app.use('/api/dialogflow', require('./routes/dialogflow'));
+app.use('/dialogflow', require('./routes/dialogflow'));
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
