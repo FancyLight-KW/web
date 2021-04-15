@@ -17,3 +17,4 @@ yarn-error.log*
 server/uploads/*
 server/.prettierignore
 server/.prettierrc
+server/firebase-adminsdk.json
