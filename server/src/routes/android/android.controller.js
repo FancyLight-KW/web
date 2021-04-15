@@ -1,6 +1,5 @@
 const models = require("../../DB/models");
 const FCM_Admin = require("firebase-admin");
-const { response } = require("../../../app");
 
 exports.addDeviceID = (req, res) => {
   models.Devices.create({
@@ -8,11 +7,15 @@ exports.addDeviceID = (req, res) => {
     DEVICE_ID: req.body.DEVICE_ID,
   })
     .then((result) => {
-      res.send(result);
+      res.send({
+        resultCode: 0,
+      });
     })
     .catch((err) => {
       console.log(err);
-      res.status(500).send(err);
+      res.status(500).send({
+        resultCode: 1,
+      });
     });
 };
 
