@@ -40,7 +40,8 @@ exports.create = (req, res) => {
   };
 
   if (req.file) {
-    query["REQ_IMG_PATH"] = req.file.filename;
+    query["REQ_IMG_PATH"] =
+      process.env.SERVER_HOST + "/uploads/" + req.file.filename;
   }
   console.log("query: ", query);
   models.Requests.create(query)
