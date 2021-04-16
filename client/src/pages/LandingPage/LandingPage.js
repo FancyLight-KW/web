@@ -127,7 +127,7 @@ function LandingPage() {
             )}
           </Col>
           <Col xs={3} md={2} id="padding-zero">
-            <MySRBox>게시판</MySRBox>
+            <MySRBox>공지사항</MySRBox>
           </Col>
         </Row>
       </FirstRowContainer>
