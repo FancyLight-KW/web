@@ -2,6 +2,20 @@ const models = require("../../DB/models");
 const FCM_Admin = require("firebase-admin");
 
 exports.addDeviceID = (req, res) => {
+  models.Devices.findOne({
+    where: {
+      DEVICE_USER_ID: req.user.User_id,
+    },
+  }).then((result) => {
+    if (result) {
+      models.Devices.destroy({
+        where: {
+          DEVICE_USER_ID: req.user.User_id,
+        },
+      });
+    }
+  });
+
   models.Devices.create({
     DEVICE_USER_ID: req.user.User_id,
     DEVICE_ID: req.body.DEVICE_ID,
