@@ -14,18 +14,19 @@ const ChatContainer = styled.div`
   width: 500px;
   position: fixed;
   z-index: 1;
-  top: 160px;
-  right: 45px;
+  bottom: 60px;
+  right: 40px;
   overflow-x: hidden;
   padding: 8px 0;
 `;
 
 const IconContainer = styled.div`
   width: 500px;
+  height: 500px;
   position: fixed;
   z-index: 1;
-  top: 840px;
-  right: -400px;
+  bottom: -400px;
+  right: -410px;
   overflow-x: hidden;
   padding: 8px 0;
 `;
