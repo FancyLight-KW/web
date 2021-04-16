@@ -18,6 +18,7 @@ const adminRouter = require("./src/routes/admin/admin");
 const authRouter = require("./src/routes/auth/auth");
 const androidRouter = require("./src/routes/android/android");
 const jwtAuth = require("./src/routes/middleware/jwt.auth");
+const dialogflowRouter = require('./src/routes/chatbot/dialogflow');
 
 models.sequelize
   .sync()
@@ -52,7 +53,7 @@ app.use("/requests", requestsRouter);
 app.use("/agent", agentRouter);
 app.use("/admin", adminRouter);
 app.use("/android", androidRouter);
-
+app.use("/dialogflow", dialogflowRouter);
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
   next(createError(404));

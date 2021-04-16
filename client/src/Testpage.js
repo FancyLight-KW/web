@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import axios from "axios";
-
+import Chatbot from './Chatbot/Chatbot';
 // test proxy
 const Testpage = () => {
   useEffect(() => {
@@ -9,7 +9,8 @@ const Testpage = () => {
 
   return (
     <div>
-      <h2>테스트페이지</h2>
+      <Chatbot />
+
     </div>
   );
 };
