@@ -1,17 +1,21 @@
 import React, { useEffect, useRef } from 'react';
 import Axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import { saveMessage } from '../actions/message_actions';
-import Message_local from './Sections/Message';
+import { saveMessage } from '../../actions/message_actions';
+import Message_local from '../Sections/Message';
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import cookie from "react-cookies";
 import jwt_decode from "jwt-decode";
-import './Sections/Message.css'
+
 
 import { useHistory } from "react-router";
-import { Modal, Button } from 'antd';
+import { Modal, Button } from 'antd';  
 
+
+//
+import './Compose.css'
+import '../Sections/style.css'
 // import styles from "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 // import {
 //   MainContainer,
@@ -204,42 +208,29 @@ function Chatbot() {
 
     return (
         <>
-            <div>
-                <div className="chatSections">
-                    <div className="botContainer">
-                        <div className="messagesContainer">
-                            <div className="messagesSection">
-                                
-                                {renderMessage(messagesFromRedux)}
+            <div style={{
+            height: 700, width: 450,
+            border: '3px solid black', borderRadius: '7px', backgroundColor: 'white'
+        }}>
+            <div style={{ height: 644, width: '100%', overflow: 'auto' }}>
 
-                                <div ref={messagesEndRef} />
-                            </div>
-                        </div>
-                        <div className="chat-inputs">
-                            
-                            <input
 
-                                className="messageInputField"
-                                placeholder="Send a message..."
-                                onKeyPress={keyPressHanlder}
-                                type="text"
-                            />
-                        </div>
-                        {/* <div style={{ position: "relative", height: "500px" }}>
-                
-                <MainContainer>
-                    <ChatContainer>
-                        
-                        <MessageInput placeholder="Type message here">
-                            onKeyPress={keyPressHanlder}
-                        </MessageInput>
-                    </ChatContainer>
-                </MainContainer>
-            </div> */}
+                {renderMessage(messagesFromRedux)}
 
-                    </div>
-                </div>
-            </div>
+                <div ref={messagesEndRef} />
+            </div >
+            <input
+                style={{
+                    margin: 0, width: '100%', height: 50,
+                    borderRadius: '4px', padding: '5px', fontSize: '1rem'
+                    
+                }}
+                placeholder="Send a message..."
+                onKeyPress={keyPressHanlder}
+                type="text"
+            />
+
+        </div> 
         </>
     )
 }

@@ -74,9 +74,9 @@ h1, p {
   border-bottom-right-radius: 30px 30px;
   border-top-right-radius: 30px 30px;
   border-bottom-left-radius: 30px 30px;
-  background-color: gray;
+  background-color: rgb(218, 218, 218);
   margin-left: 5px;
-  color: white;
+  color: black;
   margin-bottom: 10px;
 }
 

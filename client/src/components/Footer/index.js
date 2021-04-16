@@ -3,11 +3,12 @@ import chatbotimg from "../../assets/Chatbot.jpg";
 import cookie from "react-cookies";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-import Chatbot from "../../Chatbot/Chatbot";
+import Chatbot from "../../Chatbot/index/index";
 
 const ChatContainer = styled.div`
   display: flex;
   justify-content: flex-end;
+  bottom: 0;
 `;
 
 const HoverImage = styled.div`
