@@ -1,26 +1,31 @@
 import React, { useEffect, useState } from "react";
-import chatbotimg from "../../assets/Chatbot.jpg";
+import chatbotimg from "../../assets/Chatbot.png";
 import cookie from "react-cookies";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-import Chatbot from "../../Chatbot/Chatbot";
-
-const ChatContainer = styled.div`
-  display: flex;
-  justify-content: flex-end;
-`;
+import Chatbot from "../../Chatbot/index/index";
 
 const HoverImage = styled.div`
   &:hover {
     opacity: 0.8;
   }
 `;
-const SideContainer = styled.div`
+const ChatContainer = styled.div`
   width: 500px;
   position: fixed;
   z-index: 1;
-  top: 100px;
-  right: 60px;
+  top: 160px;
+  right: 45px;
+  overflow-x: hidden;
+  padding: 8px 0;
+`;
+
+const IconContainer = styled.div`
+  width: 500px;
+  position: fixed;
+  z-index: 1;
+  top: 840px;
+  right: -400px;
   overflow-x: hidden;
   padding: 8px 0;
 `;
@@ -50,16 +55,15 @@ function Footer() {
         width: "100%",
         position: "relative",
         bottom: "0",
-        width: "100%",
       }}
     >
-      <ChatContainer>
-        {authenticated ? (
-          chatbotVisible ? (
-            <>
-              <SideContainer>
-                <SideChat />
-              </SideContainer>
+      {authenticated ? (
+        chatbotVisible ? (
+          <>
+            <ChatContainer>
+              <SideChat />
+            </ChatContainer>
+            <IconContainer>
               <HoverImage>
                 <img
                   src={chatbotimg}
@@ -68,8 +72,10 @@ function Footer() {
                   onClick={chatbotHandler}
                 />
               </HoverImage>
-            </>
-          ) : (
+            </IconContainer>
+          </>
+        ) : (
+          <IconContainer>
             <HoverImage>
               <img
                 src={chatbotimg}
@@ -78,9 +84,10 @@ function Footer() {
                 onClick={chatbotHandler}
               />
             </HoverImage>
-          )
-        ) : null}
-      </ChatContainer>
+          </IconContainer>
+        )
+      ) : null}
+
       <div
         style={{
           display: "flex",

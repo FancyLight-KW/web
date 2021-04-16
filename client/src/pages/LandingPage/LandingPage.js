@@ -88,11 +88,13 @@ function LandingPage() {
 
   useEffect(() => {
     // const endpoint = `${process.env.REACT_APP_API_HOST}/requests/getAllRequest?`;
-    axios.get(`${process.env.REACT_APP_API_HOST}/csrstatus`).then((response) => {
-      console.log(response);
-      setCSRInfos(response.data);
-      countCSR(response.data);
-    });
+    axios
+      .get(`${process.env.REACT_APP_API_HOST}/csrstatus`)
+      .then((response) => {
+        console.log(response);
+        setCSRInfos(response.data);
+        countCSR(response.data);
+      });
   }, []);
 
   const countCSR = (val) => {
@@ -104,6 +106,7 @@ function LandingPage() {
   };
 
   return (
+    <>
     <LandingWrapper>
       <FirstRowContainer>
         <Row>
@@ -125,7 +128,7 @@ function LandingPage() {
             )}
           </Col>
           <Col xs={3} md={2} id="padding-zero">
-            <MySRBox>내 요청목록</MySRBox>
+            <MySRBox>공지사항</MySRBox>
           </Col>
         </Row>
       </FirstRowContainer>
@@ -250,6 +253,7 @@ function LandingPage() {
         </Row>
       </ThridRowContainer>
     </LandingWrapper>
+    </>
   );
 }
 

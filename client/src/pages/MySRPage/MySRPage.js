@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Table, Button } from "react-bootstrap";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import "./MySRPage.css";
 import { Link } from "react-router-dom";
 import axios from "axios";

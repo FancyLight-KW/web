@@ -4,7 +4,9 @@ import auth from "./auth";
 import message from './message_reducer';
 
 const rootReducer = combineReducers({
-  user, message, auth,
+  user,
+  auth,
+  message,
 });
 
 export default rootReducer;

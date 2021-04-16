@@ -1,29 +1,29 @@
 {
   "files": {
-    "main.css": "/static/css/main.325ff7ae.chunk.css",
-    "main.js": "/static/js/main.63270615.chunk.js",
-    "main.js.map": "/static/js/main.63270615.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.347fa5da.js",
-    "runtime-main.js.map": "/static/js/runtime-main.347fa5da.js.map",
+    "main.css": "/static/css/main.7b478cb6.chunk.css",
+    "main.js": "/static/js/main.e67fd055.chunk.js",
+    "main.js.map": "/static/js/main.e67fd055.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.c466936d.js",
+    "runtime-main.js.map": "/static/js/runtime-main.c466936d.js.map",
     "static/css/2.f4a6a311.chunk.css": "/static/css/2.f4a6a311.chunk.css",
-    "static/js/2.15ae5fe6.chunk.js": "/static/js/2.15ae5fe6.chunk.js",
-    "static/js/2.15ae5fe6.chunk.js.map": "/static/js/2.15ae5fe6.chunk.js.map",
-    "static/js/3.ffa5dbe8.chunk.js": "/static/js/3.ffa5dbe8.chunk.js",
-    "static/js/3.ffa5dbe8.chunk.js.map": "/static/js/3.ffa5dbe8.chunk.js.map",
+    "static/js/2.d5150444.chunk.js": "/static/js/2.d5150444.chunk.js",
+    "static/js/2.d5150444.chunk.js.map": "/static/js/2.d5150444.chunk.js.map",
+    "static/js/3.221d6dce.chunk.js": "/static/js/3.221d6dce.chunk.js",
+    "static/js/3.221d6dce.chunk.js.map": "/static/js/3.221d6dce.chunk.js.map",
     "index.html": "/index.html",
     "static/css/2.f4a6a311.chunk.css.map": "/static/css/2.f4a6a311.chunk.css.map",
-    "static/css/main.325ff7ae.chunk.css.map": "/static/css/main.325ff7ae.chunk.css.map",
-    "static/js/2.15ae5fe6.chunk.js.LICENSE.txt": "/static/js/2.15ae5fe6.chunk.js.LICENSE.txt",
+    "static/css/main.7b478cb6.chunk.css.map": "/static/css/main.7b478cb6.chunk.css.map",
+    "static/js/2.d5150444.chunk.js.LICENSE.txt": "/static/js/2.d5150444.chunk.js.LICENSE.txt",
     "static/media/800px-Hyundai_Transys_logo.02f14495.png": "/static/media/800px-Hyundai_Transys_logo.02f14495.png",
-    "static/media/Chatbot.ea6836df.jpg": "/static/media/Chatbot.ea6836df.jpg",
+    "static/media/Chatbot.7650cb57.png": "/static/media/Chatbot.7650cb57.png",
     "static/media/ITSP.60d289d1.png": "/static/media/ITSP.60d289d1.png",
     "static/media/favicon.6df13f0d.ico": "/static/media/favicon.6df13f0d.ico"
   },
   "entrypoints": [
-    "static/js/runtime-main.347fa5da.js",
+    "static/js/runtime-main.c466936d.js",
     "static/css/2.f4a6a311.chunk.css",
-    "static/js/2.15ae5fe6.chunk.js",
-    "static/css/main.325ff7ae.chunk.css",
-    "static/js/main.63270615.chunk.js"
+    "static/js/2.d5150444.chunk.js",
+    "static/css/main.7b478cb6.chunk.css",
+    "static/js/main.e67fd055.chunk.js"
   ]
 }

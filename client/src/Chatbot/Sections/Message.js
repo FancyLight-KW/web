@@ -6,8 +6,7 @@ import { SmileOutlined } from '@ant-design/icons'
 import { Table, Row, Col } from "react-bootstrap";
 //import "./Message.css"
 import './style.css'
-import Moment from 'moment'
-import 'moment/locale/ko';
+import { ThemeProvider } from '@livechat/ui-kit'
 import { useHistory } from "react-router";
 
 // import styles from "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css"
@@ -56,19 +55,11 @@ function Messages(props) {
     const SenderSrc = props.who ==='bot' ? "bot" : ""
     //const MessageSrc = props.who ==='bot' ? <Icon type="robot" /> : <Icon type="smile" />  
     
-    const nowTime = Moment().format('HH:mm');
+    //const nowTime = Moment().format('HH:mm');
     return (
         <div className="messageCard">
             {props.who === 'bot' ? (
-                <div>
-                    <div>
-                    
-                        
-                        
-                        
-                    
-                    </div>
-                    
+                <div>                  
                     <div >
                     <Avatar style={{ display: "flex", padding: '1rem', paddingLeft: '2rem', paddingRight:'4rem' }} ><RobotOutlined /></Avatar>
                         <p className="botCard"
@@ -82,12 +73,9 @@ function Messages(props) {
                                 //innerWidth: "50px"
                             }}
                         >
-
                             {props.text}
-
+   
                         </p>
-
-
                     </div>
                 </div>
             ) : (  
@@ -101,6 +89,7 @@ function Messages(props) {
                         style={{
                             paddingLeft: "16px",
                             paddingRight: "10px",
+                            paddingTop: "10px",
                             fontFamily: "Montserrat",
                             fontWeight: 700
                         }}
