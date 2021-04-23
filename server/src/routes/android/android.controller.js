@@ -52,7 +52,8 @@ exports.sendMessageToDevice = (req, res) => {
         token: targetToken,
       };
 
-      FCM_Admin.send(msg)
+      FCM_Admin.messaging()
+        .send(msg)
         .then((result) => {
           console.log(result);
           res.send("send success");
