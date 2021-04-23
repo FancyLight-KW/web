@@ -34,6 +34,13 @@ models.sequelize
 app.set("views", path.join(__dirname, "src/views"));
 app.set("view engine", "ejs");
 
+// FCM 연결
+const admin = require("firebase-admin");
+const serviceAccount = require("./firebase-adminsdk.json");
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+});
+
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

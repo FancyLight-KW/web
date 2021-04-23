@@ -28,7 +28,7 @@ exports.findOne = (req, res) => {
 };
 
 // 유저 정보 변경
-exports.update = (req, res) => {
+exports.updatePassword = (req, res) => {
   if (!req.body) {
     res.status(400).send({
       message: "Content can not be empty!",
@@ -36,24 +36,47 @@ exports.update = (req, res) => {
   }
   let body = req.body;
 
-  models.Users.update(
-    {
-      User_id: body.User_id,
-      User_password: bcrypt.encrypt(body.User_password),
-      User_name: body.User_name,
+  models.Users.findOne({
+    where: {
+      User_id: req.user.User_id,
     },
-    {
-      where: {
-        User_id: req.params.userId,
-      },
-    }
-  )
+  })
     .then((result) => {
-      console.log(`데이터 수정 완료, `, result);
-      res.send(result);
+      if (bcrypt.isPasswordSame(body.origin_password, result.User_password)) {
+        models.Users.update(
+          {
+            User_password: bcrypt.encrypt(body.new_password),
+          },
+          {
+            where: {
+              User_id: result.User_id,
+            },
+          }
+        )
+          .then((result) => {
+            res.send({
+              resultCode: 0,
+              message: "비밀번호 수정 완료",
+            });
+          })
+          .catch((err) => {
+            res.status(502).send({
+              resultCode: 3,
+              message: "수정 실패",
+            });
+          });
+      } else {
+        res.status(405).send({
+          resultCode: 1,
+          message: "비밀번호가 틀렸습니다.",
+        });
+      }
     })
     .catch((err) => {
-      console.log(`수정 실패, `, err);
+      res.status(501).send({
+        resultCode: 2,
+        message: "유저가 없습니다.",
+      });
     });
 };
 

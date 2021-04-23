@@ -20,6 +20,7 @@
     "ejs": "~2.6.1",
     "express": "~4.16.1",
     "express-session": "^1.17.1",
+    "firebase-admin": "^9.6.0",
     "http-errors": "~1.6.3",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.29.1",

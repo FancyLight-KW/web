@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const admin = require("./admin.controller");
 
+// host/api/admin
+
 // 진행중인 요청
 router.use((req, res, next) => {
   if (req.user.User_position < 3) {
@@ -12,6 +14,8 @@ router.use((req, res, next) => {
     next();
   }
 });
+
 router.get("/", admin.receiptRequest);
+router.put("/", admin.allocateAgent);
 
 module.exports = router;
