@@ -37,7 +37,7 @@ function App() {
         </Helmet>
         <Router>
           <NavBar />
-          <div>
+          <>
             <Switch>
               <Route exact path="/" component={LandingPage} />
 
@@ -58,7 +58,7 @@ function App() {
               <Route exact path="/sradmin" component={SRAdminPage} />
               <Route exact path="/test" component={Testpage} />
             </Switch>
-          </div>
+          </>
         </Router>
       </div>
       <Footer />
