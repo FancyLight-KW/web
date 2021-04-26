@@ -54,14 +54,6 @@ exports.create = (req, res) => {
     });
 };
 
-exports.findRequestCount = (req, res) => {
-  models.Requests.findAll().then((result) => {
-    res.send({
-      length: result.length,
-    });
-  });
-};
-
 // 모든 요청 가져오기
 exports.findAll = (req, res) => {
   models.Requests.findAll()

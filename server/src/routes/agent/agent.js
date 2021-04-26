@@ -12,7 +12,7 @@ router.use((req, res, next) => {
     next();
   }
 });
-
+router.get("/list", agent.findAllAgent);
 router.get("/", agent.findAllUSerDisposeRequest);
 
 module.exports = router;

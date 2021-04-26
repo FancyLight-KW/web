@@ -2,7 +2,7 @@ const express = require("express");
 const user = require("./user.controller.js");
 const router = express.Router();
 
-// /api/users/password
+// /api/users/
 // 모든 유저 출력
 router.get("/list", user.userList);
 // ID를 인자로 받아 출력
