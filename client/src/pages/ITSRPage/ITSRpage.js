@@ -106,12 +106,10 @@ function ITSRPage() {
     //setFile(e.target.files[0]);
   };
 
-  const Submit = (e) => {
-    e.preventDefault();
-  };
-
   const onSubmitHandler = (e) => {
     e.preventDefault();
+
+    console.log("A");
 
     const formData = new FormData();
 
@@ -146,21 +144,10 @@ function ITSRPage() {
 
     alert("요청이 접수되었습니다.");
   };
-  //   <Form.Group as={Row}>
-  //   <Form.Label column sm="1">
-  //     요청자
-  //   </Form.Label>
-  // </Form.Group>
-
-  // <Form.Group as={Row}>
-  //   <Form.Label column sm="1">
-  //     요청자이름
-  //   </Form.Label>
-  // </Form.Group>
 
   return (
     <RateBlock>
-      <form onSubmit={onSubmitHandler}>
+      <form>
         <Form.Group as={Row} controlId="normalForm">
           <Form.Label column sm="1" className="labelColor">
             문의대상
@@ -253,7 +240,12 @@ function ITSRPage() {
             <Form.Text muted>(첨부 가능 파일 확장자: jpg, gif, png)</Form.Text>
           </Col>
         </Form.Group>
-        <Button variant="primary" size="sm" id="marginReverse">
+        <Button
+          variant="primary"
+          size="sm"
+          id="marginReverse"
+          onClick={onSubmitHandler}
+        >
           요청하기
         </Button>
       </form>
