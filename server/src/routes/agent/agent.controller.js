@@ -13,7 +13,9 @@ exports.findAllAgent = (req, res) => {
         list.push([element["User_id"], element["User_name"]]);
       });
 
-      res.send(list);
+      res.send({
+        data: list,
+      });
     })
     .catch((err) => {
       res.status(420).send({
