@@ -4,7 +4,8 @@ const moment = require("../../config/moment.config");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "uploads");
+    console.log(__dirname + "/../../../uploads");
+    cb(null, __dirname + "/../../../uploads");
   },
   filename: (req, file, cb) => {
     cb(null, moment().format("YYYY-MM-DD_HH:mm:ss") + "-" + file.originalname);
