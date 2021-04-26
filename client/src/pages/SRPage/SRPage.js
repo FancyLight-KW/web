@@ -6,6 +6,7 @@ import Datepicker from "../../components/Datepicker";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import searchImg from "../../assets/Search.png";
+import SRModal from "../../components/SRModal";
 import cookie from "react-cookies";
 import dotenv from "dotenv";
 dotenv.config();
@@ -64,6 +65,9 @@ function SRPage() {
   const [Query, setQuery] = useState(
     `${process.env.REACT_APP_API_HOST}/requests/` //get All request
   );
+  // const [FilteredRequests, setFilterdRequests] = useState([]);
+  const [sRModalVisible, setSRModalVisible] = useState(false);
+  const [modalSRInfos, setModalSRInfos] = useState([]);
 
   const [StartDate, setStartDate] = useState("");
   const [FinishDate, setFinishDate] = useState("");
@@ -106,6 +110,16 @@ function SRPage() {
     // const endpoint = "http://localhost:5000/requests/getAllRequest?";
     fetchRequests(Query);
   }, [Query]);
+
+  const sROpenModal = (requestInfos) => {
+    setSRModalVisible(true);
+    setModalSRInfos(requestInfos);
+    //  console.log(index);
+    //  console.log(Requests[0]["TITLE"]);
+  };
+  const sRCloseModal = () => {
+    setSRModalVisible(false);
+  };
 
   const fetchRequests = (Query) => {
     axios
@@ -269,7 +283,12 @@ function SRPage() {
 
           <tbody>
             {Requests.map((request, index) => (
-              <tr key={index}>
+              <tr
+                key={index}
+                onClick={() => {
+                  sROpenModal(request);
+                }}
+              >
                 <td>{request.REQ_SEQ}</td>
                 <td>{request.CSR_STATUS}</td>
                 <td>{request.TARGET_CODE}</td>
@@ -288,6 +307,15 @@ function SRPage() {
               </tr>
             ))}
           </tbody>
+          {sRModalVisible && (
+            <SRModal
+              requestInfos={modalSRInfos}
+              visible={sRModalVisible}
+              closable={true}
+              maskClosable={true}
+              onClose={sRCloseModal}
+            />
+          )}
         </Table>
       </TableContainer>
     </>
