@@ -1,6 +1,6 @@
 const Sequelize = require("sequelize");
 module.exports = function (sequelize, DataTypes) {
-  return sequelize.define(
+  const Devices = sequelize.define(
     "Devices",
     {
       DEVICE_USER_ID: {
@@ -37,4 +37,12 @@ module.exports = function (sequelize, DataTypes) {
       ],
     }
   );
+  Devices.associate = function (models) {
+    Devices.belongsTo(models.Users, {
+      as: "DEVICE_USER",
+      foreignKey: "DEVICE_USER_ID",
+    });
+  };
+
+  return Devices;
 };

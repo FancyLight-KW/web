@@ -171,31 +171,24 @@ exports.findRequest = (req, res) => {
 
   console.log(query);
   models.Requests.findAll({
+    raw: true,
+    include: [
+      {
+        model: models.Users,
+        as: "REG_USER",
+        attributes: ["User_name"],
+      },
+    ],
     where: query,
   })
     .then((result) => {
+      console.log(result);
       res.send(result);
     })
     .catch((err) => {
-      console.log("find err");
+      console.log(err);
       res.send({
         message: "Find Request Error",
-      });
-    });
-};
-
-exports.findAllUSersRequest = (req, res) => {
-  models.Requests.findAll({
-    where: {
-      REG_USER_ID: req.params.userId,
-    },
-  })
-    .then((result) => {
-      res.send(result);
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: "find error",
       });
     });
 };
