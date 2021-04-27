@@ -1,12 +1,19 @@
 const models = require("../../DB/models");
 const Sequelize = require("sequelize");
 const sendMsg = require("../android/sendMsg");
-const request = require("../request/request.controller");
 const Op = Sequelize.Op;
 
 // 진행중인 요청
 exports.receiptRequest = (req, res) => {
   models.Requests.findAll({
+    raw: true,
+    include: [
+      {
+        model: models.Users,
+        as: "REG_USER",
+        attributes: ["User_name"],
+      },
+    ],
     where: {
       MOD_USER_ID: { [Op.eq]: null },
     },
@@ -78,8 +85,42 @@ exports.allocateAgent = (req, res) => {
 };
 
 exports.searchAgent = (req, res) => {
-  let query = request.queryString(req.query);
+  let agent = req.params.agentId;
   models.Requests.findAll({
-    where: query,
-  });
+    raw: true,
+    include: [
+      {
+        model: models.Users,
+        as: "REG_USER",
+        attributes: ["User_name"],
+      },
+    ],
+    where: {
+      MOD_USER_ID: agent,
+    },
+  })
+    .then((result) => {
+      console.warn(result);
+      let inProgressList = [];
+      let restRequestList = [];
+
+      for (let request in result) {
+        if (result[request].CSR_STATUS == "요청처리중") {
+          inProgressList.push(result[request]);
+        } else if (result[request].CSR_STATUS == "접수완료") {
+          restRequestList.push(result[request]);
+        }
+      }
+
+      res.send({
+        progress: inProgressList.length(),
+        rest: restRequestList.length(),
+      });
+    })
+    .catch((err) => {
+      res.status(501).send({
+        resultCode: 1,
+        message: "검색 에러",
+      });
+    });
 };

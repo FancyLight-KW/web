@@ -3,6 +3,14 @@ const models = require("../../DB/models");
 //모든 요원 list
 exports.findAllAgent = (req, res) => {
   models.Users.findAll({
+    raw: true,
+    include: [
+      {
+        model: models.Users,
+        as: "REG_USER",
+        attributes: ["User_name"],
+      },
+    ],
     where: {
       User_position: 2,
     },
