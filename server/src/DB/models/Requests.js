@@ -21,7 +21,7 @@ module.exports = function (sequelize, DataTypes) {
       },
       CORP_CODE: {
         type: DataTypes.STRING(10),
-        allowNull: false,
+        allowNull: true,
         defaultValue: "DM01",
       },
       TARGET_CODE: {

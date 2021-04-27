@@ -12,7 +12,9 @@ router.use((req, res, next) => {
     next();
   }
 });
+
 router.get("/list", agent.findAllAgent);
 router.get("/", agent.findAllUSerDisposeRequest);
+router.put("/:requestId", agent.updateRequest);
 
 module.exports = router;

@@ -4,8 +4,45 @@ const moment = require("../../config/moment.config");
 
 const Op = Sequelize.Op;
 
-const like = (keyword) => {
+exports.like = (keyword) => {
   return { [Op.like]: `%${keyword}%` };
+};
+
+exports.queryString = (params) => {
+  console.log(params);
+  let query = {};
+  let title = params.title ? params.title : "";
+  let user = params.user ? params.user : "";
+  let targetCode = params.targetcode ? params.targetcode : "";
+  let csrStatus = params.csrstatus ? params.csrstatus : "";
+
+  if (params.reqNo) {
+    let reqNo = params.reqNo ? params.reqNo : "";
+    query["REQ_SEQ"] = reqNo;
+  }
+
+  if (params.agent) {
+    let agent = params.agent ? params.agent : "";
+    query["MOD_USER_ID"] = this.like(agent);
+  }
+  //console.log(keyword, search);
+  query["REG_USER_ID"] = this.like(user);
+  query["TITLE"] = this.like(title);
+  query["TARGET_CODE"] = this.like(targetCode);
+  query["CSR_STATUS"] = this.like(csrStatus);
+
+  let startDate = params.startDate
+    ? moment(params.startDate).format("YYYY-MM-DD HH:mm:ss")
+    : moment(0).format("YYYY-MM-DD HH:mm:ss");
+  let endDate = params.endDate
+    ? moment(params.endDate).format("YYYY-MM-DD 23:59:59")
+    : moment().format("YYYY-MM-DD HH:mm:ss");
+
+  query["createdAt"] = {
+    [Op.between]: [startDate, endDate],
+  };
+
+  return query;
 };
 
 // 요청 생성
@@ -145,31 +182,8 @@ exports.delete = (req, res) => {
 };
 
 exports.findRequest = (req, res) => {
-  let queryparam = req.query;
-  let title = queryparam.title ? queryparam.title : "";
-  let user = queryparam.user ? queryparam.user : "";
-  let targetCode = queryparam.targetcode ? queryparam.targetcode : "";
-  let csrStatus = queryparam.csrstatus ? queryparam.csrstatus : "";
-  //console.log(keyword, search);
+  let query = this.queryString(req.query);
 
-  let query = {};
-  query["REG_USER_ID"] = like(user);
-  query["TITLE"] = like(title);
-  query["TARGET_CODE"] = like(targetCode);
-  query["CSR_STATUS"] = like(csrStatus);
-
-  let startDate = queryparam.startDate
-    ? moment(queryparam.startDate).format("YYYY-MM-DD HH:mm:ss")
-    : moment(0).format("YYYY-MM-DD HH:mm:ss");
-  let endDate = queryparam.endDate
-    ? moment(queryparam.endDate).format("YYYY-MM-DD 23:59:59")
-    : moment().format("YYYY-MM-DD HH:mm:ss");
-
-  query["createdAt"] = {
-    [Op.between]: [startDate, endDate],
-  };
-
-  console.log(query);
   models.Requests.findAll({
     raw: true,
     include: [
@@ -182,7 +196,6 @@ exports.findRequest = (req, res) => {
     where: query,
   })
     .then((result) => {
-      console.log(result);
       res.send(result);
     })
     .catch((err) => {

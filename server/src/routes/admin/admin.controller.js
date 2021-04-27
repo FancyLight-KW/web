@@ -1,6 +1,7 @@
 const models = require("../../DB/models");
 const Sequelize = require("sequelize");
 const sendMsg = require("../android/sendMsg");
+const request = require("../request/request.controller");
 const Op = Sequelize.Op;
 
 // 진행중인 요청
@@ -19,6 +20,8 @@ exports.receiptRequest = (req, res) => {
       });
     });
 };
+
+exports.denyRequest = (req, res) => {};
 
 exports.allocateAgent = (req, res) => {
   let body = req.body;
@@ -72,4 +75,11 @@ exports.allocateAgent = (req, res) => {
         message: "할당 실패",
       });
     });
+};
+
+exports.searchAgent = (req, res) => {
+  let query = request.queryString(req.query);
+  models.Requests.findAll({
+    where: query,
+  });
 };
