@@ -126,6 +126,7 @@ exports.update = (req, res) => {
       message: "Content cannot empty",
     });
   }
+  // 이미지 수정 추가해야함
 
   models.Requests.update(
     {
@@ -152,7 +153,17 @@ exports.update = (req, res) => {
     }
   )
     .then((result) => {
-      res.send(result);
+      if (result[0] == 0) {
+        res.send({
+          resultcode: 0,
+          message: "업데이트 완료",
+        });
+      } else {
+        res.status(402).send({
+          resultcode: 1,
+          message: "수정할 수 없습니다.",
+        });
+      }
     })
     .catch((err) => {
       res.send({
