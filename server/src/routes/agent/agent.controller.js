@@ -4,6 +4,7 @@ const models = require("../../DB/models");
 exports.findAllAgent = (req, res) => {
   models.Users.findAll({
     raw: true,
+    nest: true,
     include: [
       {
         model: models.Users,

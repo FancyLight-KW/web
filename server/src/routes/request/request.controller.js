@@ -186,6 +186,7 @@ exports.findRequest = (req, res) => {
 
   models.Requests.findAll({
     raw: true,
+    nest: true,
     include: [
       {
         model: models.Users,

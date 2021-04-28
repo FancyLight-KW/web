@@ -7,6 +7,7 @@ const Op = Sequelize.Op;
 exports.myInProgressRequest = (req, res) => {
   models.Requests.findAll({
     raw: true,
+    nest: true,
     include: [
       {
         model: models.Users,
@@ -42,6 +43,7 @@ exports.myInProgressRequest = (req, res) => {
 exports.myFinishedRequest = (req, res) => {
   models.Requests.findAll({
     raw: true,
+    nest: true,
     include: [
       {
         model: models.Users,
