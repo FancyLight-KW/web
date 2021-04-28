@@ -85,42 +85,20 @@ exports.allocateAgent = (req, res) => {
 };
 
 exports.searchAgent = (req, res) => {
-  let agent = req.params.agentId;
-  models.Requests.findAll({
-    raw: true,
-    include: [
+  models.sequelize
+    .query(
+      `SELECT MOD_USER_ID, 
+      Users.User_name as NAME,
+      COUNT(case when CSR_STATUS="접수완료" then 1 end) as READY,
+      COUNT(case when CSR_STATUS="요청처리중" then 1 end) as DOING
+      FROM Project.Requests  JOIN Users ON MOD_USER_ID=Users.User_id
+      GROUP BY MOD_USER_ID
+      ORDER BY DOING;`,
       {
-        model: models.Users,
-        as: "REG_USER",
-        attributes: ["User_name"],
-      },
-    ],
-    where: {
-      MOD_USER_ID: agent,
-    },
-  })
-    .then((result) => {
-      console.warn(result);
-      let inProgressList = [];
-      let restRequestList = [];
-
-      for (let request in result) {
-        if (result[request].CSR_STATUS == "요청처리중") {
-          inProgressList.push(result[request]);
-        } else if (result[request].CSR_STATUS == "접수완료") {
-          restRequestList.push(result[request]);
-        }
+        type: models.Sequelize.QueryTypes.SELECT,
       }
-
-      res.send({
-        progress: inProgressList.length(),
-        rest: restRequestList.length(),
-      });
-    })
-    .catch((err) => {
-      res.status(501).send({
-        resultCode: 1,
-        message: "검색 에러",
-      });
+    )
+    .then((result) => {
+      res.send(result);
     });
 };
