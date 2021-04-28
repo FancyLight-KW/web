@@ -4,6 +4,7 @@ import styled from "styled-components";
 import "./MySRPage.css";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import MySRModal from "../../components/MySRModal";
 import cookie from "react-cookies";
 import jwt_decode from "jwt-decode";
 import dotenv from "dotenv";
@@ -50,48 +51,9 @@ const Input = styled.input`
 `;
 
 function MySRPage() {
-  // const [FilteredRequests, setFilterdRequests] = useState([]);
   const [Requests, setRequests] = useState([]);
-
-  //   const [Query, setQuery] = useState(
-  //     "http://localhost:5000/requests/" //get All request
-  //   );
-
-  //   const [StartDate, setStartDate] = useState("");
-  //   const [FinishDate, setFinishDate] = useState("");
-  //   const [CSRStatus, setCSRStatus] = useState("");
-  //   const [TargetCode, setTargetCode] = useState("");
-  //   const [SearchType, setSearchType] = useState("title");
-  //   const [Keyword, setKeyword] = useState("");
-
-  //   const SearchHandler = () => {
-  //     const queryKeyword =
-  //       SearchType === "title"
-  //         ? Keyword === ""
-  //           ? ``
-  //           : `&title=${Keyword}`
-  //         : Keyword === ""
-  //         ? ``
-  //         : `&user=${Keyword}`;
-
-  //     //  console.log(queryKeyword);
-  //     const queryTargetCode = `&targetcode=${TargetCode}`;
-  //     const queryCSRStatus = `&csrstatus=${CSRStatus}`;
-  //     const queryDate =
-  //       StartDate === ""
-  //         ? FinishDate === ""
-  //           ? ``
-  //           : `&endDate=${FinishDate}`
-  //         : FinishDate === ""
-  //         ? `&startDate=${StartDate}`
-  //         : `&startDate=${StartDate}&endDate=${FinishDate}`;
-  //     //  console.log(queryDate);
-
-  //     const searchAPI = `http://localhost:5000/requests/search?${queryKeyword}${queryTargetCode}${queryCSRStatus}${queryDate}`;
-  //     setQuery(searchAPI);
-  //     console.log(searchAPI);
-  //     // http://localhost:5000/requests/searchRequest/?user=sehwagod&title=제목&targetcode=QA장비&csrstatus=완료&startDate=20210311&endDate=20210317
-  //   };
+  const [mySRModalVisible, setMySRModalVisible] = useState(false);
+  const [myModalSRInfos, setMyModalSRInfos] = useState([]);
 
   useEffect(() => {
     const userID = JSON.stringify(
@@ -111,42 +73,13 @@ function MySRPage() {
       });
   }, []);
 
-  //   const fetchRequests = (Query) => {
-  //     axios
-  //       .get(Query, {
-  //         headers: {
-  //           Authorization: `Bearer ${cookie.load("token")}`,
-  //         },
-  //       })
-  //       .then((response) => {
-  //         console.log(response);
-  //         setRequests([...response.data]);
-  //       });
-  //   };
-
-  //   const StartdatedHandler = (date) => {
-  //     setStartDate(date);
-  //     // console.log(StartDate);
-  //   };
-  //   const FinishDateHandler = (date) => {
-  //     setFinishDate(date);
-  //     //  console.log(FinishDate);
-  //   };
-  //   const keywordHandler = (e) => {
-  //     setKeyword(e.target.value);
-  //   };
-  //   const searchTypeHandler = (e) => {
-  //     setSearchType(e.target.value);
-  //   };
-  //   const csrStatusSearchHandler = (e) => {
-  //     setCSRStatus(e.target.value);
-  //     //  console.log(e.target.value);
-  //   };
-
-  //   const targetCodeSearchHandler = (e) => {
-  //     setTargetCode(e.target.value);
-  //     //  console.log(e.target.value);
-  //   };
+  const mySROpenModal = (requestInfos) => {
+    setMySRModalVisible(true);
+    setMyModalSRInfos(requestInfos);
+  };
+  const mySRCloseModal = () => {
+    setMySRModalVisible(false);
+  };
 
   return (
     <>
@@ -203,7 +136,12 @@ function MySRPage() {
 
           <tbody>
             {Requests.map((request, index) => (
-              <tr key={index}>
+              <tr
+                key={index}
+                onClick={() => {
+                  mySROpenModal(request);
+                }}
+              >
                 <td>{request.REQ_SEQ}</td>
                 <td>{request.CSR_STATUS}</td>
                 <td>{request.TARGET_CODE}</td>
@@ -213,7 +151,7 @@ function MySRPage() {
                 <td>{request.TITLE}</td>
                 <td></td>
                 <td></td>
-                <td>{request.createdAt.split("T")[0]}</td>
+                <td>{request.createdAt.split(" ")[0]}</td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -222,6 +160,15 @@ function MySRPage() {
               </tr>
             ))}
           </tbody>
+          {mySRModalVisible && (
+            <MySRModal
+              requestInfos={myModalSRInfos}
+              visible={mySRModalVisible}
+              closable={true}
+              maskClosable={true}
+              onClose={mySRCloseModal}
+            />
+          )}
         </Table>
       </TableContainer>
     </>

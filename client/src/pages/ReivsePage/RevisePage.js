@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import "./ITSRPage.css";
+import "./RevisePage.css";
 import { Row, Col, Button } from "react-bootstrap";
 import styled, { css } from "styled-components";
 import Form from "react-bootstrap/Form";
+import { useParams } from "react-router";
 import { Radio } from "antd";
 import Checkbox from "antd/lib/checkbox/Checkbox";
 import axios from "axios";
@@ -33,9 +34,38 @@ const RadioBlock = styled.div`
 const MarginBlock = styled.div`
   position: relative;
   top: 5px;
+  right: 10px;
+`;
+const InfoBlock = styled.div`
+  font-weight: 600;
+  margin: 5px 0 0 3px;
 `;
 
-function ITSRPage() {
+function RevisePage() {
+  const { reqNo } = useParams();
+  //  console.log(reqNo);
+
+  //
+  const [Requests, setRequests] = useState([{}]);
+
+  useEffect(() => {
+    axios
+      .get(`${process.env.REACT_APP_API_HOST}/requests/search?reqNo=${reqNo}`, {
+        headers: {
+          Authorization: `Bearer ${cookie.load("token")}`,
+        },
+      })
+      .then((response) => {
+        console.log(response);
+
+        setRequests([...response.data]);
+        setTitle(response.data[0].TITLE);
+        setContent(response.data[0].CONTENT);
+        setTMApprovalReqYN(response.data[0].TM_APPROVAL_REQ_YN);
+        //setRequests([...response.data]);
+      });
+  }, []);
+
   const 법인코드 = "법인코드";
   const CSR진행상태 = "접수";
   const 임시저장 = "w";
@@ -44,13 +74,10 @@ function ITSRPage() {
   const [SystemGroupCode, setSystemGroupCode] = useState("test");
   const [TMApprovalReqYN, setTMApprovalReqYN] = useState("N");
   const [CheckboxData, setCheckboxData] = useState("false");
-  const [Title, setTitle] = useState("");
+  const [Title, setTitle] = useState();
   const [Content, setContent] = useState("");
   const [File, setFile] = useState("");
-  // const fileRef = useRef();
-  //const userID = JSON.stringify(jwt_decode(cookie.load("token")).User_id).split(
-  //  '"'
-  //)[1];
+  const [changeDate, setChangeDate] = useState(false);
 
   const dateChanger = (date) => {
     let year = date.getFullYear();
@@ -65,7 +92,7 @@ function ITSRPage() {
 
   const [ReqFinishDate, setReqFinishDate] = useState(dateChanger(new Date()));
 
-  // const [RegUserID, setRegUserID] = useState("");
+  const [RegUserID, setRegUserID] = useState("");
 
   const targetCodeHandler = (e) => {
     console.log(e.target.value);
@@ -84,8 +111,6 @@ function ITSRPage() {
     } else {
       setTMApprovalReqYN("N");
     }
-
-    //console.log(TMApprovalReqYN);
   };
 
   const titleHandler = (e) => {
@@ -100,8 +125,9 @@ function ITSRPage() {
     setReqFinishDate(date);
     // console.log(ReqFinishDate);
   };
-
-  //   let file = new FormData();
+  const changeDateHandler = () => {
+    setChangeDate(true);
+  };
 
   const fileHandler = (e) => {
     // let file = e.target.files[0];
@@ -118,6 +144,7 @@ function ITSRPage() {
     const formData = new FormData();
 
     let body = JSON.stringify({
+      REQ_SEQ: reqNo,
       TARGET_CODE: TargetCode,
       SYSTEM_GROUP_CODE: SystemGroupCode,
       TM_APPROVAL_REQ_YN: TMApprovalReqYN,
@@ -137,36 +164,41 @@ function ITSRPage() {
     console.log(body);
 
     axios
-      .post(`${process.env.REACT_APP_API_HOST}/requests`, formData, {
+      .put(`${process.env.REACT_APP_API_HOST}/requests/:${reqNo}`, formData, {
         headers: {
           Authorization: `Bearer ${cookie.load("token")}`,
         },
       })
       .then((response) => {
         console.log(response);
+        alert("수정되었습니다.");
       });
-
-    alert("요청이 접수되었습니다.");
   };
 
   return (
     <ITSRBlock>
-      <Header>※ IT서비스 요청</Header>
+      <Header>※ IT서비스 수정</Header>
+      <Form.Group as={Row} controlId="normalForm">
+        <Form.Label column sm="1" className="labelColor">
+          요청자
+        </Form.Label>
+        <label className="marginleft" />
+        <InfoBlock>{Requests[0]["REG_USER.User_name"]}</InfoBlock>
+      </Form.Group>
+      <Form.Group as={Row} controlId="normalForm">
+        <Form.Label column sm="1" className="labelColor">
+          요청 등록일
+        </Form.Label>
+        <label className="marginleft" />
+        <InfoBlock>{(Requests[0].createdAt || "").split(" ")[0]}</InfoBlock>
+      </Form.Group>
       <form>
         <Form.Group as={Row} controlId="normalForm">
           <Form.Label column sm="1" className="labelColor">
             문의대상
           </Form.Label>
           <label className="marginleft" />
-          <RadioBlock>
-            <Radio.Group onChange={targetCodeHandler} value={TargetCode}>
-              <Radio value={"업무시스템"}>업무시스템</Radio>
-              <label className="marginleft" />
-              <Radio value={"IT인프라"}>IT인프라 </Radio>
-              <label className="marginleft" />
-              <Radio value={"OA장비"}>OA장비 </Radio>
-            </Radio.Group>
-          </RadioBlock>
+          <InfoBlock>{Requests[0].TARGET_CODE}</InfoBlock>
         </Form.Group>
         <Form.Group as={Row} controlId="normalForm">
           <Form.Label column sm="1" className="labelColor">
@@ -184,16 +216,9 @@ function ITSRPage() {
             팀장 승인
           </Form.Label>
           <label className="marginleft" />
-          <RadioBlock>
-            <Checkbox onChange={tMApporvalonChange}></Checkbox>
-            <label className="marginleft">
-              체크박스를 선택하시면 팀장에게 승인요청이 됩니다.
-            </label>
-            <Form.Text className="redText">
-              ※ 승인 필요 사항 : 업무프로세스 변경에 따른 시스템 개선, 중요
-              데이터의 변경, 투자 필요 사항
-            </Form.Text>
-          </RadioBlock>
+          <InfoBlock>
+            {Requests[0]["TM_APPROVAL_REQ_YN"] === "Y" ? "Y" : "N"}
+          </InfoBlock>
         </Form.Group>
 
         <br></br>
@@ -202,8 +227,8 @@ function ITSRPage() {
           <Form.Label column sm="1" className="labelColor">
             제목
           </Form.Label>
-          <Col sm="10" onChange={titleHandler}>
-            <Form.Control type="text" />
+          <Col sm="10">
+            <Form.Control type="text" onChange={titleHandler} value={Title} />
           </Col>
         </Form.Group>
 
@@ -213,8 +238,15 @@ function ITSRPage() {
           <Form.Label column sm="1" className="labelColor">
             요청내용
           </Form.Label>
-          <Col sm="10" onChange={contentHandler}>
-            <Form.Control as="textarea" maxLength={500} required rows={5} />
+          <Col sm="10">
+            <Form.Control
+              as="textarea"
+              maxLength="500"
+              required
+              rows={5}
+              onChange={contentHandler}
+              value={Content}
+            />
           </Col>
         </Form.Group>
 
@@ -222,11 +254,23 @@ function ITSRPage() {
           <Form.Label column sm="1" className="labelColor">
             희망완료일
           </Form.Label>
-          <Col sm="2">
-            <MarginBlock>
-              <Datepicker change={finishDateHandler} />
-            </MarginBlock>
-          </Col>
+
+          {changeDate ? (
+            <Col sm="1">
+              <MarginBlock>
+                <Datepicker change={finishDateHandler} />
+              </MarginBlock>
+            </Col>
+          ) : (
+            <>
+              <Col sm="1">
+                <InfoBlock>{Requests[0].REQ_FINISH_DATE}</InfoBlock>
+              </Col>
+              <Button variant="secondary" size="sm" onClick={changeDateHandler}>
+                변경
+              </Button>
+            </>
+          )}
         </Form.Group>
 
         <br></br>
@@ -245,17 +289,18 @@ function ITSRPage() {
             <Form.Text muted>(첨부 가능 파일 확장자: jpg, gif, png)</Form.Text>
           </Col>
         </Form.Group>
+
         <Button
           variant="primary"
           size="sm"
           id="marginReverse"
           onClick={onSubmitHandler}
         >
-          요청하기
+          저장
         </Button>
       </form>
     </ITSRBlock>
   );
 }
-
-export default ITSRPage;
+//   onClick={onSubmitHandler}
+export default RevisePage;
