@@ -115,13 +115,18 @@ exports.findImage = (req, res) => {
 };
 
 exports.update = (req, res) => {
-  if (!req.body) {
+  let body = req.body;
+
+  while (typeof body != "object") {
+    body = JSON.parse(body);
+  }
+
+  if (!body) {
     res.status(400).send({
       message: "Content cannot empty",
     });
   }
 
-  let body = req.body;
   models.Requests.update(
     {
       TITLE: body.TITLE,
