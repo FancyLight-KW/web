@@ -164,7 +164,7 @@ function RevisePage() {
     console.log(body);
 
     axios
-      .put(`${process.env.REACT_APP_API_HOST}/requests/:${reqNo}`, formData, {
+      .put(`${process.env.REACT_APP_API_HOST}/requests/${reqNo}`, formData, {
         headers: {
           Authorization: `Bearer ${cookie.load("token")}`,
         },

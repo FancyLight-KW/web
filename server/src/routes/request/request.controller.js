@@ -115,9 +115,10 @@ exports.findImage = (req, res) => {
 };
 
 exports.update = (req, res) => {
-  let body = req.body;
-
+  let body = JSON.parse(req.body.body);
+  console.log(body);
   while (typeof body != "object") {
+    console.log("while" + body);
     body = JSON.parse(body);
   }
 
@@ -127,7 +128,7 @@ exports.update = (req, res) => {
     });
   }
   // 이미지 수정 추가해야함
-
+  console.log(body.TITLE);
   models.Requests.update(
     {
       TITLE: body.TITLE,
@@ -153,13 +154,13 @@ exports.update = (req, res) => {
     }
   )
     .then((result) => {
-      if (result[0] == 0) {
+      if (result[0] == 1) {
         res.send({
           resultcode: 0,
           message: "업데이트 완료",
         });
       } else {
-        res.status(402).send({
+        res.status(400).send({
           resultcode: 1,
           message: "수정할 수 없습니다.",
         });
@@ -179,7 +180,7 @@ exports.delete = (req, res) => {
     },
   })
     .then((result) => {
-      if (result == 1) {
+      if (result > 0) {
         res.send({
           resultcode: result,
           message: `${req.params.requestId} delete success`,
