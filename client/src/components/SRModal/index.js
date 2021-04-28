@@ -176,7 +176,7 @@ function SRModal({
                 <SRInfoSpan>요청 사원</SRInfoSpan>
                 <SRInfoDiv>
                   {" "}
-                  {requestInfos["REG_USER.User_name"]} <hr />
+                  {requestInfos.REG_USER.User_name} <hr />
                 </SRInfoDiv>
               </SRInfoBlock>
               <SRInfoBlock>

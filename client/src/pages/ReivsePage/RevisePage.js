@@ -43,11 +43,12 @@ const InfoBlock = styled.div`
 
 function RevisePage() {
   const { reqNo } = useParams();
-  //  console.log(reqNo);
+  console.log(reqNo);
 
   //
   const [Requests, setRequests] = useState([{}]);
-
+  const [userName, setUserName] = useState("홍길동");
+  let Username;
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_API_HOST}/requests/search?reqNo=${reqNo}`, {
@@ -63,6 +64,8 @@ function RevisePage() {
         setContent(response.data[0].CONTENT);
         setTMApprovalReqYN(response.data[0].TM_APPROVAL_REQ_YN);
         //setRequests([...response.data]);
+        //    Username = Requests[0].REG_USER.User_name;
+        setUserName(response.data[0].REG_USER.User_name);
       });
   }, []);
 
@@ -145,23 +148,33 @@ function RevisePage() {
 
     let body = JSON.stringify({
       REQ_SEQ: reqNo,
-      TARGET_CODE: TargetCode,
-      SYSTEM_GROUP_CODE: SystemGroupCode,
-      TM_APPROVAL_REQ_YN: TMApprovalReqYN,
       TITLE: Title,
       CONTENT: Content,
-      REQ_FINISH_DATE: ReqFinishDate,
       CORP_CODE: 법인코드,
+      TARGET_CODE: TargetCode,
+      SYSTEM_GROUP_CODE: SystemGroupCode,
+      SYSTEM_CODE: null,
+      TM_APPROVAL_REQ_YN: TMApprovalReqYN,
       CSR_STATUS: "접수대기",
       IMSI_YN: 임시저장,
-      //  REG_USER_ID: userID,
+      REQ_FINISH_DATE: ReqFinishDate,
+      MOD_USER_ID: Requests[0].MOD_USER_ID,
+      REQ_IMG_PATH: Requests[0].REQ_IMG_PATH,
+      createdAt: Requests[0].createdAt,
+      updatedAt: Requests[0].updatedAt,
+      REG_USER: Requests[0].REG_USER.User_name,
     });
+
+    console.log("a" + Requests[0].REG_USER.User_name);
+
+    //  body.REG_USER["User_name"] = Requests[0]["REG_USER.User_name"];
 
     formData.append("imagefile", File);
     formData.append("body", body);
 
     console.log(formData);
     console.log(body);
+    //  console.log("Added" + body);
 
     axios
       .put(`${process.env.REACT_APP_API_HOST}/requests/${reqNo}`, formData, {
@@ -183,7 +196,8 @@ function RevisePage() {
           요청자
         </Form.Label>
         <label className="marginleft" />
-        <InfoBlock>{Requests[0]["REG_USER.User_name"]}</InfoBlock>
+
+        <InfoBlock>{userName}</InfoBlock>
       </Form.Group>
       <Form.Group as={Row} controlId="normalForm">
         <Form.Label column sm="1" className="labelColor">
