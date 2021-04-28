@@ -1,14 +1,11 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import { useDispatch, useSelector } from "react-redux";
-import { loginUser } from "../../actions/user";
-import { authUser } from "../../actions/auth";
+import { Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import Logo from "../../assets/800px-Hyundai_Transys_logo.png";
 import NoImage from "../../assets/noimage.png";
 // import CloseButton from "./CloseButton";
-import cookie from "react-cookies";
-import jwt_decode from "jwt-decode";
 
 const ModalWrapper = styled.div`
   box-sizing: border-box;
@@ -48,10 +45,10 @@ const ModalInner = styled.div`
   padding: 20px 20px;
 `;
 const ContentWrapper = styled.div`
-display: flex,
-text-align: center,
-width: 100%,
-flex-direction: column,
+    display: flex,
+    text-align: center,
+    width: 100%,
+    flex-direction: column,
 `;
 const LogoBox = styled.div`
   margin: 0px 0px 14px;
@@ -65,10 +62,15 @@ const TypeText = styled.div`
   line-height: 22px;
   font-weight: 700;
 `;
-const HeadSpan = styled.span`
+const HeaContainer = styled.div`
   display: flex;
   width: 100%;
   padding-bottom: 15px;
+`;
+
+const HeadSpan = styled.span`
+  display: flex;
+  width: 76%;
 `;
 const SRInfoBlock = styled.div`
   display: flex;
@@ -110,7 +112,7 @@ const SRConentSpan = styled.span`
   height: 200px;
 `;
 
-function SRModal({
+function MySRModal({
   requestInfos,
   className,
   onClose,
@@ -132,13 +134,12 @@ function SRModal({
   };
   //    {closable && <div className="modal-close" onClick={close}></div>}
 
-  const dispatch = useDispatch();
+  //const dispatch = useDispatch();
   //axios.defaults.withCredentials = true;
 
   const onSubmitHandler = (event) => {
     event.preventDefault(); // 새로고침 방지
   };
-  //
 
   return (
     <>
@@ -155,7 +156,14 @@ function SRModal({
           </LogoBox>
           <ContentWrapper>
             <TypeText>
-              <HeadSpan>※ 세부정보</HeadSpan>
+              <HeaContainer>
+                <HeadSpan>※ 나의 요청 세부정보</HeadSpan>
+                <Link to={`/revise/${requestInfos.REQ_SEQ}`}>
+                  <Button variant="primary" size="sm">
+                    수정하기
+                  </Button>
+                </Link>
+              </HeaContainer>
               <SRInfoBlock>
                 <SRInfoSpan>제목</SRInfoSpan>
                 <SRInfoDiv>
@@ -211,8 +219,8 @@ function SRModal({
   );
 }
 
-SRModal.propTypes = {
+MySRModal.propTypes = {
   visible: PropTypes.bool,
 };
 
-export default SRModal;
+export default MySRModal;
