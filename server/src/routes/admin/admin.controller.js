@@ -6,6 +6,15 @@ const Op = Sequelize.Op;
 // 진행중인 요청
 exports.receiptRequest = (req, res) => {
   models.Requests.findAll({
+    raw: true,
+    nest: true,
+    include: [
+      {
+        model: models.Users,
+        as: "REG_USER",
+        attributes: ["User_name"],
+      },
+    ],
     where: {
       MOD_USER_ID: { [Op.eq]: null },
     },
@@ -19,6 +28,8 @@ exports.receiptRequest = (req, res) => {
       });
     });
 };
+
+exports.denyRequest = (req, res) => {};
 
 exports.allocateAgent = (req, res) => {
   let body = req.body;
@@ -71,5 +82,24 @@ exports.allocateAgent = (req, res) => {
         resultCode: 1,
         message: "할당 실패",
       });
+    });
+};
+
+exports.searchAgent = (req, res) => {
+  models.sequelize
+    .query(
+      `SELECT MOD_USER_ID, 
+      Users.User_name as NAME,
+      COUNT(case when CSR_STATUS="접수완료" then 1 end) as READY,
+      COUNT(case when CSR_STATUS="요청처리중" then 1 end) as DOING
+      FROM Project.Requests  JOIN Users ON MOD_USER_ID=Users.User_id
+      GROUP BY MOD_USER_ID
+      ORDER BY DOING;`,
+      {
+        type: models.Sequelize.QueryTypes.SELECT,
+      }
+    )
+    .then((result) => {
+      res.send(result);
     });
 };

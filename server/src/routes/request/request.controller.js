@@ -4,8 +4,45 @@ const moment = require("../../config/moment.config");
 
 const Op = Sequelize.Op;
 
-const like = (keyword) => {
+exports.like = (keyword) => {
   return { [Op.like]: `%${keyword}%` };
+};
+
+exports.queryString = (params) => {
+  console.log(params);
+  let query = {};
+  let title = params.title ? params.title : "";
+  let user = params.user ? params.user : "";
+  let targetCode = params.targetcode ? params.targetcode : "";
+  let csrStatus = params.csrstatus ? params.csrstatus : "";
+
+  if (params.reqNo) {
+    let reqNo = params.reqNo ? params.reqNo : "";
+    query["REQ_SEQ"] = reqNo;
+  }
+
+  if (params.agent) {
+    let agent = params.agent ? params.agent : "";
+    query["MOD_USER_ID"] = this.like(agent);
+  }
+  //console.log(keyword, search);
+  query["REG_USER_ID"] = this.like(user);
+  query["TITLE"] = this.like(title);
+  query["TARGET_CODE"] = this.like(targetCode);
+  query["CSR_STATUS"] = this.like(csrStatus);
+
+  let startDate = params.startDate
+    ? moment(params.startDate).format("YYYY-MM-DD HH:mm:ss")
+    : moment(0).format("YYYY-MM-DD HH:mm:ss");
+  let endDate = params.endDate
+    ? moment(params.endDate).format("YYYY-MM-DD 23:59:59")
+    : moment().format("YYYY-MM-DD HH:mm:ss");
+
+  query["createdAt"] = {
+    [Op.between]: [startDate, endDate],
+  };
+
+  return query;
 };
 
 // 요청 생성
@@ -54,14 +91,6 @@ exports.create = (req, res) => {
     });
 };
 
-exports.findRequestCount = (req, res) => {
-  models.Requests.findAll().then((result) => {
-    res.send({
-      length: result.length,
-    });
-  });
-};
-
 // 모든 요청 가져오기
 exports.findAll = (req, res) => {
   models.Requests.findAll()
@@ -86,13 +115,20 @@ exports.findImage = (req, res) => {
 };
 
 exports.update = (req, res) => {
-  if (!req.body) {
+  let body = JSON.parse(req.body.body);
+  console.log(body);
+  while (typeof body != "object") {
+    console.log("while" + body);
+    body = JSON.parse(body);
+  }
+
+  if (!body) {
     res.status(400).send({
       message: "Content cannot empty",
     });
   }
-
-  let body = req.body;
+  // 이미지 수정 추가해야함
+  console.log(body.TITLE);
   models.Requests.update(
     {
       TITLE: body.TITLE,
@@ -118,7 +154,17 @@ exports.update = (req, res) => {
     }
   )
     .then((result) => {
-      res.send(result);
+      if (result[0] == 1) {
+        res.send({
+          resultcode: 0,
+          message: "업데이트 완료",
+        });
+      } else {
+        res.status(400).send({
+          resultcode: 1,
+          message: "수정할 수 없습니다.",
+        });
+      }
     })
     .catch((err) => {
       res.send({
@@ -134,7 +180,7 @@ exports.delete = (req, res) => {
     },
   })
     .then((result) => {
-      if (result == 1) {
+      if (result > 0) {
         res.send({
           resultcode: result,
           message: `${req.params.requestId} delete success`,
@@ -153,57 +199,27 @@ exports.delete = (req, res) => {
 };
 
 exports.findRequest = (req, res) => {
-  let queryparam = req.query;
-  let title = queryparam.title ? queryparam.title : "";
-  let user = queryparam.user ? queryparam.user : "";
-  let targetCode = queryparam.targetcode ? queryparam.targetcode : "";
-  let csrStatus = queryparam.csrstatus ? queryparam.csrstatus : "";
-  //console.log(keyword, search);
+  let query = this.queryString(req.query);
 
-  let query = {};
-  query["REG_USER_ID"] = like(user);
-  query["TITLE"] = like(title);
-  query["TARGET_CODE"] = like(targetCode);
-  query["CSR_STATUS"] = like(csrStatus);
-
-  let startDate = queryparam.startDate
-    ? moment(queryparam.startDate).format("YYYY-MM-DD HH:mm:ss")
-    : moment(0).format("YYYY-MM-DD HH:mm:ss");
-  let endDate = queryparam.endDate
-    ? moment(queryparam.endDate).format("YYYY-MM-DD 23:59:59")
-    : moment().format("YYYY-MM-DD HH:mm:ss");
-
-  query["createdAt"] = {
-    [Op.between]: [startDate, endDate],
-  };
-
-  console.log(query);
   models.Requests.findAll({
+    raw: true,
+    nest: true,
+    include: [
+      {
+        model: models.Users,
+        as: "REG_USER",
+        attributes: ["User_name"],
+      },
+    ],
     where: query,
   })
     .then((result) => {
       res.send(result);
     })
     .catch((err) => {
-      console.log("find err");
+      console.log(err);
       res.send({
         message: "Find Request Error",
-      });
-    });
-};
-
-exports.findAllUSersRequest = (req, res) => {
-  models.Requests.findAll({
-    where: {
-      REG_USER_ID: req.params.userId,
-    },
-  })
-    .then((result) => {
-      res.send(result);
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: "find error",
       });
     });
 };

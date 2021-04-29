@@ -7,9 +7,8 @@ const upload = require("../middleware/fileupload");
 // host/requests/
 
 router.post("/", upload.single("imagefile"), request.create);
-router.get("/", request.findAll);
+router.get("/", request.findRequest);
 router.get("/image/:requestId", request.findImage);
-router.get("/count", request.findRequestCount);
 router.get("/search", request.findRequest);
 router.put("/:requestId", upload.single("imagefile"), request.update);
 router.delete("/:requestId", request.delete);

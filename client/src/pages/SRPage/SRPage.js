@@ -63,7 +63,7 @@ function SRPage() {
   // const [FilteredRequests, setFilterdRequests] = useState([]);
   const [Requests, setRequests] = useState([]);
   const [Query, setQuery] = useState(
-    `${process.env.REACT_APP_API_HOST}/requests/` //get All request
+    `${process.env.REACT_APP_API_HOST}/requests/search` //get All request
   );
   // const [FilteredRequests, setFilterdRequests] = useState([]);
   const [sRModalVisible, setSRModalVisible] = useState(false);
@@ -106,7 +106,6 @@ function SRPage() {
   };
 
   useEffect(() => {
-    //console.log(cookie.load("token"));
     // const endpoint = "http://localhost:5000/requests/getAllRequest?";
     fetchRequests(Query);
   }, [Query]);
@@ -298,7 +297,7 @@ function SRPage() {
                 <td>{request.TITLE}</td>
                 <td></td>
                 <td></td>
-                <td>{request.createdAt.split("T")[0]}</td>
+                <td>{request.createdAt.split(" ")[0]}</td>
                 <td></td>
                 <td></td>
                 <td></td>

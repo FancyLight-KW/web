@@ -1,14 +1,9 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import { useDispatch, useSelector } from "react-redux";
-import { loginUser } from "../../actions/user";
-import { authUser } from "../../actions/auth";
 import Logo from "../../assets/800px-Hyundai_Transys_logo.png";
 import NoImage from "../../assets/noimage.png";
 // import CloseButton from "./CloseButton";
-import cookie from "react-cookies";
-import jwt_decode from "jwt-decode";
 
 const ModalWrapper = styled.div`
   box-sizing: border-box;
@@ -69,6 +64,7 @@ const HeadSpan = styled.span`
   display: flex;
   width: 100%;
   padding-bottom: 15px;
+  // fodasdasd
 `;
 const SRInfoBlock = styled.div`
   display: flex;
@@ -82,7 +78,7 @@ const SRImageBlock = styled.div`
 const SRImageBox = styled.div`
   display: flex;
   justify-content: center;
-  width: 100%;
+  width: 75%;
 `;
 const SRInfoSpan = styled.span`
   display: flex;
@@ -94,11 +90,11 @@ const SRInfoSpan = styled.span`
 `;
 const SRInfoDiv = styled.div`
   padding-left: 10px;
-  width: 100%;
+  width: 72%;
 `;
 const SRConentDiv = styled.div`
   padding-left: 10px;
-  width: 100%;
+  width: 72%;
   word-break: break-all;
 `;
 const SRConentSpan = styled.span`
@@ -110,7 +106,7 @@ const SRConentSpan = styled.span`
   height: 200px;
 `;
 
-function SRModal({
+function Agentodal({
   requestInfos,
   className,
   onClose,
@@ -132,13 +128,12 @@ function SRModal({
   };
   //    {closable && <div className="modal-close" onClick={close}></div>}
 
-  const dispatch = useDispatch();
+  //const dispatch = useDispatch();
   //axios.defaults.withCredentials = true;
 
   const onSubmitHandler = (event) => {
     event.preventDefault(); // 새로고침 방지
   };
-  //
 
   return (
     <>
@@ -155,7 +150,7 @@ function SRModal({
           </LogoBox>
           <ContentWrapper>
             <TypeText>
-              <HeadSpan>※ 세부정보</HeadSpan>
+              <HeadSpan>※ 나의 요청 세부정보</HeadSpan>
               <SRInfoBlock>
                 <SRInfoSpan>제목</SRInfoSpan>
                 <SRInfoDiv>
@@ -176,7 +171,7 @@ function SRModal({
                 <SRInfoSpan>요청 사원</SRInfoSpan>
                 <SRInfoDiv>
                   {" "}
-                  {requestInfos.REG_USER.User_name} <hr />
+                  {requestInfos["REG_USER.User_name"]} <hr />
                 </SRInfoDiv>
               </SRInfoBlock>
               <SRInfoBlock>
@@ -211,8 +206,8 @@ function SRModal({
   );
 }
 
-SRModal.propTypes = {
+AgentModal.propTypes = {
   visible: PropTypes.bool,
 };
 
-export default SRModal;
+export default AgentModal;

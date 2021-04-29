@@ -74,7 +74,7 @@ function LandingPage() {
     "접수 대기",
     "접수완료",
     "요청처리중",
-    "처리 지연중",
+    "처리 완료",
   ];
 
   useEffect(() => {
@@ -169,7 +169,7 @@ function LandingPage() {
 
                   <Card.Text>
                     <div id="text_green">
-                      {CSRInfos.완료 ? CSRInfos.완료 : "0"}
+                      {CSRInfos.접수완료 ? CSRInfos.접수완료 : "0"}
                     </div>
                     <div id="text_gray">건</div>
                   </Card.Text>
@@ -182,7 +182,7 @@ function LandingPage() {
 
                   <Card.Text>
                     <div id="text_blue">
-                      {CSRInfos.진행 ? CSRInfos.진행 : "0"}
+                      {CSRInfos.요청처리중 ? CSRInfos.요청처리중 : "0"}
                     </div>
                     <div id="text_gray">건</div>
                   </Card.Text>
@@ -193,7 +193,10 @@ function LandingPage() {
                   <Card.Title id="bold"> {csrStatusTypes[4]}</Card.Title>
 
                   <Card.Text>
-                    <div id="text_red">0</div>
+                    <div id="text_red">
+                      {" "}
+                      {CSRInfos.처리완료 ? CSRInfos.처리완료 : "0"}
+                    </div>
                     <div id="text_gray">건</div>
                   </Card.Text>
                 </Card.Body>

@@ -10,11 +10,6 @@ function initModels(sequelize) {
   var SequelizeMeta = _SequelizeMeta(sequelize, DataTypes);
   var Users = _Users(sequelize, DataTypes);
 
-  Devices.belongsTo(Users, { as: "DEVICE_USER", foreignKey: "DEVICE_USER_ID"});
-  Users.hasOne(Devices, { as: "Device", foreignKey: "DEVICE_USER_ID"});
-  Requests.belongsTo(Users, { as: "REG_USER", foreignKey: "REG_USER_ID"});
-  Users.hasMany(Requests, { as: "Requests", foreignKey: "REG_USER_ID"});
-
   return {
     Devices,
     Requests,
