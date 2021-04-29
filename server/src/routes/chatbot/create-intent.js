@@ -12,13 +12,13 @@ const dialogflow = require('@google-cloud/dialogflow');
 // Instantiates the Intent Client
 const intentsClient = new dialogflow.IntentsClient();
 
-async function createIntent() {
+exports.createIntent = async (req, res) => {
   // Construct request
 
   // The path to identify the agent that owns the created intent.
   const agentPath = intentsClient.agentPath(projectId);
 
-  const trainingPhrases = [];
+  const trainingPhrases = [req.body];
 
   trainingPhrasesParts.forEach(trainingPhrasesPart => {
     const part = {
@@ -58,4 +58,4 @@ async function createIntent() {
   console.log(`Intent ${response.name} created`);
 }
 
-createIntent();
+//createIntent();

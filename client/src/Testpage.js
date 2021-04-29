@@ -5,7 +5,8 @@ import Chatbot from './Chatbot/index/index';
 import Maximized from './components/Chat/Maximized'
 import Minimized from './components/Chat/Minimized'
 import { ThemeProvider, FixedWrapper, darkTheme, elegantTheme, purpleTheme, defaultTheme } from '@livechat/ui-kit'
-
+import chatbotimg from "./assets/Chatbot.png";
+import styled from "styled-components";
 const themes = {
   defaultTheme: {
       FixedWrapperMaximized: {
@@ -95,8 +96,14 @@ const themeElegantButton = {
   background: '#000',
   color: '#D9A646',  
 }
+
+const HoverImage = styled.div`
+  &:hover {
+    opacity: 0.8;
+  }
+`;
 // test proxy
-class Testpage extends React.Component {
+//class Testpage extends React.Component {
   // state = {
   //     theme: 'defaultTheme'
   // }
@@ -107,23 +114,26 @@ class Testpage extends React.Component {
   //         theme: target.name + 'Theme'    ,
   //     })
   // }
-
-  render() {
+const Testpage = (props) =>{
+  //render() {
       return (
         <ThemeProvider theme='defaultTheme'>
           <div>
             <FixedWrapper.Root minimizedOnInit>
               <FixedWrapper.Maximized>
-                <Maximized {...this.props} />
+                <Maximized {...props} />
               </FixedWrapper.Maximized>
               <FixedWrapper.Minimized>
-                <Minimized {...this.props} />
+                  
+                <Minimized {...props}>
+                {/* <img src={chatbotimg}></img> */}
+                </Minimized>
               </FixedWrapper.Minimized>
             </FixedWrapper.Root>
           </div>
         </ThemeProvider>
       )
-  }
+  //}
+//}
 }
-
 export default Testpage;
