@@ -63,10 +63,13 @@ h1, p {
 
 /* Message component styles here 👇 */
 .botIcon {
+  width: max-content;
   border-bottom-right-radius: 30px 30px;
   border-top-right-radius: 30px 30px;
   border-top-left-radius: 30px 30px;
   border-bottom-left-radius: 30px 30px;
+  margin-left: 5px;
+  margin-bottom: 10px;
 }
 
 .botCard {
@@ -74,10 +77,11 @@ h1, p {
   border-bottom-right-radius: 30px 30px;
   border-top-right-radius: 30px 30px;
   border-bottom-left-radius: 30px 30px;
-  background-color: rgb(218, 218, 218);
+  background: #e7e7e7;
   margin-left: 5px;
   color: black;
   margin-bottom: 10px;
+  max-width: 75%;
 }
 
 .userCard {
@@ -86,9 +90,10 @@ h1, p {
   border-top-left-radius: 30px 30px;
   border-bottom-left-radius: 30px 30px;
   float: right;
-  background-color: #0069c0;
+  background: #007aff;
   margin-right: 5px;
   color: white;
+  max-width: 75%;
 }
 
 .messagesSection::-webkit-scrollbar {

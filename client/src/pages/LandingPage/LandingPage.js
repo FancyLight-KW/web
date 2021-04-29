@@ -106,6 +106,7 @@ function LandingPage() {
   };
 
   return (
+    <>
     <LandingWrapper>
       <FirstRowContainer>
         <Row>
@@ -255,6 +256,7 @@ function LandingPage() {
         </Row>
       </ThridRowContainer>
     </LandingWrapper>
+    </>
   );
 }
 

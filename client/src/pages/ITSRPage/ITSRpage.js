@@ -245,12 +245,7 @@ function ITSRPage() {
             <Form.Text muted>(첨부 가능 파일 확장자: jpg, gif, png)</Form.Text>
           </Col>
         </Form.Group>
-        <Button
-          variant="primary"
-          size="sm"
-          id="marginReverse"
-          onClick={onSubmitHandler}
-        >
+        <Button variant="primary" size="sm" id="marginReverse">
           요청하기
         </Button>
       </form>

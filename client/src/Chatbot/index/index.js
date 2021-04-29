@@ -7,7 +7,10 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import cookie from "react-cookies";
 import jwt_decode from "jwt-decode";
+import Moment from 'moment'
+import 'moment/locale/ko';
 
+import { ThemeProvider } from '@livechat/ui-kit'
 
 import { useHistory } from "react-router";
 import { Modal, Button } from 'antd';  
@@ -72,6 +75,7 @@ function Chatbot() {
                 conversation = {
                     who: 'bot',
                     content: content,
+                    timestamp: Date.now(),
                 }
 
                 dispatch(saveMessage(conversation))
@@ -113,6 +117,7 @@ function Chatbot() {
                 let conversation = {
                     who: 'bot',
                     content: content,
+                    timestamp: Date.now(),
                 }
 
                 dispatch(saveMessage(conversation))
@@ -205,15 +210,19 @@ function Chatbot() {
         scrollToBottom()
       });
 
-
+    const nowTime = Moment().format('YYYY년 MM월 HH:mm');
     return (
         <>
             <div style={{
-            height: 700, width: 450,
+            height: 650, width: 400,
             border: '3px solid black', borderRadius: '7px', backgroundColor: 'white'
         }}>
-            <div style={{ height: 644, width: '100%', overflow: 'auto' }}>
+            
 
+            <div style={{ height: 594, width: '100%', overflow: 'auto' }}>
+            <div className="timestamp">
+                {nowTime}
+            </div>
 
                 {renderMessage(messagesFromRedux)}
 
@@ -230,7 +239,27 @@ function Chatbot() {
                 type="text"
             />
 
-        </div> 
+        </div>
+        {/* <ThemeProvider style={{backgroundColor: 'white'}}>
+            <div style={{ height: 594, width: '100%', overflow: 'auto' }}>
+                <div className="timestamp">
+                    {nowTime}
+                </div>
+                {renderMessage(messagesFromRedux)}
+
+                <div ref={messagesEndRef} />
+            </div >
+            <input
+                style={{
+                    margin: 0, width: '100%', height: '10%',
+                    borderRadius: '4px', padding: '5px', fontSize: '1rem'
+                    
+                }}
+                placeholder="Send a message..."
+                onKeyPress={keyPressHanlder}
+                type="text"
+            />
+        </ThemeProvider> */}
         </>
     )
 }

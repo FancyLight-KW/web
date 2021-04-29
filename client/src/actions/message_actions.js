@@ -1,9 +1,9 @@
-export const SAVE_MESSAGE = 'save_message';
+import * as actionTypes from '../constants/chatActionTypes'
 
 export function saveMessage(dataToSubmit) {
    
     return {
-        type: SAVE_MESSAGE,
+        type: actionTypes.SAVE_MESSAGE,
         payload: dataToSubmit
     }
 }

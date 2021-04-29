@@ -1,6 +1,6 @@
 import {
     SAVE_MESSAGE,
-} from '../actions/message_actions';
+} from '../constants/chatActionTypes';
 
 export default function (state = {messages:[]}, action) {
     switch (action.type) {

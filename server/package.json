@@ -8,6 +8,7 @@
     "dev": "nodemon"
   },
   "dependencies": {
+    "@google-cloud/dialogflow": "^3.5.0",
     "bcrypt": "^5.0.1",
     "body-parser": "^1.18.3",
     "connect-flash": "^0.1.1",

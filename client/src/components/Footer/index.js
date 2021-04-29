@@ -4,7 +4,9 @@ import cookie from "react-cookies";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import Chatbot from "../../Chatbot/index/index";
-
+import Maximized from "../Chat/Maximized";
+import Minimized from '../Chat/Minimized'
+import { ThemeProvider, FixedWrapper, darkTheme, elegantTheme, purpleTheme, defaultTheme } from '@livechat/ui-kit'
 const HoverImage = styled.div`
   &:hover {
     opacity: 0.8;
@@ -14,27 +16,26 @@ const ChatContainer = styled.div`
   width: 500px;
   position: fixed;
   z-index: 1;
-  bottom: 60px;
-  right: 40px;
+  top: 160px;
+  right: 45px;
   overflow-x: hidden;
   padding: 8px 0;
 `;
 
 const IconContainer = styled.div`
   width: 500px;
-  height: 500px;
   position: fixed;
   z-index: 1;
-  bottom: -400px;
-  right: -410px;
+  top: 840px;
+  right: -400px;
   overflow-x: hidden;
   padding: 8px 0;
 `;
-const SideChat = styled(Chatbot)`
+const SideChat = styled(Maximized)`
   display: block;
 `;
 
-function Footer() {
+const Footer = (props) => {
   const [authenticated, setAuthenticated] = useState(false);
   const [chatbotVisible, setChatbotVisible] = useState(false);
   const userInfos = useSelector((state) => state.auth.userInfos);
@@ -51,55 +52,69 @@ function Footer() {
   }, [userInfos]);
 
   return (
-    <div
-      style={{
-        width: "100%",
-        position: "relative",
-        bottom: "0",
-        width: "100%",
-      }}
-    >
-      {authenticated ? (
-        chatbotVisible ? (
-          <>
-            <ChatContainer>
-              <SideChat />
-            </ChatContainer>
-            <IconContainer>
-              <HoverImage>
-                <img
-                  src={chatbotimg}
-                  width="80"
-                  height="80"
-                  onClick={chatbotHandler}
-                />
-              </HoverImage>
-            </IconContainer>
-          </>
-        ) : (
-          <IconContainer>
-            <HoverImage>
-              <img
-                src={chatbotimg}
-                width="80"
-                height="80"
-                onClick={chatbotHandler}
-              />
-            </HoverImage>
-          </IconContainer>
-        )
-      ) : null}
+    // <div
+    //   style={{
+    //     width: "100%",
+    //     position: "relative",
+    //     bottom: "0",
+    //   }}
+    // >
+    //   {authenticated ? (
+    //     chatbotVisible ? (
+    //       <>
+    //         <ChatContainer>
+    //           <SideChat />
+    //         </ChatContainer>
+    //         <IconContainer>
+    //           <HoverImage>
+    //             <img
+    //               src={chatbotimg}
+    //               width="80"
+    //               height="80"
+    //               onClick={chatbotHandler}
+    //             />
+    //           </HoverImage>
+    //         </IconContainer>
+    //       </>
+    //     ) : (
+    //       <IconContainer>
+    //         <HoverImage>
+    //           <img
+    //             src={chatbotimg}
+    //             width="80"
+    //             height="80"
+    //             onClick={chatbotHandler}
+    //           />
+    //         </HoverImage>
+    //       </IconContainer>
+    //     )
+    //   ) : null}
 
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          fontSize: "x-small",
-        }}
-      >
-        <p>&copy;{new Date().getFullYear()} FANCY LIGHT</p>
-      </div>
-    </div>
+    //   <div
+    //     style={{
+    //       display: "flex",
+    //       justifyContent: "center",
+    //       fontSize: "x-small",
+    //     }}
+    //   >
+    //     <p>&copy;{new Date().getFullYear()} FANCY LIGHT</p>
+    //   </div>
+    // </div>
+    <ThemeProvider theme='defaultTheme'>
+          <div>
+            <FixedWrapper.Root minimizedOnInit>
+              <FixedWrapper.Maximized>
+                <Maximized {...props} />
+              </FixedWrapper.Maximized>
+              <FixedWrapper.Minimized>
+                  
+                <Minimized {...props}>
+                {/* <img src={chatbotimg}></img> */}
+                </Minimized>
+              </FixedWrapper.Minimized>
+            </FixedWrapper.Root>
+          </div>
+    </ThemeProvider>
   );
 }
 

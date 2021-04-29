@@ -1,29 +1,37 @@
 {
   "files": {
-    "main.css": "/static/css/main.de8c8ceb.chunk.css",
-    "main.js": "/static/js/main.f69b3ad5.chunk.js",
-    "main.js.map": "/static/js/main.f69b3ad5.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.3a06144e.js",
-    "runtime-main.js.map": "/static/js/runtime-main.3a06144e.js.map",
+    "main.css": "/static/css/main.7b478cb6.chunk.css",
+    "main.js": "/static/js/main.e67fd055.chunk.js",
+    "main.js.map": "/static/js/main.e67fd055.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.c466936d.js",
+    "runtime-main.js.map": "/static/js/runtime-main.c466936d.js.map",
     "static/css/2.f4a6a311.chunk.css": "/static/css/2.f4a6a311.chunk.css",
-    "static/js/2.fe99bb82.chunk.js": "/static/js/2.fe99bb82.chunk.js",
-    "static/js/2.fe99bb82.chunk.js.map": "/static/js/2.fe99bb82.chunk.js.map",
-    "static/js/3.9110f123.chunk.js": "/static/js/3.9110f123.chunk.js",
-    "static/js/3.9110f123.chunk.js.map": "/static/js/3.9110f123.chunk.js.map",
+    "static/js/2.d5150444.chunk.js": "/static/js/2.d5150444.chunk.js",
+    "static/js/2.d5150444.chunk.js.map": "/static/js/2.d5150444.chunk.js.map",
+    "static/js/3.221d6dce.chunk.js": "/static/js/3.221d6dce.chunk.js",
+    "static/js/3.221d6dce.chunk.js.map": "/static/js/3.221d6dce.chunk.js.map",
     "index.html": "/index.html",
     "static/css/2.f4a6a311.chunk.css.map": "/static/css/2.f4a6a311.chunk.css.map",
-    "static/css/main.de8c8ceb.chunk.css.map": "/static/css/main.de8c8ceb.chunk.css.map",
-    "static/js/2.fe99bb82.chunk.js.LICENSE.txt": "/static/js/2.fe99bb82.chunk.js.LICENSE.txt",
+    "static/css/main.7b478cb6.chunk.css.map": "/static/css/main.7b478cb6.chunk.css.map",
+    "static/js/2.d5150444.chunk.js.LICENSE.txt": "/static/js/2.d5150444.chunk.js.LICENSE.txt",
     "static/media/800px-Hyundai_Transys_logo.02f14495.png": "/static/media/800px-Hyundai_Transys_logo.02f14495.png",
     "static/media/Chatbot.7650cb57.png": "/static/media/Chatbot.7650cb57.png",
     "static/media/ITSP.60d289d1.png": "/static/media/ITSP.60d289d1.png",
     "static/media/favicon.6df13f0d.ico": "/static/media/favicon.6df13f0d.ico"
   },
   "entrypoints": [
+<<<<<<< HEAD
     "static/js/runtime-main.3a06144e.js",
     "static/css/2.f4a6a311.chunk.css",
     "static/js/2.fe99bb82.chunk.js",
     "static/css/main.de8c8ceb.chunk.css",
     "static/js/main.f69b3ad5.chunk.js"
+=======
+    "static/js/runtime-main.c466936d.js",
+    "static/css/2.f4a6a311.chunk.css",
+    "static/js/2.d5150444.chunk.js",
+    "static/css/main.7b478cb6.chunk.css",
+    "static/js/main.e67fd055.chunk.js"
+>>>>>>> feature/chat-ui
   ]
 }
