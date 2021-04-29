@@ -17,6 +17,6 @@ router.use((req, res, next) => {
 
 router.get("/", admin.receiptRequest);
 router.put("/", admin.allocateAgent);
-router.get("/:agentId", admin.searchAgent);
+router.get("/agentlist", admin.searchAgent);
 
 module.exports = router;
