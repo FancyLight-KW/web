@@ -84,7 +84,7 @@ const SRImageBlock = styled.div`
 const SRImageBox = styled.div`
   display: flex;
   justify-content: center;
-  width: 75%;
+  width: 100%;
 `;
 const SRInfoSpan = styled.span`
   display: flex;
@@ -96,11 +96,11 @@ const SRInfoSpan = styled.span`
 `;
 const SRInfoDiv = styled.div`
   padding-left: 10px;
-  width: 72%;
+  width: 100%;
 `;
 const SRConentDiv = styled.div`
   padding-left: 10px;
-  width: 72%;
+  width: 100%;
   word-break: break-all;
 `;
 const SRConentSpan = styled.span`
@@ -159,7 +159,11 @@ function MySRModal({
               <HeaContainer>
                 <HeadSpan>※ 나의 요청 세부정보</HeadSpan>
                 <Link to={`/revise/${requestInfos.REQ_SEQ}`}>
-                  <Button variant="primary" size="sm">
+                  <Button
+                    variant="primary"
+                    size="sm"
+                    style={{ marginLeft: "80px" }}
+                  >
                     수정하기
                   </Button>
                 </Link>

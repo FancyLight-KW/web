@@ -204,7 +204,7 @@ function RevisePage() {
           요청 등록일
         </Form.Label>
         <label className="marginleft" />
-        <InfoBlock>{(Requests[0].createdAt || "").split(" ")[0]}</InfoBlock>
+        <InfoBlock> </InfoBlock>
       </Form.Group>
       <form>
         <Form.Group as={Row} controlId="normalForm">
@@ -278,7 +278,11 @@ function RevisePage() {
           ) : (
             <>
               <Col sm="1">
-                <InfoBlock>{Requests[0].REQ_FINISH_DATE}</InfoBlock>
+                <InfoBlock>
+                  {(Requests[0].createdAt || "")
+                    .split(" ")[0]
+                    .replaceAll("-", "/")}
+                </InfoBlock>
               </Col>
               <Button variant="secondary" size="sm" onClick={changeDateHandler}>
                 변경
