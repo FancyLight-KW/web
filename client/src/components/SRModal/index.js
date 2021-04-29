@@ -82,7 +82,7 @@ const SRImageBlock = styled.div`
 const SRImageBox = styled.div`
   display: flex;
   justify-content: center;
-  width: 75%;
+  width: 100%;
 `;
 const SRInfoSpan = styled.span`
   display: flex;
@@ -94,11 +94,11 @@ const SRInfoSpan = styled.span`
 `;
 const SRInfoDiv = styled.div`
   padding-left: 10px;
-  width: 72%;
+  width: 100%;
 `;
 const SRConentDiv = styled.div`
   padding-left: 10px;
-  width: 72%;
+  width: 100%;
   word-break: break-all;
 `;
 const SRConentSpan = styled.span`
