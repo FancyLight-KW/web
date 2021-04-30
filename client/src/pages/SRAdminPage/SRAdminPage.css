@@ -1,5 +1,6 @@
 #thCenterAlign {
   vertical-align: middle;
+  text-align: center;
 }
 #padding_zero {
   padding-right: 0;

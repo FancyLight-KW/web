@@ -20,6 +20,10 @@ const StyledSpan = styled.span`
   font-size: 16px;
   letter-spacing: -0.3px;
 `;
+const Bold = styled.div`
+  font-weight: 700;
+  color: #0069c0;
+`;
 
 function NavBar() {
   //  let dispatch = useDispatch();
@@ -114,7 +118,9 @@ function NavBar() {
                       ? "요원"
                       : "관리자"}
                   </StyledSpan>
-                  <StyledSpan>{userName}</StyledSpan>
+                  <StyledSpan>
+                    <Bold>{userName}</Bold>님
+                  </StyledSpan>
                   <StyledSpan>
                     최근 로그인:
                     <h6
