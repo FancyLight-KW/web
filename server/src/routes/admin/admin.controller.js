@@ -88,13 +88,13 @@ exports.allocateAgent = (req, res) => {
 exports.searchAgent = (req, res) => {
   models.sequelize
     .query(
-      `SELECT MOD_USER_ID, 
-      Users.User_name as NAME,
-      COUNT(case when CSR_STATUS="접수완료" then 1 end) as READY,
-      COUNT(case when CSR_STATUS="요청처리중" then 1 end) as DOING
-      FROM Project.Requests  JOIN Users ON MOD_USER_ID=Users.User_id
-      GROUP BY MOD_USER_ID
-      ORDER BY DOING;`,
+      'SELECT User_id, User_name, \
+      COUNT(case when CSR_STATUS="접수완료" then 1 end) AS READY,\
+      COUNT(case when CSR_STATUS="요청처리중" then 1 end) AS DOING FROM Users \
+      LEFT JOIN Requests ON User_id=MOD_USER_ID\
+      WHERE User_position=2\
+      GROUP BY User_id\
+      order BY DOING, READY;',
       {
         type: models.Sequelize.QueryTypes.SELECT,
       }
