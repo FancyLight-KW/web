@@ -196,7 +196,18 @@ function SRModal({
               <SRImageBlock>
                 <SRInfoSpan>이미지</SRInfoSpan>
                 <SRImageBox>
-                  <img src={NoImage} width="200px" height="200px" />
+                  {requestInfos.REQ_IMG_PATH === null ? (
+                    <img src={NoImage} width="200px" height="200px" />
+                  ) : (
+                    <img
+                      src={requestInfos.REQ_IMG_PATH}
+                      width="200px"
+                      height="200px"
+                      onClick={() => {
+                        window.open(requestInfos.REQ_IMG_PATH);
+                      }}
+                    />
+                  )}
                 </SRImageBox>
               </SRImageBlock>
             </TypeText>

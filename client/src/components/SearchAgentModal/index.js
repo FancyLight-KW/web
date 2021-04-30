@@ -1,11 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import { Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser } from "../../actions/user";
+import { authUser } from "../../actions/auth";
+import axios from "axios";
 import Logo from "../../assets/800px-Hyundai_Transys_logo.png";
 import NoImage from "../../assets/noimage.png";
+import { Table, Button } from "react-bootstrap";
 // import CloseButton from "./CloseButton";
+import cookie from "react-cookies";
+import jwt_decode from "jwt-decode";
 
 const ModalWrapper = styled.div`
   box-sizing: border-box;
@@ -37,18 +42,18 @@ const ModalInner = styled.div`
   box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.5);
   background-color: #fff;
   border-radius: 10px;
-  width: 700px;
-  max-width: 700px;
-  top: 50%;
-  transform: translateY(-50%);
+  width: 1500px;
+  max-width: 1500px;
+  top: 20%;
+  transform: translateY(-20%);
   margin: 0 auto;
   padding: 20px 20px;
 `;
 const ContentWrapper = styled.div`
-    display: flex,
-    text-align: center,
-    width: 100%,
-    flex-direction: column,
+display: flex,
+text-align: center,
+width: 100%,
+flex-direction: column,
 `;
 const LogoBox = styled.div`
   margin: 0px 0px 14px;
@@ -62,16 +67,18 @@ const TypeText = styled.div`
   line-height: 22px;
   font-weight: 700;
 `;
-const HeaContainer = styled.div`
+const HeadSpan = styled.span`
   display: flex;
   width: 100%;
   padding-bottom: 15px;
 `;
-
-const HeadSpan = styled.span`
+const AgentInfoTableWrapper = styled.div`
   display: flex;
-  width: 76%;
+  flex-direction: column;
+  border-radius: 5px;
+  border-top: solid #0069c0;
 `;
+
 const SRInfoBlock = styled.div`
   display: flex;
   width: 100%;
@@ -112,7 +119,7 @@ const SRConentSpan = styled.span`
   height: 200px;
 `;
 
-function MySRModal({
+function SearchAgentModal({
   requestInfos,
   className,
   onClose,
@@ -121,6 +128,24 @@ function MySRModal({
   visible,
   children,
 }) {
+  useEffect(() => {
+    // const userID = JSON.stringify(
+    // jwt_decode(cookie.load("token")).User_id
+    // ).split('"')[1];
+    //  console.log(JSON.stringify(jwt_decode(cookie.load("token"))));
+
+    axios
+      .get(`${process.env.REACT_APP_API_HOST}/admin/agentlist`, {
+        headers: {
+          Authorization: `Bearer ${cookie.load("token")}`,
+        },
+      })
+      .then((response) => {
+        console.log(response);
+        //       setRequests([...response.data]);
+      });
+  }, []);
+
   const onMaskClick = (e) => {
     if (e.target === e.currentTarget) {
       onClose(e);
@@ -134,12 +159,13 @@ function MySRModal({
   };
   //    {closable && <div className="modal-close" onClick={close}></div>}
 
-  //const dispatch = useDispatch();
+  const dispatch = useDispatch();
   //axios.defaults.withCredentials = true;
 
   const onSubmitHandler = (event) => {
     event.preventDefault(); // 새로고침 방지
   };
+  //
 
   return (
     <>
@@ -156,70 +182,53 @@ function MySRModal({
           </LogoBox>
           <ContentWrapper>
             <TypeText>
-              <HeaContainer>
-                <HeadSpan>※ 나의 요청 세부정보</HeadSpan>
-                <Link to={`/revise/${requestInfos.REQ_SEQ}`}>
-                  <Button
-                    variant="primary"
-                    size="sm"
-                    style={{ marginLeft: "80px" }}
-                  >
-                    수정하기
-                  </Button>
-                </Link>
-              </HeaContainer>
-              <SRInfoBlock>
-                <SRInfoSpan>제목</SRInfoSpan>
-                <SRInfoDiv>
-                  {" "}
-                  {requestInfos.TITLE}
-                  <hr />
-                </SRInfoDiv>
-              </SRInfoBlock>
-              <SRInfoBlock>
-                <SRInfoSpan>요청 날짜</SRInfoSpan>
-                <SRInfoDiv>
-                  {" "}
-                  {requestInfos.createdAt.split(" ")[0]}
-                  <hr />
-                </SRInfoDiv>
-              </SRInfoBlock>
-              <SRInfoBlock>
-                <SRInfoSpan>요청 사원</SRInfoSpan>
-                <SRInfoDiv>
-                  {" "}
-                  {requestInfos.REG_USER.User_name} <hr />
-                </SRInfoDiv>
-              </SRInfoBlock>
-              <SRInfoBlock>
-                <SRInfoSpan>접수 상태</SRInfoSpan>
-                <SRInfoDiv>
-                  {" "}
-                  {requestInfos.CSR_STATUS} <hr />
-                </SRInfoDiv>
-              </SRInfoBlock>
-              <SRInfoBlock>
-                <SRConentSpan>내용</SRConentSpan>
-                <SRConentDiv>
-                  {" "}
-                  {requestInfos.CONTENT} <hr />
-                </SRConentDiv>
-              </SRInfoBlock>
-              <SRImageBlock>
-                <SRInfoSpan>이미지</SRInfoSpan>
-                <SRImageBox>
-                  {requestInfos.REQ_IMG_PATH === null ? (
-                    <img src={NoImage} width="200px" height="200px" />
-                  ) : (
-                    <img
-                      src={requestInfos.REQ_IMG_PATH}
-                      width="200px"
-                      height="200px"
-                    />
-                  )}
-                </SRImageBox>
-              </SRImageBlock>
+              <HeadSpan>※ 요원 설정</HeadSpan>
             </TypeText>
+            <AgentInfoTableWrapper>
+              <Table striped bordered hover>
+                <thead>
+                  <tr>
+                    <th rowSpan="2" id="thCenterAlign">
+                      No
+                    </th>
+                    <th rowSpan="2" id="thCenterAlign">
+                      서비스상태
+                    </th>
+                    <th rowSpan="2" id="thCenterAlign">
+                      문의대상
+                    </th>
+                    <th rowSpan="2" id="thCenterAlign">
+                      시스템명1
+                    </th>
+                    <th rowSpan="2" id="thCenterAlign">
+                      시스템명2
+                    </th>
+                    <th rowSpan="2" id="thCenterAlign">
+                      문의유형
+                    </th>
+                    <th rowSpan="2" id="thCenterAlign">
+                      제목
+                    </th>
+
+                    <th colSpan="3">서비스 요청</th>
+                    <th colSpan="2">서비스 접수</th>
+                    <th colSpan="3">서비스 검토/처리</th>
+                  </tr>
+                  <tr>
+                    <th>부서</th>
+                    <th>성명</th>
+                    <th>요청등록일</th>
+                    <th>성명</th>
+                    <th>접수일</th>
+                    <th>설명</th>
+                    <th>예상완료일</th>
+                    <th>처리완료일</th>
+                  </tr>
+                </thead>
+
+                <tbody> </tbody>
+              </Table>
+            </AgentInfoTableWrapper>
 
             <form onSubmit={onSubmitHandler}></form>
 
@@ -231,8 +240,8 @@ function MySRModal({
   );
 }
 
-MySRModal.propTypes = {
+SearchAgentModal.propTypes = {
   visible: PropTypes.bool,
 };
 
-export default MySRModal;
+export default SearchAgentModal;
