@@ -283,7 +283,7 @@ function RevisePage() {
             <>
               <Col sm="1">
                 <InfoBlock>
-                  {(Requests[0].createdAt || "")
+                  {(Requests[0].REQ_FINISH_DATE || "")
                     .split(" ")[0]
                     .replaceAll("-", "/")}
                 </InfoBlock>
