@@ -64,36 +64,71 @@ exports.findAllUSerDisposeRequest = (req, res) => {
 //요청 날짜 수정
 exports.updateRequest = (req, res) => {
   let body = req.body;
+  let params = req.params;
 
-  models.Requests.update(
-    {
-      CSR_STATUS: body.CSR_STATUS,
-      REQ_FINISH_DATE: body.REQ_FINISH_DATE,
-    },
-    {
-      where: {
-        REQ_SEQ: req.params.requestId,
+  if (params.isfinished) {
+    models.Requests.update(
+      {
+        CSR_STATUS: body.CSR_STATUS,
+        REAL_FINISH_DATE: body.DATE,
       },
-    }
-  )
-    .then((result) => {
-      // 수정 성공
-      if (result[0] > 0) {
-        res.send({
-          resultCode: 0,
-          message: "update done",
-        });
-      } else {
-        res.send(402).send({
-          resultCode: 1,
-          message: "글 번호 없음",
-        });
+      {
+        where: {
+          REQ_SEQ: req.params.requestId,
+        },
       }
-    })
-    .catch((err) => {
-      res.status(501).send({
-        resultCode: 2,
-        message: "수정 실패",
+    )
+      .then((result) => {
+        // 수정 성공
+        if (result[0] > 0) {
+          res.send({
+            resultCode: 0,
+            message: "update done",
+          });
+        } else {
+          res.send(402).send({
+            resultCode: 1,
+            message: "글 번호 없음",
+          });
+        }
+      })
+      .catch((err) => {
+        res.status(501).send({
+          resultCode: 2,
+          message: "수정 실패",
+        });
       });
-    });
+  } else {
+    models.Requests.update(
+      {
+        CSR_STATUS: body.CSR_STATUS,
+        EXPRECTED_FINISH_DATE: body.DATE,
+      },
+      {
+        where: {
+          REQ_SEQ: req.params.requestId,
+        },
+      }
+    )
+      .then((result) => {
+        // 수정 성공
+        if (result[0] > 0) {
+          res.send({
+            resultCode: 0,
+            message: "update done",
+          });
+        } else {
+          res.send(402).send({
+            resultCode: 1,
+            message: "글 번호 없음",
+          });
+        }
+      })
+      .catch((err) => {
+        res.status(501).send({
+          resultCode: 2,
+          message: "수정 실패",
+        });
+      });
+  }
 };

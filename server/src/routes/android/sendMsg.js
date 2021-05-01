@@ -3,17 +3,9 @@ const FCM_Admin = require("firebase-admin");
 
 exports.sendMessageToDevice = async (agent, reqNo) => {
   let msg = {
-    android: {
-      notification: {
-        click_action: ".HomeActivity",
-      },
-    },
-    notification: {
-      title: "새로운 요청이 들어왔어요",
-      body: "헤헤",
-    },
     data: {
-      test: "안녕",
+      title: "ddd",
+      body: "dd",
     },
   };
 
