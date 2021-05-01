@@ -150,9 +150,9 @@ function SearchAgentModal({
       });
   }, []);
 
-  const allocateAgent = (agentName) => {
+  const allocateAgent = (agentID) => {
     let agentInfo = {
-      MOD_USER_ID: agentName,
+      MOD_USER_ID: agentID,
       REQ_SEQ: reqSEQ,
     };
     // console.log("Req " + req_seq + " " + agentName);
@@ -237,7 +237,7 @@ function SearchAgentModal({
                           id="thCenterAlign"
                           size="sm"
                           onClick={() => {
-                            allocateAgent(info.User_name);
+                            allocateAgent(info.User_id);
                           }}
                         >
                           할당하기
