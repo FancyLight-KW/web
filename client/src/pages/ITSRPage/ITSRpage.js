@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./ITSRPage.css";
-import { Row, Col } from "react-bootstrap";
+import { Row, Col, Button } from "react-bootstrap";
 import styled, { css } from "styled-components";
 import Form from "react-bootstrap/Form";
 import { Radio } from "antd";
@@ -13,12 +13,18 @@ import dotenv from "dotenv";
 dotenv.config();
 
 // border: 1px solid black;
-const RateBlock = styled.div`
+const ITSRBlock = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 30px;
-  padding: 30px;
+  padding: 30px 40px 0 40px;
   border-radius: 5px;
+`;
+const Header = styled.span`
+  font-weight: 700;
+  color: #0069c0;
+  font-size: 20px;
+  margin-left: -15px;
+  margin-bottom: 20px;
 `;
 const RadioBlock = styled.div`
   position: relative;
@@ -106,10 +112,6 @@ function ITSRPage() {
     //setFile(e.target.files[0]);
   };
 
-  const Submit = (e) => {
-    e.preventDefault();
-  };
-
   const onSubmitHandler = (e) => {
     e.preventDefault();
 
@@ -146,21 +148,11 @@ function ITSRPage() {
 
     alert("요청이 접수되었습니다.");
   };
-  //   <Form.Group as={Row}>
-  //   <Form.Label column sm="1">
-  //     요청자
-  //   </Form.Label>
-  // </Form.Group>
-
-  // <Form.Group as={Row}>
-  //   <Form.Label column sm="1">
-  //     요청자이름
-  //   </Form.Label>
-  // </Form.Group>
 
   return (
-    <RateBlock>
-      <form onSubmit={onSubmitHandler}>
+    <ITSRBlock>
+      <Header>※ IT서비스 요청</Header>
+      <form>
         <Form.Group as={Row} controlId="normalForm">
           <Form.Label column sm="1" className="labelColor">
             문의대상
@@ -222,13 +214,13 @@ function ITSRPage() {
             요청내용
           </Form.Label>
           <Col sm="10" onChange={contentHandler}>
-            <Form.Control as="textarea" rows={5} />
+            <Form.Control as="textarea" maxLength={500} required rows={5} />
           </Col>
         </Form.Group>
 
         <Form.Group as={Row} controlId="normalForm">
           <Form.Label column sm="1" className="labelColor">
-            요청만료일
+            희망완료일
           </Form.Label>
           <Col sm="2">
             <MarginBlock>
@@ -253,10 +245,16 @@ function ITSRPage() {
             <Form.Text muted>(첨부 가능 파일 확장자: jpg, gif, png)</Form.Text>
           </Col>
         </Form.Group>
-
-        <button>요청하기</button>
+        <Button
+          variant="primary"
+          size="sm"
+          id="marginReverse"
+          onClick={onSubmitHandler}
+        >
+          요청하기
+        </Button>
       </form>
-    </RateBlock>
+    </ITSRBlock>
   );
 }
 

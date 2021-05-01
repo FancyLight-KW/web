@@ -12,6 +12,7 @@ import ITSRPage from "./pages/ITSRPage/ITSRpage";
 import MySRPage from "./pages/MySRPage/MySRPage";
 import SRAgentPage from "./pages/SRAgentPage/SRAgentPage";
 import SRAdminPage from "./pages/SRAdminPage/SRAdminPage";
+import RevisePage from "./pages/ReivsePage/RevisePage";
 import NavBar from "./components/NavBar/NavBar";
 import Footer from "./components/Footer";
 import ProtectedRoute from "./ProtectedRoute";
@@ -37,7 +38,7 @@ function App() {
         </Helmet>
         <Router>
           <NavBar />
-          <div>
+          <>
             <Switch>
               <Route exact path="/" component={LandingPage} />
 
@@ -56,9 +57,10 @@ function App() {
               <Route exact path="/mysr" component={MySRPage} />
               <Route exact path="/sragent" component={SRAgentPage} />
               <Route exact path="/sradmin" component={SRAdminPage} />
+              <Route exact path="/revise/:reqNo" component={RevisePage} />
               <Route exact path="/test" component={Testpage} />
             </Switch>
-          </div>
+          </>
         </Router>
       </div>
       <Footer />

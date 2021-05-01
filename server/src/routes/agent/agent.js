@@ -14,5 +14,6 @@ router.use((req, res, next) => {
 });
 
 router.get("/", agent.findAllUSerDisposeRequest);
+router.put("/:requestId/:isfinished", agent.updateRequest);
 
 module.exports = router;

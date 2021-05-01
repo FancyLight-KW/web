@@ -1,4 +1,5 @@
 const Sequelize = require("sequelize");
+
 module.exports = function (sequelize, DataTypes) {
   const Users = sequelize.define(
     "Users",
@@ -46,9 +47,15 @@ module.exports = function (sequelize, DataTypes) {
       ],
     }
   );
-  // Users.associate = (models) => {
-  //   Users.hasMany(models.Requests);
-  // };
+
+  Users.associate = function (models) {
+    Users.hasOne(models.Devices, {
+      foreignKey: "DEVICE_USER_ID",
+    });
+    Users.hasMany(models.Requests, {
+      foreignKey: "REG_USER_ID",
+    });
+  };
 
   return Users;
 };

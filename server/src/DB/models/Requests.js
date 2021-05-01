@@ -21,7 +21,7 @@ module.exports = function (sequelize, DataTypes) {
       },
       CORP_CODE: {
         type: DataTypes.STRING(10),
-        allowNull: false,
+        allowNull: true,
         defaultValue: "DM01",
       },
       TARGET_CODE: {
@@ -59,6 +59,14 @@ module.exports = function (sequelize, DataTypes) {
         type: DataTypes.STRING(14),
         allowNull: true,
       },
+      EXPRECTED_FINISH_DATE: {
+        type: DataTypes.STRING(14),
+        allowNull: true,
+      },
+      REAL_FINISH_DATE: {
+        type: DataTypes.STRING(14),
+        allowNull: true,
+      },
       REG_USER_ID: {
         type: DataTypes.STRING(50),
         allowNull: true,
@@ -75,14 +83,6 @@ module.exports = function (sequelize, DataTypes) {
         type: DataTypes.STRING(100),
         allowNull: true,
       },
-      // updatedAt: {
-      //   type: DataTypes.DATE,
-      //   allowNull: false,
-      // },
-      // createdAt: {
-      //   type: DataTypes.DATE,
-      //   allowNull: false,
-      // },
     },
     {
       sequelize,
@@ -104,11 +104,12 @@ module.exports = function (sequelize, DataTypes) {
     }
   );
 
-  // Requests.associate = (models) => {
-  //   Requests.belongsTo(models.Users, {
-  //     foreignKey: "User_id",
-  //   });
-  // };
+  Requests.associate = function (models) {
+    Requests.belongsTo(models.Users, {
+      as: "REG_USER",
+      foreignKey: "REG_USER_ID",
+    });
+  };
 
   return Requests;
 };

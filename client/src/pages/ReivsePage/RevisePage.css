@@ -1,0 +1,20 @@
+.marginleft {
+  margin-left: 12px;
+}
+#marginReverse {
+  margin-left: -12px;
+}
+.checkbox {
+  vertical-align: text-top;
+}
+.redText {
+  color: crimson;
+}
+label {
+  vertical-align: -1px;
+}
+.labelColor {
+  background-color: whitesmoke;
+  color: #0069c0;
+  font-weight: bold;
+}

@@ -1,3 +1,9 @@
+process.env.NODE_ENV =
+  process.env.NODE_ENV &&
+  process.env.NODE_ENV.trim().toLowerCase() == "production"
+    ? "production"
+    : "development";
+
 const createError = require("http-errors");
 const express = require("express");
 const path = require("path");
@@ -16,7 +22,9 @@ const requestsRouter = require("./src/routes/request/request");
 const agentRouter = require("./src/routes/agent/agent");
 const adminRouter = require("./src/routes/admin/admin");
 const authRouter = require("./src/routes/auth/auth");
+const androidRouter = require("./src/routes/android/android");
 const jwtAuth = require("./src/routes/middleware/jwt.auth");
+const dialogflowRouter = require("./src/routes/chatbot/dialogflow");
 
 models.sequelize
   .sync()
@@ -31,6 +39,13 @@ models.sequelize
 // view engine setup
 app.set("views", path.join(__dirname, "src/views"));
 app.set("view engine", "ejs");
+
+// FCM 연결
+const admin = require("firebase-admin");
+const serviceAccount = require("./firebase-adminsdk.json");
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+});
 
 app.use(logger("dev"));
 app.use(express.json());
@@ -50,7 +65,8 @@ app.use("/mypage", mypageRouter);
 app.use("/requests", requestsRouter);
 app.use("/agent", agentRouter);
 app.use("/admin", adminRouter);
-
+app.use("/android", androidRouter);
+app.use("/dialogflow", dialogflowRouter);
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
   next(createError(404));

@@ -74,7 +74,7 @@ function LandingPage() {
     "접수 대기",
     "접수완료",
     "요청처리중",
-    "처리 지연중",
+    "처리 완료",
   ];
 
   useEffect(() => {
@@ -88,11 +88,13 @@ function LandingPage() {
 
   useEffect(() => {
     // const endpoint = `${process.env.REACT_APP_API_HOST}/requests/getAllRequest?`;
-    axios.get(`${process.env.REACT_APP_API_HOST}/csrstatus`).then((response) => {
-      console.log(response);
-      setCSRInfos(response.data);
-      countCSR(response.data);
-    });
+    axios
+      .get(`${process.env.REACT_APP_API_HOST}/csrstatus`)
+      .then((response) => {
+        console.log(response);
+        setCSRInfos(response.data);
+        countCSR(response.data);
+      });
   }, []);
 
   const countCSR = (val) => {
@@ -104,6 +106,7 @@ function LandingPage() {
   };
 
   return (
+    <>
     <LandingWrapper>
       <FirstRowContainer>
         <Row>
@@ -125,7 +128,7 @@ function LandingPage() {
             )}
           </Col>
           <Col xs={3} md={2} id="padding-zero">
-            <MySRBox>내 요청목록</MySRBox>
+            <MySRBox>공지사항</MySRBox>
           </Col>
         </Row>
       </FirstRowContainer>
@@ -167,7 +170,7 @@ function LandingPage() {
 
                   <Card.Text>
                     <div id="text_green">
-                      {CSRInfos.완료 ? CSRInfos.완료 : "0"}
+                      {CSRInfos.접수완료 ? CSRInfos.접수완료 : "0"}
                     </div>
                     <div id="text_gray">건</div>
                   </Card.Text>
@@ -180,7 +183,7 @@ function LandingPage() {
 
                   <Card.Text>
                     <div id="text_blue">
-                      {CSRInfos.진행 ? CSRInfos.진행 : "0"}
+                      {CSRInfos.요청처리중 ? CSRInfos.요청처리중 : "0"}
                     </div>
                     <div id="text_gray">건</div>
                   </Card.Text>
@@ -191,7 +194,10 @@ function LandingPage() {
                   <Card.Title id="bold"> {csrStatusTypes[4]}</Card.Title>
 
                   <Card.Text>
-                    <div id="text_red">0</div>
+                    <div id="text_red">
+                      {" "}
+                      {CSRInfos.처리완료 ? CSRInfos.처리완료 : "0"}
+                    </div>
                     <div id="text_gray">건</div>
                   </Card.Text>
                 </Card.Body>
@@ -250,6 +256,7 @@ function LandingPage() {
         </Row>
       </ThridRowContainer>
     </LandingWrapper>
+    </>
   );
 }
 

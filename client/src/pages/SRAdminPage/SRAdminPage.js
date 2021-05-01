@@ -5,6 +5,8 @@ import "./SRAdminPage.css";
 import Datepicker from "../../components/Datepicker";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import SRModal from "../../components/SRModal";
+import SearchAgentModal from "../../components/SearchAgentModal";
 import searchImg from "../../assets/Search.png";
 import cookie from "react-cookies";
 import dotenv from "dotenv";
@@ -40,10 +42,17 @@ const SearchBlock = styled.div`
 `;
 const TableContainer = styled.div`
   display: flex;
-  flex-direction: column;
   border-radius: 5px;
   border-top: solid #0069c0;
 `;
+// const InfoContainer = styled.div`
+//   display: flex;
+//   width: 85%;
+// `;
+// const MangageContainer = styled.div`
+//   display: flex;
+//   width: 15%;
+// `;
 const BetweenDate = styled.span`
   padding-left: 10px;
   padding-top: 3px;
@@ -64,6 +73,11 @@ function SRAdminPage() {
   const [Query, setQuery] = useState(
     `${process.env.REACT_APP_API_HOST}/admin` //get All request
   );
+
+  const [sRModalVisible, setSRModalVisible] = useState(false);
+  const [modalSRInfos, setModalSRInfos] = useState([]);
+  const [searchAgentModalVisible, setSearchAgentModalVisible] = useState(false);
+  const [reqSEQ, setREQSEQ] = useState("");
 
   const [StartDate, setStartDate] = useState("");
   const [FinishDate, setFinishDate] = useState("");
@@ -102,8 +116,6 @@ function SRAdminPage() {
   };
 
   useEffect(() => {
-    //console.log(cookie.load("token"));
-    // const endpoint = "http://localhost:5000/requests/getAllRequest?";
     fetchRequests(Query);
   }, [Query]);
 
@@ -138,6 +150,23 @@ function SRAdminPage() {
 
   const targetCodeSearchHandler = (e) => {
     setTargetCode(e.target.value);
+  };
+  const searchAgentOpenModal = (reqseq) => {
+    setSearchAgentModalVisible(true);
+    setREQSEQ(reqseq);
+    //   setMyModalSRInfos(requestInfos);
+  };
+  const searchAgentCloseModal = () => {
+    setSearchAgentModalVisible(false);
+  };
+  const sROpenModal = (requestInfos) => {
+    setSRModalVisible(true);
+    setModalSRInfos(requestInfos);
+    //  console.log(index);
+    //  console.log(Requests[0]["TITLE"]);
+  };
+  const sRCloseModal = () => {
+    setSRModalVisible(false);
   };
 
   return (
@@ -247,43 +276,104 @@ function SRAdminPage() {
                 제목
               </th>
 
-              <th colSpan="3">서비스 요청</th>
-              <th colSpan="2">서비스 접수</th>
-              <th colSpan="3">서비스 검토/처리</th>
+              <th colSpan="3" id="thCenterAlign">
+                서비스 요청
+              </th>
+              <th colSpan="2" id="thCenterAlign">
+                서비스 접수
+              </th>
+              <th colSpan="3" id="thCenterAlign">
+                서비스 검토/처리
+              </th>
+              <th colSpan="4" id="thCenterAlign">
+                요청 처리
+              </th>
             </tr>
             <tr>
-              <th>부서</th>
-              <th>성명</th>
-              <th>요청등록일</th>
-              <th>성명</th>
-              <th>접수일</th>
-              <th>설명</th>
-              <th>예상완료일</th>
-              <th>처리완료일</th>
+              <th id="thCenterAlign">부서</th>
+              <th id="thCenterAlign">성명</th>
+              <th id="thCenterAlign">요청등록일</th>
+              <th id="thCenterAlign">성명</th>
+              <th id="thCenterAlign">접수일</th>
+              <th id="thCenterAlign">설명</th>
+              <th id="thCenterAlign">예상완료일</th>
+              <th id="thCenterAlign"> 처리완료일</th>
+              <th id="thCenterAlign">세부정보</th>
+              <th id="thCenterAlign">승인</th>
+              <th id="thCenterAlign">반려</th>
             </tr>
           </thead>
 
           <tbody>
             {Requests.map((request, index) => (
               <tr key={index}>
-                <td>{request.REQ_SEQ}</td>
-                <td>{request.CSR_STATUS}</td>
-                <td>{request.TARGET_CODE}</td>
-                <td></td>
-                <td></td>
-                <td>{request.REQ_TYPE_CODE}</td>
+                <td id="thCenterAlign">{request.REQ_SEQ}</td>
+                <td id="thCenterAlign">{request.CSR_STATUS}</td>
+                <td id="thCenterAlign">{request.TARGET_CODE}</td>
+                <td id="thCenterAlign"></td>
+                <td id="thCenterAlign"></td>
+                <td id="thCenterAlign">{request.REQ_TYPE_CODE}</td>
                 <td>{request.TITLE}</td>
+                <td id="thCenterAlign"></td>
+                <td></td>
+                <td id="thCenterAlign">{request.createdAt.split(" ")[0]}</td>
                 <td></td>
                 <td></td>
-                <td>{request.createdAt.split("T")[0]}</td>
                 <td></td>
                 <td></td>
                 <td></td>
-                <td></td>
-                <td></td>
+                <td id="thCenterAlign">
+                  {" "}
+                  <Button
+                    variant="link"
+                    size="sm"
+                    onClick={() => {
+                      sROpenModal(request);
+                    }}
+                  >
+                    세부정보 보기
+                  </Button>
+                </td>
+
+                <td id="thCenterAlign">
+                  {" "}
+                  <Button
+                    variant="success"
+                    size="sm"
+                    onClick={() => {
+                      searchAgentOpenModal(request.REQ_SEQ);
+                    }}
+                  >
+                    승인하기
+                  </Button>
+                </td>
+                <td id="thCenterAlign">
+                  {" "}
+                  <Button variant="secondary" size="sm">
+                    반려하기
+                  </Button>
+                </td>
               </tr>
             ))}
           </tbody>
+          {sRModalVisible && (
+            <SRModal
+              requestInfos={modalSRInfos}
+              visible={sRModalVisible}
+              closable={true}
+              maskClosable={true}
+              onClose={sRCloseModal}
+            />
+          )}
+          {searchAgentModalVisible && (
+            <SearchAgentModal
+              reqSEQ={reqSEQ}
+              visible={searchAgentModalVisible}
+              closable={true}
+              maskClosable={true}
+              onClose={searchAgentCloseModal}
+            />
+          )}
         </Table>
       </TableContainer>
     </>
