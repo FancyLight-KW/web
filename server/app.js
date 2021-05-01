@@ -1,4 +1,8 @@
-process.env.NODE_ENV = ( process.env.NODE_ENV && ( process.env.NODE_ENV ).trim().toLowerCase() == 'production' ) ? 'production' : 'development';
+process.env.NODE_ENV =
+  process.env.NODE_ENV &&
+  process.env.NODE_ENV.trim().toLowerCase() == "production"
+    ? "production"
+    : "development";
 
 const createError = require("http-errors");
 const express = require("express");
@@ -20,7 +24,7 @@ const adminRouter = require("./src/routes/admin/admin");
 const authRouter = require("./src/routes/auth/auth");
 const androidRouter = require("./src/routes/android/android");
 const jwtAuth = require("./src/routes/middleware/jwt.auth");
-const dialogflowRouter = require('./src/routes/chatbot/dialogflow');
+const dialogflowRouter = require("./src/routes/chatbot/dialogflow");
 
 models.sequelize
   .sync()
