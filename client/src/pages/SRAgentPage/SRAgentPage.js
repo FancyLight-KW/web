@@ -6,6 +6,7 @@ import Datepicker from "../../components/Datepicker";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import searchImg from "../../assets/Search.png";
+import SRModal from "../../components/SRModal";
 import cookie from "react-cookies";
 import dotenv from "dotenv";
 dotenv.config();
@@ -71,7 +72,18 @@ function SRAgentPage() {
   const [TargetCode, setTargetCode] = useState("");
   const [SearchType, setSearchType] = useState("title");
   const [Keyword, setKeyword] = useState("");
+  const [sRModalVisible, setSRModalVisible] = useState(false);
+  const [modalSRInfos, setModalSRInfos] = useState([]);
 
+  const sROpenModal = (requestInfos) => {
+    setSRModalVisible(true);
+    setModalSRInfos(requestInfos);
+    //  console.log(index);
+    //  console.log(Requests[0]["TITLE"]);
+  };
+  const sRCloseModal = () => {
+    setSRModalVisible(false);
+  };
   const SearchHandler = () => {
     const queryKeyword =
       SearchType === "title"
@@ -135,7 +147,6 @@ function SRAgentPage() {
   const csrStatusSearchHandler = (e) => {
     setCSRStatus(e.target.value);
   };
-
   const targetCodeSearchHandler = (e) => {
     setTargetCode(e.target.value);
   };
@@ -247,9 +258,18 @@ function SRAgentPage() {
                 제목
               </th>
 
-              <th colSpan="3">서비스 요청</th>
-              <th colSpan="2">서비스 접수</th>
-              <th colSpan="3">서비스 검토/처리</th>
+              <th colSpan="3" id="thCenterAlign">
+                서비스 요청
+              </th>
+              <th colSpan="2" id="thCenterAlign">
+                서비스 접수
+              </th>
+              <th colSpan="3" id="thCenterAlign">
+                서비스 검토/처리
+              </th>
+              <th colSpan="3" id="thCenterAlign">
+                서비스 처리 상태관리
+              </th>
             </tr>
             <tr>
               <th>부서</th>
@@ -260,6 +280,9 @@ function SRAgentPage() {
               <th>설명</th>
               <th>예상완료일</th>
               <th>처리완료일</th>
+              <th id="thCenterAlign">서비스 상태</th>
+              <th id="thCenterAlign">세부정보 보기</th>
+              <th id="thCenterAlign">상태관리</th>
             </tr>
           </thead>
 
@@ -275,15 +298,43 @@ function SRAgentPage() {
                 <td>{request.TITLE}</td>
                 <td></td>
                 <td></td>
-                <td>{request.createdAt.split("T")[0]}</td>
+                <td>{request.createdAt.split(" ")[0]}</td>
                 <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
+                <td></td>
+                <td id="thCenterAlign">
+                  {" "}
+                  <Button
+                    variant="link"
+                    size="sm"
+                    onClick={() => {
+                      sROpenModal(request);
+                    }}
+                  >
+                    세부정보 보기
+                  </Button>
+                </td>
+                <td id="thCenterAlign">
+                  {" "}
+                  <Button variant="info" size="sm" onClick={() => {}}>
+                    상태관리하기
+                  </Button>
+                </td>
               </tr>
             ))}
           </tbody>
+          {sRModalVisible && (
+            <SRModal
+              requestInfos={modalSRInfos}
+              visible={sRModalVisible}
+              closable={true}
+              maskClosable={true}
+              onClose={sRCloseModal}
+            />
+          )}
         </Table>
       </TableContainer>
     </>

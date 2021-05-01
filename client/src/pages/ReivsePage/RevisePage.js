@@ -3,7 +3,7 @@ import "./RevisePage.css";
 import { Row, Col, Button } from "react-bootstrap";
 import styled, { css } from "styled-components";
 import Form from "react-bootstrap/Form";
-import { useParams } from "react-router";
+import { useHistory, useParams } from "react-router";
 import { Radio } from "antd";
 import Checkbox from "antd/lib/checkbox/Checkbox";
 import axios from "axios";
@@ -42,6 +42,7 @@ const InfoBlock = styled.div`
 `;
 
 function RevisePage() {
+  let history = useHistory();
   const { reqNo } = useParams();
   console.log(reqNo);
 
@@ -126,7 +127,7 @@ function RevisePage() {
 
   const finishDateHandler = (date) => {
     setReqFinishDate(date);
-    // console.log(ReqFinishDate);
+    console.log("ReqFinishDate" + ReqFinishDate);
   };
   const changeDateHandler = () => {
     setChangeDate(true);
@@ -172,8 +173,8 @@ function RevisePage() {
     formData.append("imagefile", File);
     formData.append("body", body);
 
-    console.log(formData);
-    console.log(body);
+    console.log("수정" + formData);
+    console.log("수정" + body);
     //  console.log("Added" + body);
 
     axios
@@ -184,7 +185,10 @@ function RevisePage() {
       })
       .then((response) => {
         console.log(response);
-        alert("수정되었습니다.");
+        if (response.data.resultcode === 0) {
+          alert("수정되었습니다.");
+          history.push("/mysr");
+        }
       });
   };
 
