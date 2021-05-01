@@ -1,39 +1,6 @@
 const models = require("../../DB/models");
+const { Op } = require("sequelize");
 
-//모든 요원 list
-exports.findAllAgent = (req, res) => {
-  models.Users.findAll({
-    raw: true,
-    nest: true,
-    include: [
-      {
-        model: models.Users,
-        as: "REG_USER",
-        attributes: ["User_name"],
-      },
-    ],
-    where: {
-      User_position: 2,
-    },
-  })
-    .then((result) => {
-      console.log(result);
-      let list = [];
-      result.forEach((element) => {
-        list.push([element["User_id"], element["User_name"]]);
-      });
-
-      res.send({
-        data: list,
-      });
-    })
-    .catch((err) => {
-      res.status(420).send({
-        resultCode: 1,
-        message: "요원 검색 에러",
-      });
-    });
-};
 //요원에게 할당된 요청
 exports.findAllUSerDisposeRequest = (req, res) => {
   models.Requests.findAll({
@@ -48,13 +15,16 @@ exports.findAllUSerDisposeRequest = (req, res) => {
     ],
     where: {
       MOD_USER_ID: req.user.User_id,
-      CSR_STATUS: "접수완료",
+      CSR_STATUS: {
+        [Op.or]: ["접수완료", "요청처리중"],
+      },
     },
   })
     .then((result) => {
       res.send(result);
     })
     .catch((err) => {
+      console.log(err);
       res.status(500).send({
         resultCode: 1,
         message: "find error",

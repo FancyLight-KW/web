@@ -22,9 +22,10 @@ exports.myInProgressRequest = (req, res) => {
     order: [
       [
         Sequelize.literal(
-          `CASE WHEN "CSR_STATUS" = "접수대기" THEN 0 \
-          WHEN "CSR_STATUS" = "접수완료" THEN 1 \
-          WHEN "CSR_STATUS" = "요청대기중" THEN 2 END DESC`
+          `CASE WHEN "CSR_STATUS" = "요청반려" THEN 0\
+          WHEN "CSR_STATUS" = "접수대기" THEN 1 \
+          WHEN "CSR_STATUS" = "접수완료" THEN 2 \
+          WHEN "CSR_STATUS" = "요청처리중" THEN 3 END DESC`
         ),
       ],
     ],

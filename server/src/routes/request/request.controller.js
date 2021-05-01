@@ -211,6 +211,7 @@ exports.findRequest = (req, res) => {
       },
     ],
     where: query,
+    order: [["REQ_SEQ", "DESC"]],
   })
     .then((result) => {
       res.send(result);
