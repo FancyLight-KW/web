@@ -66,8 +66,9 @@ exports.findAllUSerDisposeRequest = (req, res) => {
 exports.updateRequest = (req, res) => {
   let body = req.body;
   let params = req.params;
-
-  if (params.isfinished) {
+  console.log(params);
+  if (params.isfinished != 0) {
+    console.log("요청끝");
     models.Requests.update(
       {
         CSR_STATUS: body.CSR_STATUS,
@@ -75,7 +76,7 @@ exports.updateRequest = (req, res) => {
       },
       {
         where: {
-          REQ_SEQ: req.params.requestId,
+          REQ_SEQ: params.requestId,
         },
       }
     )
@@ -100,6 +101,7 @@ exports.updateRequest = (req, res) => {
         });
       });
   } else {
+    console.log("요청진행중");
     models.Requests.update(
       {
         CSR_STATUS: body.CSR_STATUS,
