@@ -42,8 +42,8 @@ const ModalInner = styled.div`
   box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.5);
   background-color: #fff;
   border-radius: 10px;
-  width: 1500px;
-  max-width: 1500px;
+  width: 1000px;
+  max-width: 10 00px;
   top: 20%;
   transform: translateY(-20%);
   margin: 0 auto;
@@ -120,7 +120,7 @@ const SRConentSpan = styled.span`
 `;
 
 function SearchAgentModal({
-  requestInfos,
+  reqSEQ,
   className,
   onClose,
   maskClosable,
@@ -128,11 +128,15 @@ function SearchAgentModal({
   visible,
   children,
 }) {
+  const [agentInfos, setAgentInfos] = useState([]);
+
   useEffect(() => {
     // const userID = JSON.stringify(
     // jwt_decode(cookie.load("token")).User_id
     // ).split('"')[1];
     //  console.log(JSON.stringify(jwt_decode(cookie.load("token"))));
+    let req_seq = reqSEQ;
+    console.log("req" + reqSEQ);
 
     axios
       .get(`${process.env.REACT_APP_API_HOST}/admin/agentlist`, {
@@ -142,9 +146,31 @@ function SearchAgentModal({
       })
       .then((response) => {
         console.log(response);
-        //       setRequests([...response.data]);
+        setAgentInfos([...response.data]);
       });
   }, []);
+
+  const allocateAgent = (agentName) => {
+    let agentInfo = {
+      MOD_USER_ID: agentName,
+      REQ_SEQ: reqSEQ,
+    };
+    // console.log("Req " + req_seq + " " + agentName);
+
+    axios
+      .put(`${process.env.REACT_APP_API_HOST}/admin `, agentInfo, {
+        headers: {
+          Authorization: `Bearer ${cookie.load("token")}`,
+        },
+      })
+      .then((response) => {
+        console.log(response);
+        if (response.data.resultCode === 0) {
+          alert("할당되었습니다.");
+          window.location.reload();
+        }
+      });
+  };
 
   const onMaskClick = (e) => {
     if (e.target === e.currentTarget) {
@@ -188,45 +214,38 @@ function SearchAgentModal({
               <Table striped bordered hover>
                 <thead>
                   <tr>
-                    <th rowSpan="2" id="thCenterAlign">
-                      No
-                    </th>
-                    <th rowSpan="2" id="thCenterAlign">
-                      서비스상태
-                    </th>
-                    <th rowSpan="2" id="thCenterAlign">
-                      문의대상
-                    </th>
-                    <th rowSpan="2" id="thCenterAlign">
-                      시스템명1
-                    </th>
-                    <th rowSpan="2" id="thCenterAlign">
-                      시스템명2
-                    </th>
-                    <th rowSpan="2" id="thCenterAlign">
-                      문의유형
-                    </th>
-                    <th rowSpan="2" id="thCenterAlign">
-                      제목
-                    </th>
-
-                    <th colSpan="3">서비스 요청</th>
-                    <th colSpan="2">서비스 접수</th>
-                    <th colSpan="3">서비스 검토/처리</th>
-                  </tr>
-                  <tr>
-                    <th>부서</th>
-                    <th>성명</th>
-                    <th>요청등록일</th>
-                    <th>성명</th>
-                    <th>접수일</th>
-                    <th>설명</th>
-                    <th>예상완료일</th>
-                    <th>처리완료일</th>
+                    <th id="thCenterAlign">No</th>
+                    <th id="thCenterAlign">요원 이름</th>
+                    <th id="thCenterAlign">할당된 작업 개수</th>
+                    <th id="thCenterAlign">작업 중인 개수</th>
+                    <th id="thCenterAlign">할당</th>
                   </tr>
                 </thead>
 
-                <tbody> </tbody>
+                <tbody>
+                  {agentInfos.map((info, index) => (
+                    <tr key={index}>
+                      <td id="thCenterAlign">{index}</td>
+                      <td id="thCenterAlign">{info.User_name}</td>
+                      <td id="thCenterAlign">{info.READY}</td>
+                      <td id="thCenterAlign">{info.DOING}</td>
+
+                      <td id="thCenterAlign">
+                        {" "}
+                        <Button
+                          variant="success"
+                          id="thCenterAlign"
+                          size="sm"
+                          onClick={() => {
+                            allocateAgent(info.User_name);
+                          }}
+                        >
+                          할당하기
+                        </Button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
               </Table>
             </AgentInfoTableWrapper>
 
