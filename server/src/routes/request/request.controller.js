@@ -199,7 +199,7 @@ exports.delete = (req, res) => {
 
 exports.findRequest = (req, res) => {
   let query = this.queryString(req.query);
-
+  console.log(query);
   models.Requests.findAll({
     raw: true,
     nest: true,

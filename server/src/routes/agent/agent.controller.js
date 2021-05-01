@@ -56,6 +56,7 @@ exports.findAllUSerDisposeRequest = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
+        resultCode: 1,
         message: "find error",
       });
     });

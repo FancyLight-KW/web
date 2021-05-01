@@ -34,6 +34,7 @@ exports.myInProgressRequest = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
+        resultCode: 1,
         message: "mypage error",
       });
     });
@@ -61,6 +62,7 @@ exports.myFinishedRequest = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
+        resultCode: 1,
         message: "done request error",
       });
     });
