@@ -18,3 +18,4 @@ server/uploads/*
 server/.prettierignore
 server/.prettierrc
 server/firebase-adminsdk.json
+server/chatbotkey.json

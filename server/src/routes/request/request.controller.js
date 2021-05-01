@@ -1,6 +1,7 @@
 const models = require("../../DB/models");
 const Sequelize = require("sequelize");
 const moment = require("../../config/moment.config");
+const fs = require("fs");
 
 const Op = Sequelize.Op;
 
@@ -127,31 +128,34 @@ exports.update = (req, res) => {
       message: "Content cannot empty",
     });
   }
-  // 이미지 수정 추가해야함
-  models.Requests.update(
-    {
-      TITLE: body.TITLE,
-      CONTENT: body.CONTENT,
-      CORP_CODE: body.CORP_CODE,
-      TARGET_CODE: body.TARGET_CODE,
-      SYSTEM_GROUP_CODE: body.SYSTEM_GROUP_CODE,
-      SYSTEM_CODE: body.SYSTEM_CODE,
-      REQ_TYPE_CODE: body.REQ_TYPE_CODE,
-      TM_APPROVAL_REQ_YN: body.TM_APPROVAL_REQ_YN,
-      CSR_STATUS: body.CSR_STATUS,
-      IMSI_YN: body.IMSI_YN,
-      REQ_FINISH_DATE: body.REQ_FINISH_DATE,
-      REG_USER_ID: body.REG_USER_ID,
-      REG_DATE: body.REG_DATE,
-      MOD_USER_ID: body.MOD_USER_ID,
-      //updatedAt: nowDate,
+  let query = {
+    TITLE: body.TITLE,
+    CONTENT: body.CONTENT,
+    CORP_CODE: body.CORP_CODE,
+    TARGET_CODE: body.TARGET_CODE,
+    SYSTEM_GROUP_CODE: body.SYSTEM_GROUP_CODE,
+    SYSTEM_CODE: body.SYSTEM_CODE,
+    REQ_TYPE_CODE: body.REQ_TYPE_CODE,
+    TM_APPROVAL_REQ_YN: body.TM_APPROVAL_REQ_YN,
+    CSR_STATUS: body.CSR_STATUS,
+    IMSI_YN: body.IMSI_YN,
+    REQ_FINISH_DATE: body.REQ_FINISH_DATE,
+    REG_USER_ID: body.REG_USER_ID,
+    REG_DATE: body.REG_DATE,
+    MOD_USER_ID: body.MOD_USER_ID,
+    //updatedAt: nowDate,
+  };
+
+  if (req.file) {
+    query["REQ_IMG_PATH"] =
+      process.env.SERVER_HOST + "/uploads/" + req.file.filename;
+  }
+
+  models.Requests.update(query, {
+    where: {
+      REQ_SEQ: req.params.requestId,
     },
-    {
-      where: {
-        REQ_SEQ: req.params.requestId,
-      },
-    }
-  )
+  })
     .then((result) => {
       if (result[0] == 1) {
         res.send({
