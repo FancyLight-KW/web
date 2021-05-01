@@ -1,4 +1,5 @@
 process.env.NODE_ENV = ( process.env.NODE_ENV && ( process.env.NODE_ENV ).trim().toLowerCase() == 'production' ) ? 'production' : 'development';
+GOOGLE_APPLICATION_CREDENTIALS = "./itsp-chatbot-app-c90dbf21721e.json";
 
 const createError = require("http-errors");
 const express = require("express");
