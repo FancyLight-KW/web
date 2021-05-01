@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import searchImg from "../../assets/Search.png";
 import SRModal from "../../components/SRModal";
+import SRStateModal from "../../components/SRStateModal";
 import cookie from "react-cookies";
 import dotenv from "dotenv";
 dotenv.config();
@@ -29,10 +30,12 @@ const TopFirstRowhWrapper = styled.div`
   display: flex;
   width: 100%;
   height: 33%;
+  color: black;
 `;
 const SecondRowWrapper = styled.div`
   display: flex;
   height: 33%;
+  color: black;
 `;
 const SearchBlock = styled.div`
   display: flex;
@@ -73,17 +76,25 @@ function SRAgentPage() {
   const [SearchType, setSearchType] = useState("title");
   const [Keyword, setKeyword] = useState("");
   const [sRModalVisible, setSRModalVisible] = useState(false);
+  const [sRStateModalVisible, setSRStateModalVisible] = useState(false);
   const [modalSRInfos, setModalSRInfos] = useState([]);
+  const [reqSEQ, setREQSEQ] = useState("");
 
   const sROpenModal = (requestInfos) => {
     setSRModalVisible(true);
     setModalSRInfos(requestInfos);
-    //  console.log(index);
-    //  console.log(Requests[0]["TITLE"]);
   };
   const sRCloseModal = () => {
     setSRModalVisible(false);
   };
+  const sRStateOpenModal = (reqseq) => {
+    setSRStateModalVisible(true);
+    setREQSEQ(reqseq);
+  };
+  const sRStateCloseModal = () => {
+    setSRStateModalVisible(false);
+  };
+
   const SearchHandler = () => {
     const queryKeyword =
       SearchType === "title"
@@ -171,13 +182,7 @@ function SRAgentPage() {
               width: "10%",
               justifyContent: "flex-end",
             }}
-          >
-            <Link to="/itsr">
-              <Button variant="primary" size="sm" id="itsrButton">
-                IT 서비스 요청
-              </Button>
-            </Link>
-          </div>
+          ></div>
         </PageNameWrapper>
         <TopFirstRowhWrapper>
           <SearchBlock>
@@ -236,56 +241,52 @@ function SRAgentPage() {
         <Table striped bordered hover>
           <thead>
             <tr>
-              <th rowSpan="2" id="thCenterAlign">
+              <th rowSpan="2" id="centerAlign">
                 No
               </th>
-              <th rowSpan="2" id="thCenterAlign">
+              <th rowSpan="2" id="centerAlign">
                 서비스상태
               </th>
-              <th rowSpan="2" id="thCenterAlign">
+              <th rowSpan="2" id="centerAlign">
                 문의대상
               </th>
-              <th rowSpan="2" id="thCenterAlign">
+              <th rowSpan="2" id="centerAlign">
                 시스템명1
               </th>
-              <th rowSpan="2" id="thCenterAlign">
+              <th rowSpan="2" id="centerAlign">
                 시스템명2
               </th>
-              <th rowSpan="2" id="thCenterAlign">
+              <th rowSpan="2" id="centerAlign">
                 문의유형
               </th>
-              <th rowSpan="2" id="thCenterAlign">
+              <th rowSpan="2" id="centerAlign">
                 제목
               </th>
 
-              <th colSpan="3" id="thCenterAlign">
+              <th colSpan="2" id="centerAlign">
                 서비스 요청
               </th>
-              <th colSpan="2" id="thCenterAlign">
+              <th colSpan="2" id="centerAlign">
                 서비스 접수
               </th>
-              <th colSpan="3" id="thCenterAlign">
+              <th colSpan="2" id="centerAlign">
                 서비스 검토/처리
               </th>
-              <th colSpan="3" id="thCenterAlign">
+              <th colSpan="2" id="centerAlign">
                 서비스 처리 상태관리
               </th>
             </tr>
             <tr>
-              <th>부서</th>
-              <th>성명</th>
+              <th>요청자</th>
               <th>요청등록일</th>
-              <th>성명</th>
+              <th>접수자</th>
               <th>접수일</th>
-              <th>설명</th>
               <th>예상완료일</th>
               <th>처리완료일</th>
-              <th id="thCenterAlign">서비스 상태</th>
-              <th id="thCenterAlign">세부정보 보기</th>
-              <th id="thCenterAlign">상태관리</th>
+              <th id="centerAlign">세부정보 보기</th>
+              <th id="centerAlign">상태관리</th>
             </tr>
           </thead>
-
           <tbody>
             {Requests.map((request, index) => (
               <tr key={index}>
@@ -297,15 +298,12 @@ function SRAgentPage() {
                 <td>{request.REQ_TYPE_CODE}</td>
                 <td>{request.TITLE}</td>
                 <td></td>
-                <td></td>
                 <td>{request.createdAt.split(" ")[0]}</td>
                 <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
-                <td></td>
-                <td></td>
-                <td id="thCenterAlign">
+                <td id="centerAlign">
                   {" "}
                   <Button
                     variant="link"
@@ -317,9 +315,15 @@ function SRAgentPage() {
                     세부정보 보기
                   </Button>
                 </td>
-                <td id="thCenterAlign">
+                <td id="centerAlign">
                   {" "}
-                  <Button variant="info" size="sm" onClick={() => {}}>
+                  <Button
+                    variant="info"
+                    size="sm"
+                    onClick={() => {
+                      sRStateOpenModal(request.REQ_SEQ);
+                    }}
+                  >
                     상태관리하기
                   </Button>
                 </td>
@@ -333,6 +337,15 @@ function SRAgentPage() {
               closable={true}
               maskClosable={true}
               onClose={sRCloseModal}
+            />
+          )}
+          {sRStateModalVisible && (
+            <SRStateModal
+              reqSEQ={reqSEQ}
+              visible={sRStateModalVisible}
+              closable={true}
+              maskClosable={true}
+              onClose={sRStateCloseModal}
             />
           )}
         </Table>
