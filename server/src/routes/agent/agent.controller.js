@@ -37,6 +37,15 @@ exports.findAllAgent = (req, res) => {
 //요원에게 할당된 요청
 exports.findAllUSerDisposeRequest = (req, res) => {
   models.Requests.findAll({
+    raw: true,
+    nest: true,
+    include: [
+      {
+        model: models.Users,
+        as: "REG_USER",
+        attributes: ["User_name"],
+      },
+    ],
     where: {
       MOD_USER_ID: req.user.User_id,
       CSR_STATUS: "접수완료",

@@ -128,7 +128,6 @@ exports.update = (req, res) => {
     });
   }
   // 이미지 수정 추가해야함
-  console.log(body.TITLE);
   models.Requests.update(
     {
       TITLE: body.TITLE,
