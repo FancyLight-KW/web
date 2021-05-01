@@ -17,6 +17,7 @@ router.use((req, res, next) => {
 
 router.get("/", admin.receiptRequest);
 router.put("/", admin.allocateAgent);
+router.put("/deny", admin.denyRequest);
 router.get("/agentlist", admin.searchAgent);
 
 module.exports = router;
