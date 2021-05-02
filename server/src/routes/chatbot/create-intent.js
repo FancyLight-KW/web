@@ -14,7 +14,7 @@ const intentsClient = new dialogflow.IntentsClient();
 
 exports.createIntent = async (req, res) => {
   // Construct request
-
+  
   // The path to identify the agent that owns the created intent.
   const agentPath = intentsClient.agentPath(projectId);
 
