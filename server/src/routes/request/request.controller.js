@@ -210,7 +210,7 @@ exports.delete = (req, res) => {
     .then((result) => {
       if (result > 0) {
         res.send({
-          resultcode: 0,
+          resultCode: 0,
           message: `${req.params.requestId} delete success`,
         });
       } else {
