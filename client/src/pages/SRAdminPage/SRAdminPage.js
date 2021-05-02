@@ -30,10 +30,12 @@ const TopFirstRowhWrapper = styled.div`
   display: flex;
   width: 100%;
   height: 33%;
+  color: black;
 `;
 const SecondRowWrapper = styled.div`
   display: flex;
   height: 33%;
+  color: black;
 `;
 const SearchBlock = styled.div`
   display: flex;
@@ -168,6 +170,25 @@ function SRAdminPage() {
   const sRCloseModal = () => {
     setSRModalVisible(false);
   };
+  const denySRHandler = (reqSEQ) => {
+    let reqseq = {
+      REQ_SEQ: reqSEQ,
+    };
+
+    axios
+      .put(`${process.env.REACT_APP_API_HOST}/admin/deny`, reqseq, {
+        headers: {
+          Authorization: `Bearer ${cookie.load("token")}`,
+        },
+      })
+      .then((response) => {
+        console.log(response);
+        if (response.data.resultCode === 0) {
+          alert("요청이 반려되었습니다.");
+          window.location.reload();
+        }
+      });
+  };
 
   return (
     <>
@@ -254,75 +275,74 @@ function SRAdminPage() {
         <Table striped bordered hover>
           <thead>
             <tr>
-              <th rowSpan="2" id="thCenterAlign">
+              <th rowSpan="2" id="centerAlign">
                 No
               </th>
-              <th rowSpan="2" id="thCenterAlign">
+              <th rowSpan="2" id="centerAlign">
                 서비스상태
               </th>
-              <th rowSpan="2" id="thCenterAlign">
+              <th rowSpan="2" id="centerAlign">
                 문의대상
               </th>
-              <th rowSpan="2" id="thCenterAlign">
+              <th rowSpan="2" id="centerAlign">
                 시스템명1
               </th>
-              <th rowSpan="2" id="thCenterAlign">
+              <th rowSpan="2" id="centerAlign">
                 시스템명2
               </th>
-              <th rowSpan="2" id="thCenterAlign">
+              <th rowSpan="2" id="centerAlign">
                 문의유형
               </th>
-              <th rowSpan="2" id="thCenterAlign">
+              <th rowSpan="2" id="centerAlign">
                 제목
               </th>
 
-              <th colSpan="3" id="thCenterAlign">
+              <th colSpan="2" id="centerAlign">
                 서비스 요청
               </th>
-              <th colSpan="2" id="thCenterAlign">
+              <th colSpan="2" id="centerAlign">
                 서비스 접수
               </th>
-              <th colSpan="3" id="thCenterAlign">
+              <th colSpan="2" id="centerAlign">
                 서비스 검토/처리
               </th>
-              <th colSpan="4" id="thCenterAlign">
+              <th colSpan="4" id="centerAlign">
                 요청 처리
               </th>
             </tr>
             <tr>
-              <th id="thCenterAlign">부서</th>
-              <th id="thCenterAlign">성명</th>
-              <th id="thCenterAlign">요청등록일</th>
-              <th id="thCenterAlign">성명</th>
-              <th id="thCenterAlign">접수일</th>
-              <th id="thCenterAlign">설명</th>
-              <th id="thCenterAlign">예상완료일</th>
-              <th id="thCenterAlign"> 처리완료일</th>
-              <th id="thCenterAlign">세부정보</th>
-              <th id="thCenterAlign">승인</th>
-              <th id="thCenterAlign">반려</th>
+              <th id="centerAlign">요청자</th>
+              <th id="centerAlign">요청등록일</th>
+              <th id="centerAlign">성명</th>
+              <th id="centerAlign">접수일</th>
+
+              <th id="centerAlign">예상완료일</th>
+              <th id="centerAlign"> 처리완료일</th>
+              <th id="centerAlign">세부정보</th>
+              <th id="centerAlign">승인</th>
+              <th id="centerAlign">반려</th>
             </tr>
           </thead>
 
           <tbody>
             {Requests.map((request, index) => (
               <tr key={index}>
-                <td id="thCenterAlign">{request.REQ_SEQ}</td>
-                <td id="thCenterAlign">{request.CSR_STATUS}</td>
-                <td id="thCenterAlign">{request.TARGET_CODE}</td>
-                <td id="thCenterAlign"></td>
-                <td id="thCenterAlign"></td>
-                <td id="thCenterAlign">{request.REQ_TYPE_CODE}</td>
+                <td id="centerAlign">{request.REQ_SEQ}</td>
+                <td id="centerAlign">{request.CSR_STATUS}</td>
+                <td id="centerAlign">{request.TARGET_CODE}</td>
+                <td id="centerAlign"></td>
+                <td id="centerAlign">{request.REQ_TYPE_CODE}</td>
+                <td id="centerAlign"></td>
                 <td>{request.TITLE}</td>
-                <td id="thCenterAlign"></td>
+                <td id="centerAlign"></td>
                 <td></td>
-                <td id="thCenterAlign">{request.createdAt.split(" ")[0]}</td>
-                <td></td>
-                <td></td>
+                <td id="centerAlign">{request.createdAt.split(" ")[0]}</td>
                 <td></td>
                 <td></td>
                 <td></td>
-                <td id="thCenterAlign">
+
+                <td></td>
+                <td id="centerAlign">
                   {" "}
                   <Button
                     variant="link"
@@ -335,7 +355,7 @@ function SRAdminPage() {
                   </Button>
                 </td>
 
-                <td id="thCenterAlign">
+                <td id="centerAlign">
                   {" "}
                   <Button
                     variant="success"
@@ -347,9 +367,15 @@ function SRAdminPage() {
                     승인하기
                   </Button>
                 </td>
-                <td id="thCenterAlign">
+                <td id="centerAlign">
                   {" "}
-                  <Button variant="secondary" size="sm">
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    onClick={() => {
+                      denySRHandler(request.REQ_SEQ);
+                    }}
+                  >
                     반려하기
                   </Button>
                 </td>
