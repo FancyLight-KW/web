@@ -201,9 +201,8 @@ function NavBar() {
           ) : userLevel === 2 ? (
             <NavDropdown title="요원용" id="dropDown-nav">
               <NavDropdown.Item>
-                <Link style={{ color: "black" }}>요청</Link>
+                <Link style={{ color: "black" }}>나의 요청목록</Link>
               </NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.3">?</NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item href="sragent">나의 작업목록</NavDropdown.Item>
             </NavDropdown>
