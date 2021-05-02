@@ -17,6 +17,7 @@ exports.receiptRequest = (req, res) => {
     ],
     where: {
       MOD_USER_ID: { [Op.eq]: null },
+      CSR_STATUS: { [Op.ne]: "요청반려" },
     },
   })
     .then((result) => {

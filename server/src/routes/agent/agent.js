@@ -13,8 +13,7 @@ router.use((req, res, next) => {
   }
 });
 
-router.get("/list", agent.findAllAgent);
 router.get("/", agent.findAllUSerDisposeRequest);
-router.put("/:requestId", agent.updateRequest);
+router.put("/:requestId/:isfinished", agent.updateRequest);
 
 module.exports = router;

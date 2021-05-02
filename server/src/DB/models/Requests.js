@@ -59,6 +59,14 @@ module.exports = function (sequelize, DataTypes) {
         type: DataTypes.STRING(14),
         allowNull: true,
       },
+      EXPRECTED_FINISH_DATE: {
+        type: DataTypes.STRING(14),
+        allowNull: true,
+      },
+      REAL_FINISH_DATE: {
+        type: DataTypes.STRING(14),
+        allowNull: true,
+      },
       REG_USER_ID: {
         type: DataTypes.STRING(50),
         allowNull: true,

@@ -4,8 +4,8 @@ const FCM_Admin = require("firebase-admin");
 exports.sendMessageToDevice = async (agent, reqNo) => {
   let msg = {
     data: {
-      title: "TITLE",
-      body: "BODY",
+      title: "ddd",
+      body: "dd",
     },
   };
 
