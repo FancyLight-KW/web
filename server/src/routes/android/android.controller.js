@@ -5,15 +5,20 @@ exports.addDeviceID = (req, res) => {
     where: {
       DEVICE_USER_ID: req.user.User_id,
     },
-  }).then((result) => {
-    if (result) {
-      models.Devices.destroy({
-        where: {
-          DEVICE_USER_ID: req.user.User_id,
-        },
-      });
-    }
-  });
+  })
+    .then((result) => {
+      console.log(result);
+      if (result) {
+        models.Devices.destroy({
+          where: {
+            DEVICE_USER_ID: req.user.User_id,
+          },
+        });
+      }
+    })
+    .catch((err) => {
+      console.log("기기정보 검색 실패");
+    });
 
   models.Devices.create({
     DEVICE_USER_ID: req.user.User_id,

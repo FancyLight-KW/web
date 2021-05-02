@@ -145,8 +145,21 @@ exports.update = (req, res) => {
     MOD_USER_ID: body.MOD_USER_ID,
     //updatedAt: nowDate,
   };
-
   if (req.file) {
+    models.Requests.findOne({
+      attributes: ["REQ_IMG_PATH"],
+      where: {
+        REQ_SEQ: req.params.requestId,
+      },
+    }).then((result) => {
+      let path = result.REQ_IMG_PATH;
+      let pastFile = path.split("/")[4];
+      console.log(pastFile);
+
+      fs.unlink(path.join(appRoot, "uploads", pastFile), (err) => {
+        console.log(err);
+      });
+    });
     query["REQ_IMG_PATH"] =
       process.env.SERVER_HOST + "/uploads/" + req.file.filename;
   }
