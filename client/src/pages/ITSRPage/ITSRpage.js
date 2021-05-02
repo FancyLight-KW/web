@@ -4,6 +4,7 @@ import { Row, Col, Button } from "react-bootstrap";
 import styled, { css } from "styled-components";
 import Form from "react-bootstrap/Form";
 import { Radio } from "antd";
+import { useHistory } from "react-router";
 import Checkbox from "antd/lib/checkbox/Checkbox";
 import axios from "axios";
 import Datepicker from "../../components/Datepicker";
@@ -36,6 +37,8 @@ const MarginBlock = styled.div`
 `;
 
 function ITSRPage() {
+  let history = useHistory();
+
   const 법인코드 = "법인코드";
   const CSR진행상태 = "접수";
   const 임시저장 = "w";
@@ -47,10 +50,6 @@ function ITSRPage() {
   const [Title, setTitle] = useState("");
   const [Content, setContent] = useState("");
   const [File, setFile] = useState("");
-  // const fileRef = useRef();
-  //const userID = JSON.stringify(jwt_decode(cookie.load("token")).User_id).split(
-  //  '"'
-  //)[1];
 
   const dateChanger = (date) => {
     let year = date.getFullYear();
@@ -63,7 +62,7 @@ function ITSRPage() {
     return String(year + month + day);
   };
 
-  const [ReqFinishDate, setReqFinishDate] = useState(dateChanger(new Date()));
+  const [ReqFinishDate, setReqFinishDate] = useState();
 
   // const [RegUserID, setRegUserID] = useState("");
 
@@ -104,12 +103,7 @@ function ITSRPage() {
   //   let file = new FormData();
 
   const fileHandler = (e) => {
-    // let file = e.target.files[0];
-    // console.log(file.name);
-
     setFile(e.target.files[0]);
-    //console.log(File);
-    //setFile(e.target.files[0]);
   };
 
   const onSubmitHandler = (e) => {
@@ -147,6 +141,7 @@ function ITSRPage() {
       });
 
     alert("요청이 접수되었습니다.");
+    history.push("/servicerequest");
   };
 
   return (

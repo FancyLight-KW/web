@@ -17,6 +17,7 @@ exports.receiptRequest = (req, res) => {
     ],
     where: {
       MOD_USER_ID: { [Op.eq]: null },
+      CSR_STATUS: { [Op.ne]: "요청반려" },
     },
   })
     .then((result) => {
@@ -29,7 +30,37 @@ exports.receiptRequest = (req, res) => {
     });
 };
 
-exports.denyRequest = (req, res) => {};
+exports.denyRequest = (req, res) => {
+  models.Requests.update(
+    {
+      CSR_STATUS: "요청반려",
+    },
+    {
+      where: {
+        REQ_SEQ: req.body.REQ_SEQ,
+      },
+    }
+  )
+    .then((result) => {
+      if (result > 0) {
+        res.send({
+          resultCode: 0,
+          message: "요청 반려 성공",
+        });
+      } else {
+        res.status(440).send({
+          resultCode: 1,
+          message: "요청 검색 실패",
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        resultCode: 2,
+        message: "요청 반려 실패",
+      });
+    });
+};
 
 exports.allocateAgent = (req, res) => {
   let body = req.body;
@@ -48,17 +79,10 @@ exports.allocateAgent = (req, res) => {
       // send message to android
       console.log(result[0]);
       if (result[0] > 0) {
-        let msg = {
-          notification: {
-            title: "새로운 요청이 들어왔어요",
-            body: "헤헤",
-          },
-          data: {
-            test: "안녕",
-          },
-        };
-
-        if (sendMsg.sendMessageToDevice(body.MOD_USER_ID, msg) != 0) {
+        if (
+          (await sendMsg.sendMessageToDevice(body.MOD_USER_ID, body.REQ_SEQ)) !=
+          0
+        ) {
           res.status(503).send({
             resultCode: 3,
             message: "메세지 전송 실패",
