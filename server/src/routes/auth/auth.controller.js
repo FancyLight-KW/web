@@ -80,7 +80,7 @@ exports.login = (req, res) => {
           },
           process.env.SECRET,
           {
-            expiresIn: "1h",
+            expiresIn: "9h",
           }
         );
 
