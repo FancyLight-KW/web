@@ -157,14 +157,18 @@ exports.update = (req, res) => {
       },
     })
       .then((result) => {
-        console.log(result);
         if (result.REQ_IMG_PATH) {
           let filePath = result.REQ_IMG_PATH;
-          let pastFile = filePath.split("/")[4];
-          console.log(pastFile);
+          let pastFile = filePath.split("/").slice(-1).pop();
 
           fs.unlink(path.join(appRoot, "uploads", pastFile), (err) => {
-            console.log(err);
+            if (err) {
+              console.log(err);
+              res.send({
+                resultCode: 3,
+                message: err,
+              });
+            }
           });
         }
       })
