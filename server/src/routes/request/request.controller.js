@@ -2,6 +2,7 @@ const models = require("../../DB/models");
 const Sequelize = require("sequelize");
 const moment = require("../../config/moment.config");
 const fs = require("fs");
+const path = require("path");
 
 const Op = Sequelize.Op;
 
@@ -117,7 +118,7 @@ exports.findImage = (req, res) => {
 
 exports.update = (req, res) => {
   let body = JSON.parse(req.body.body);
-  console.log(body);
+
   while (typeof body != "object") {
     console.log("while" + body);
     body = JSON.parse(body);
@@ -125,9 +126,11 @@ exports.update = (req, res) => {
 
   if (!body) {
     res.status(400).send({
+      resultCode: 2,
       message: "Content cannot empty",
     });
   }
+
   let query = {
     TITLE: body.TITLE,
     CONTENT: body.CONTENT,
@@ -147,10 +150,28 @@ exports.update = (req, res) => {
   };
 
   if (req.file) {
+    models.Requests.findOne({
+      attributes: ["REQ_IMG_PATH"],
+      where: {
+        REQ_SEQ: req.params.requestId,
+      },
+    })
+      .then((result) => {
+        console.log(result);
+        if (result.REQ_IMG_PATH) {
+          let filePath = result.REQ_IMG_PATH;
+          let pastFile = filePath.split("/")[4];
+          console.log(pastFile);
+
+          fs.unlink(path.join(appRoot, "uploads", pastFile), (err) => {
+            console.log(err);
+          });
+        }
+      })
+      .catch();
     query["REQ_IMG_PATH"] =
       process.env.SERVER_HOST + "/uploads/" + req.file.filename;
   }
-
   models.Requests.update(query, {
     where: {
       REQ_SEQ: req.params.requestId,

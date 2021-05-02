@@ -36,6 +36,7 @@ models.sequelize
     console.log(err);
   });
 
+global.appRoot = path.resolve(__dirname);
 // view engine setup
 app.set("views", path.join(__dirname, "src/views"));
 app.set("view engine", "ejs");
