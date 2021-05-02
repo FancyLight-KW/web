@@ -13,15 +13,13 @@
 // limitations under the License.
 
 'use strict';
-const config = require('../../config/dialogflow/keys');
 
 /**
  * List of all intents in the specified project.
  * @param {string} projectId The project to be used
  */
-function main(projectId = config.googleProjectID) {
-  // [START dialogflow_list_intents]
 
+  // [START dialogflow_list_intents]
   /**
    * TODO(developer): Uncomment the following lines before running the sample.
    */
@@ -33,18 +31,18 @@ function main(projectId = config.googleProjectID) {
   // Instantiates clients
   const intentsClient = new dialogflow.IntentsClient();
 
-  async function listIntents() {
+exports.listIntents = async () => {
     // Construct request
-
+  
     // The path to identify the agent that owns the intents.
-    const projectAgentPath = intentsClient.agentPath(projectId);
-
+    const projectAgentPath = intentsClient.agentPath(process.env.GOOGLE_PROJECT_ID);
+  
     console.log(projectAgentPath);
-
+  
     const request = {
       parent: projectAgentPath,
     };
-
+  
     // Send the request for listing intents.
     const [response] = await intentsClient.listIntents(request);
     response.forEach(intent => {
@@ -54,22 +52,16 @@ function main(projectId = config.googleProjectID) {
       console.log(`Action: ${intent.action}`);
       console.log(`Root folowup intent: ${intent.rootFollowupIntentName}`);
       console.log(`Parent followup intent: ${intent.parentFollowupIntentName}`);
-
+  
       console.log('Input contexts:');
       intent.inputContextNames.forEach(inputContextName => {
         console.log(`\tName: ${inputContextName}`);
       });
-
+  
       console.log('Output contexts:');
       intent.outputContexts.forEach(outputContext => {
         console.log(`\tName: ${outputContext.name}`);
       });
     });
   }
-
-  listIntents();
-
-  // [END dialogflow_list_intents]
-}
-
-main(...process.argv.slice(2));
+//main(...process.argv.slice(2));

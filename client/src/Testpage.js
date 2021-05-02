@@ -1,7 +1,7 @@
 import * as React from "react";
 import axios from "axios";
 import Chatbot from './Chatbot/index/index';
-
+import cookie from "react-cookies";
 import Maximized from './components/Chat/Maximized'
 import Minimized from './components/Chat/Minimized'
 import { ThemeProvider, FixedWrapper, darkTheme, elegantTheme, purpleTheme, defaultTheme } from '@livechat/ui-kit'
@@ -115,6 +115,20 @@ const HoverImage = styled.div`
   //     })
   // }
 const Testpage = (props) =>{
+
+  axios
+    .get(`${process.env.REACT_APP_API_HOST}/dialogflow/listIntent`, {
+      headers: {
+        Authorization: `Bearer ${cookie.load("token")}`,
+      },
+    })
+    .then((response) => {
+      console.log(response);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+
   //render() {
       return (
         <ThemeProvider theme='defaultTheme'>
