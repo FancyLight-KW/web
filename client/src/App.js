@@ -16,6 +16,7 @@ import RevisePage from "./pages/ReivsePage/RevisePage";
 import NavBar from "./components/NavBar/NavBar";
 import Footer from "./components/Footer";
 import ProtectedRoute from "./ProtectedRoute";
+import ManageIntentPage from "./pages/ManageIntentPage/";
 
 function App() {
   const [authenticated, setAuthenticated] = useState(false);
@@ -58,6 +59,7 @@ function App() {
               <Route exact path="/sragent" component={SRAgentPage} />
               <Route exact path="/sradmin" component={SRAdminPage} />
               <Route exact path="/revise/:reqNo" component={RevisePage} />
+              <Route exact path="/manageintent" component={ManageIntentPage} />
               <Route exact path="/test" component={Testpage} />
             </Switch>
           </>
