@@ -335,12 +335,10 @@ function SRAdminPage() {
                 <td id="centerAlign"></td>
                 <td>{request.TITLE}</td>
                 <td id="centerAlign"></td>
-                <td></td>
                 <td id="centerAlign">{request.createdAt.split(" ")[0]}</td>
                 <td></td>
                 <td></td>
                 <td></td>
-
                 <td></td>
                 <td id="centerAlign">
                   {" "}
