@@ -8,12 +8,8 @@ const models = require("../../../../DB/models");
 
 // CREATE
 exports.create = (req, res) => {
-  models.Intent_Phrases.create({
-    PHRASES_INTENT_ID: req.body.PHRASES_INTENT_ID,
-    PHRASE: req.body.PHRASE,
-  })
+  models.Intent_Phrases.bulkCreate(req.body.data)
     .then((result) => {
-      console.log(result);
       res.send({
         resultCode: 0,
         message: "구문 생성 성공",

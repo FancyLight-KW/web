@@ -4,6 +4,7 @@ module.exports = function (sequelize, DataTypes) {
     "Intent_Responses",
     {
       RESPONSES_ID: {
+        autoIncrement: true,
         type: DataTypes.INTEGER,
         allowNull: false,
         primaryKey: true,

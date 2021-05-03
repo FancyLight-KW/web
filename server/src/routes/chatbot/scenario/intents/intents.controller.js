@@ -8,9 +8,7 @@ const models = require("../../../../DB/models");
 
 // CREATE
 exports.create = (req, res) => {
-  models.Intents.create({
-    INTENT_TITLE: req.body.INTENT_TITLE,
-  })
+  models.Intents.bulkCreate(req.body.data)
     .then((result) => {
       res.send({
         resultCode: 0,

@@ -7,7 +7,11 @@
 ```HTTP
 POST /intents
 ```
-* body: `{INTENT_TITLE: 인텐트 제목}`<br>
+* body: `
+{
+  "data": [{"INTENT_TITLE": "이우제"}, {"INTENT_TITLE": "마우스"}, {"INTENT_TITLE": "컴퓨터"} ...]
+}
+`
 * return: `{resultCode, message}`
 
 ### 1.2 READ
@@ -37,8 +41,11 @@ POST /intents/{인텐트번호}
 ```http
 POST /phrases
 ```
-* body: `{  PHRASES_INTENT_ID: 인텐트id, PHRASE: 구문 }`
-새 구문 생성
+* body: 
+`{
+  "data": [{"PHRASES_INTENT_ID": 3, "PHRASE": "우제1"}, {"PHRASES_INTENT_ID": 3, "PHRASE": "우제2"}]
+}`
+
 * return: `{resultCode, message}`
 
 ## 2.2 READ
@@ -68,7 +75,10 @@ POST /phrases/{구문번호}
 ```http
 POST /responses
 ```
-* body: `{  RESPONSES_INTENT_ID: 인텐트id, RESPONSE: 대답문 }`
+* body:
+ `{
+  "data": [{"RESPONSES_INTENT_ID": 3, "RESPONSE": "안녕안녕"}, {"RESPONSES_INTENT_ID": 3, "RESPONSE": "재밌어요!"}]
+}`
 * return: {resultCode, message}
 
 ### 3.2 READ
