@@ -29,9 +29,9 @@ module.exports = function (sequelize, DataTypes) {
     }
   );
   Intents.associate = function (models) {
-    Intents.hasMany(models.Intent_Prases, {
-      as: "Intent_Prases",
-      foreignKey: "PRASES_INTENT_ID",
+    Intents.hasMany(models.Intent_Phrases, {
+      as: "Intent_Phrases",
+      foreignKey: "PHRASES_INTENT_ID",
     });
     Intents.hasMany(models.Intent_Responses, {
       as: "Intent_Responses",

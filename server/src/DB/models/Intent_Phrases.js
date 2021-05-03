@@ -1,15 +1,15 @@
 const Sequelize = require("sequelize");
 module.exports = function (sequelize, DataTypes) {
   const IP = sequelize.define(
-    "Intent_Prases",
+    "Intent_Phrases",
     {
-      PRASES_ID: {
+      PHRASES_ID: {
         autoIncrement: true,
         type: DataTypes.INTEGER,
         allowNull: false,
         primaryKey: true,
       },
-      PRASES_INTENT_ID: {
+      PHRASES_INTENT_ID: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
@@ -17,34 +17,34 @@ module.exports = function (sequelize, DataTypes) {
           key: "INTENT_ID",
         },
       },
-      PRASE: {
+      PHRASE: {
         type: DataTypes.STRING(100),
         allowNull: false,
       },
     },
     {
       sequelize,
-      tableName: "Intent_Prases",
+      tableName: "Intent_Phrases",
       timestamps: false,
       indexes: [
         {
           name: "PRIMARY",
           unique: true,
           using: "BTREE",
-          fields: [{ name: "PRASES_ID" }],
+          fields: [{ name: "PHRASES_ID" }],
         },
         {
           name: "rid_idx",
           using: "BTREE",
-          fields: [{ name: "PRASES_INTENT_ID" }],
+          fields: [{ name: "PHRASES_INTENT_ID" }],
         },
       ],
     }
   );
   IP.associate = function (models) {
     IP.belongsTo(models.Intents, {
-      as: "PRASES_INTENT",
-      foreignKey: "PRASES_INTENT_ID",
+      as: "PHRASES_INTENT",
+      foreignKey: "PHRASES_INTENT_ID",
     });
   };
   return IP;
