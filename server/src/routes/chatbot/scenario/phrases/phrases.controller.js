@@ -11,6 +11,7 @@ exports.create = (req, res) => {
   models.Intent_Phrases.bulkCreate(req.body.data)
     .then((result) => {
       res.send({
+        reult: result,
         resultCode: 0,
         message: "구문 생성 성공",
       });
