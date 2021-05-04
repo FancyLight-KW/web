@@ -10,6 +10,7 @@ import { Row, Col, Button } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import axios from "axios";
 import styled, { css } from "styled-components";
+import cookie from "react-cookies";
 
 const { SubMenu } = Menu;
 
@@ -35,27 +36,28 @@ const IntentContainer = styled.div`
 `;
 const ShowIntent = styled.div`
   display: flex;
-  width: 14%;
+  width: 23%;
+  marin-left: 1;
 `;
 const BlankBlock = styled.div`
   display: flex;
-  width: 10%;
+  width: 2%;
 `;
 const ManageInetnetContainer = styled.div`
   display: flex;
-  width: 45%;
+  width: 80%;
   flex-direction: column;
-  margin-top: 15px;
+  margin-top: 30px;
   margin-left: 40px;
 `;
 const ButtonConatiner = styled.div`
   display: flex;
-  width: 10%;
+  width: 20%;
   flex-direction: column;
 `;
 
 const ButtonBlock = styled.div`
-  margin-top: 15px;
+  margin: 0px, 0, 0, 10px;
 `;
 
 function handleClick(e) {
@@ -63,7 +65,7 @@ function handleClick(e) {
   // console.log(e.key);
 }
 
-function ManageIntentPage() {
+function RegisterIntentPage() {
   // Intent Name
   const [intentName, setIntentName] = useState("");
   const intentNameHandler = (e) => {
@@ -78,7 +80,7 @@ function ManageIntentPage() {
       text: "",
     },
   ]);
-  const nextId = useRef(0);
+  const nextTPId = useRef(0);
 
   const trainingPhrasesVisibleHandler = () => {
     setTrainingPhrasesVisible(!trainingPhrasesVisible);
@@ -94,16 +96,14 @@ function ManageIntentPage() {
       setTrainingPhrases(trainingPhrases.filter((phrase) => phrase.id !== id));
     }
   };
-
   // 보낼 때는 trainingPhrases[0].text === "" 이면 안보내도록 ,,?
-
   const trainingPhrasesKeyPress = (e) => {
     if (e.key === "Enter") {
       if (trainingPhrasesInput === "") {
         return;
       }
       let newTrainingPhrase = {
-        id: nextId.current,
+        id: nextTPId.current,
         text: trainingPhrasesInput,
       };
       if (newTrainingPhrase.id === 0) {
@@ -112,7 +112,113 @@ function ManageIntentPage() {
       setTrainingPhrases(trainingPhrases.concat(newTrainingPhrase));
       setTrainingPhrasesInput("");
 
-      nextId.current += 1;
+      nextTPId.current += 1;
+    }
+  };
+  // Responses
+  const [responsesVisible, setResponsesVisible] = useState(false);
+  const [responsesInput, setResponsesInput] = useState("");
+  const [responses, setResponses] = useState([
+    {
+      id: null,
+      response: "",
+    },
+  ]);
+  const nextResponseId = useRef(0);
+
+  const responsesVisibleHandler = () => {
+    setResponsesVisible(!responsesVisible);
+  };
+
+  const responsesInputHandler = (e) => {
+    setResponsesInput(e.target.value);
+  };
+  const responsesDeleteHandler = (id) => {
+    if (responses.length === 1) {
+      setResponses([{ id: null, response: "" }]);
+    } else {
+      setResponses(responses.filter((response) => response.id !== id));
+    }
+  };
+
+  const responsesKeyPress = (e) => {
+    if (e.key === "Enter") {
+      if (responsesInput === "") {
+        return;
+      }
+      let newResponse = {
+        id: nextResponseId.current,
+        response: responsesInput,
+      };
+      if (newResponse.id === 0) {
+        setResponses(responses.splice(0, 1));
+      }
+      setResponses(responses.concat(newResponse));
+      setResponsesInput("");
+
+      nextResponseId.current += 1;
+    }
+  };
+
+  const saveHandler = async () => {
+    const intentTitle = {
+      data: [
+        {
+          INTENT_TITLE: intentName,
+        },
+      ],
+    };
+    let titleResult = await axios.post(
+      `${process.env.REACT_APP_API_HOST}/scenario/intents`,
+      intentTitle,
+      {
+        headers: {
+          Authorization: `Bearer ${cookie.load("token")}`,
+        },
+      }
+    );
+    let intentID = titleResult.data.result[0].INTENT_ID;
+    let intentPhrases = {
+      data: [],
+    };
+    trainingPhrases.forEach((e) => {
+      intentPhrases.data.push({ PHRASES_INTENT_ID: intentID, PHRASE: e.text });
+    });
+
+    let phrasesResult = await axios.post(
+      `${process.env.REACT_APP_API_HOST}/scenario/phrases`,
+      intentPhrases,
+      {
+        headers: {
+          Authorization: `Bearer ${cookie.load("token")}`,
+        },
+      }
+    );
+    let intentResponses = {
+      data: [],
+    };
+    responses.forEach((e) => {
+      intentResponses.data.push({
+        RESPONSES_INTENT_ID: intentID,
+        RESPONSE: e.response,
+      });
+    });
+
+    let responseResult = await axios.post(
+      `${process.env.REACT_APP_API_HOST}/scenario/responses`,
+      intentResponses,
+      {
+        headers: {
+          Authorization: `Bearer ${cookie.load("token")}`,
+        },
+      }
+    );
+    if (
+      phrasesResult.data.resultCode === 0 &&
+      responseResult.data.resultCode === 0
+    ) {
+      alert("인텐트가 등록됐습니다.");
+      window.location.reload();
     }
   };
 
@@ -122,7 +228,7 @@ function ManageIntentPage() {
         <>
           <PageNameWrapper>
             <span style={{ marginLeft: "16px", fontSize: "18px" }}>
-              ※ 챗봇 시나리오 관리
+              ※ 챗봇 시나리오 등록
             </span>
           </PageNameWrapper>
           <span style={{ marginLeft: "15px", marginBottom: "10px" }}>
@@ -132,7 +238,7 @@ function ManageIntentPage() {
       </TopContainer>
 
       <IntentContainer>
-        <ShowIntent>
+        {/* <ShowIntent>
           <Menu onClick={handleClick} style={{ width: 250 }}>
             <Menu.Item key="5">
               Option 5asdddddddddddddddasdddddddddddddddddddd
@@ -141,26 +247,46 @@ function ManageIntentPage() {
             <Menu.Item key="7">Option 7</Menu.Item>
             <Menu.Item key="8">Option 8</Menu.Item>
           </Menu>
-        </ShowIntent>
+        </ShowIntent> */}
         <BlankBlock />
         <ManageInetnetContainer>
           <Form.Group as={Row} controlId="normalForm">
-            <Form.Label column sm="2" className="labelColor">
+            <Form.Label
+              column
+              sm="3"
+              className="labelColor"
+              style={{ borderRadius: "5px" }}
+            >
               Intent name
             </Form.Label>
-            <Col sm="5">
+            <Col sm="7">
               <Form.Control type="text" onChange={intentNameHandler} />
             </Col>
+            <Button
+              variant="primary"
+              size="md"
+              style={{ marginLeft: "26px" }}
+              onClick={() => {
+                saveHandler();
+              }}
+            >
+              저장하기
+            </Button>
           </Form.Group>
           <Form.Group
             as={Row}
             controlId="normalForm"
             style={{ marginTop: "20px" }}
           >
-            <Form.Label column sm="2" className="labelColor">
+            <Form.Label
+              column
+              sm="3"
+              className="labelColor"
+              style={{ borderRadius: "5px" }}
+            >
               Training phrases
             </Form.Label>
-            <Col sm="5">
+            <Col sm="8">
               <Form.Control
                 type="text"
                 value={trainingPhrasesInput}
@@ -214,22 +340,67 @@ function ManageIntentPage() {
             controlId="normalForm"
             style={{ marginTop: "20px" }}
           >
-            <Form.Label column sm="2" className="labelColor">
+            <Form.Label
+              column
+              sm="3"
+              className="labelColor"
+              style={{ borderRadius: "5px" }}
+            >
               Responses
             </Form.Label>
-          </Form.Group>
-        </ManageInetnetContainer>
+            <Col sm="8">
+              <Form.Control
+                type="text"
+                value={responsesInput}
+                placeholder="Enter a text response"
+                onChange={responsesInputHandler}
+                onKeyPress={responsesKeyPress}
+              />
+            </Col>
 
-        <ButtonConatiner>
-          <ButtonBlock>
-            <Button variant="primary" size="md" onClick={() => {}}>
-              저장하기
-            </Button>
-          </ButtonBlock>
-        </ButtonConatiner>
+            {responsesVisible ? (
+              <CaretUpOutlined
+                onClick={() => {
+                  responsesVisibleHandler();
+                }}
+                style={{ fontSize: "20px", marginTop: "10px" }}
+              />
+            ) : (
+              <CaretDownOutlined
+                onClick={() => {
+                  responsesVisibleHandler();
+                }}
+                style={{ fontSize: "20px", marginTop: "10px" }}
+              />
+            )}
+          </Form.Group>
+          {responsesVisible ? (
+            <List
+              size="small"
+              bordered
+              dataSource={responses}
+              renderItem={(item) =>
+                item.response === "" ? null : (
+                  <List.Item
+                    extra={
+                      <DeleteOutlined
+                        onClick={() => {
+                          responsesDeleteHandler(item.id);
+                        }}
+                      />
+                    }
+                  >
+                    {item.response}
+                  </List.Item>
+                )
+              }
+              style={{ marginLeft: "-15px" }}
+            ></List>
+          ) : null}
+        </ManageInetnetContainer>
       </IntentContainer>
     </>
   );
 }
 
-export default ManageIntentPage;
+export default RegisterIntentPage;
