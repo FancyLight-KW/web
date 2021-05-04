@@ -13,7 +13,7 @@ exports.create = (req, res) => {
       res.send({
         result: result,
         resultCode: 0,
-        message: "구문 생성 성공",
+        message: "Phrase 생성 성공",
       });
     })
     .catch((err) => {
