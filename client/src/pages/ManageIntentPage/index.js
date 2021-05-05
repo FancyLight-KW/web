@@ -1,19 +1,17 @@
 import React, { useState, useEffect, useRef } from "react";
-import "antd/dist/antd.css";
-import { List } from "antd";
+import { Button, Row, Col, Form } from "react-bootstrap";
+import axios from "axios";
+import { Link, useHistory, useParams } from "react-router-dom";
+import styled, { css } from "styled-components";
+import cookie from "react-cookies";
 import {
+  EyeOutlined,
+  PlusOutlined,
   CaretDownOutlined,
   CaretUpOutlined,
   DeleteOutlined,
-  EyeOutlined,
-  PlusOutlined,
 } from "@ant-design/icons";
-import { Row, Col, Button } from "react-bootstrap";
-import { Link, useHistory } from "react-router-dom";
-import Form from "react-bootstrap/Form";
-import axios from "axios";
-import styled, { css } from "styled-components";
-import cookie from "react-cookies";
+import { List } from "antd";
 
 const TopContainer = styled.div`
   display: flex;
@@ -21,7 +19,7 @@ const TopContainer = styled.div`
   background-color: aliceblue;
   color: #0069c0;
   font-weight: bold;
-  flex-direction: column;
+  flex-direction: row;
   border-bottom: solid #0069c0;
 `;
 const PageNameWrapper = styled.div`
@@ -38,13 +36,13 @@ const IntentContainer = styled.div`
 const Blank = styled.div`
   width: 1%;
 `;
-const BiggerBlank = styled.div`
-  width: 5%;
-`;
 const TableContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 30%;
+`;
+const BiggerBlank = styled.div`
+  width: 5%;
 `;
 const ManageInetnetContainer = styled.div`
   display: flex;
@@ -54,12 +52,30 @@ const ManageInetnetContainer = styled.div`
   margin-left: 40px;
 `;
 
-function RegisterIntentPage() {
+function ManageIntentPage() {
+  const { intentid } = useParams();
+  console.log(intentid);
+
   let history = useHistory();
   const [intents, setIntents] = useState([]);
 
+  console.log("a");
+  console.log(
+    "a" +
+      intents.filter(function (e) {
+        return (e.INTENT_ID = intentid);
+      })
+  );
+
+  //console.log(intents.map((o) => o.INTENT_ID).indexOf(intentid));
+  //intents.INTENT_ID 가 intentid인 친구의 INTENT_TITLE
+
+  //   var newArr = arr.filter(function(item){
+  //     return item.name === "orange";
+  //   });
+
   // Intent Name
-  const [intentName, setIntentName] = useState("");
+  const [intentName, setIntentName] = useState();
   const intentNameHandler = (e) => {
     setIntentName(e.target.value);
   };
@@ -222,8 +238,25 @@ function RegisterIntentPage() {
         },
       })
       .then((response) => {
-        console.log(response.data);
+        //     console.log(response.data);
         setIntents([...response.data]);
+        //   setIntentName(response.data);
+        //    console.log(response.data.INTENT_ID);
+      });
+  }, []);
+
+  useEffect(() => {
+    axios
+      .get(
+        `${process.env.REACT_APP_API_HOST}/scenario/phrases?rid=${intentid}`,
+        {
+          headers: {
+            Authorization: `Bearer ${cookie.load("token")}`,
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response.data);
       });
   }, []);
 
@@ -276,8 +309,11 @@ function RegisterIntentPage() {
             )}
             style={{ marginLeft: "-15px" }}
           ></List>
+          <Blank />
         </TableContainer>
+
         <BiggerBlank />
+
         <ManageInetnetContainer>
           <Form.Group as={Row} controlId="normalForm">
             <Form.Label
@@ -427,10 +463,9 @@ function RegisterIntentPage() {
             ></List>
           ) : null}
         </ManageInetnetContainer>
-        <Blank />
       </IntentContainer>
     </>
   );
 }
 
-export default RegisterIntentPage;
+export default ManageIntentPage;

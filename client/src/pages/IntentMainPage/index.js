@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Button, Table } from "react-bootstrap";
 import axios from "axios";
+import { Link, useHistory } from "react-router-dom";
 import styled, { css } from "styled-components";
 import cookie from "react-cookies";
+import { EyeOutlined, EllipsisOutlined, PlusOutlined } from "@ant-design/icons";
+import { List } from "antd";
 
 const TopContainer = styled.div`
   display: flex;
@@ -10,7 +13,8 @@ const TopContainer = styled.div`
   background-color: aliceblue;
   color: #0069c0;
   font-weight: bold;
-  flex-direction: column;
+  flex-direction: row;
+  border-bottom: solid #0069c0;
 `;
 const PageNameWrapper = styled.div`
   display: flex;
@@ -18,14 +22,21 @@ const PageNameWrapper = styled.div`
   height: 100%;
   align-items: center;
 `;
+const ContentWrapper = styled.div`
+  display: flex;
+  width: 100%;
+`;
+const Blank = styled.div`
+  width: 1%;
+`;
 const TableContainer = styled.div`
   display: flex;
   flex-direction: column;
-  border-radius: 5px;
-  border-top: solid #0069c0;
+  width: 30%;
 `;
 
 function IntentMainPage() {
+  let history = useHistory();
   const [intents, setIntents] = useState([]);
 
   useEffect(() => {
@@ -50,29 +61,48 @@ function IntentMainPage() {
           </span>
         </PageNameWrapper>
       </TopContainer>
-      <TableContainer>
-        <Table striped bordered hover>
-          <thead>
-            <tr>
-              <th rowSpan="2" id="centerAlign">
-                No
-              </th>
-              <th rowSpan="2" id="centerAlign">
-                Intent Name
-              </th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {intents.map((intent, index) => (
-              <tr key={index}>
-                <td id="centerAlign">{intent.INTENT_ID}</td>
-                <td id="centerAlign">{intent.INTENT_TITLE}</td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-      </TableContainer>
+      <ContentWrapper>
+        <Blank />
+        <TableContainer>
+          <List
+            size="large"
+            bordered
+            header={
+              <div
+                style={{
+                  fontWeight: "bold",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
+                Intent 목록
+                <PlusOutlined
+                  onClick={() => {
+                    history.push("/registerintent");
+                  }}
+                />
+              </div>
+            }
+            dataSource={intents}
+            renderItem={(item) => (
+              <List.Item
+                extra={
+                  <EyeOutlined
+                    onClick={() => {
+                      history.push(`/manageintent/${item.INTENT_ID}`);
+                    }}
+                  />
+                }
+              >
+                {item.INTENT_TITLE}
+              </List.Item>
+            )}
+            style={{ marginLeft: "-15px" }}
+          ></List>
+          <Blank />
+        </TableContainer>
+      </ContentWrapper>
     </>
   );
 }
