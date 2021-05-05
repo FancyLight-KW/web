@@ -70,6 +70,10 @@ exports.createIntent = async (req, res) => {
   // }catch(error){
 
   // }
+  res.send( {
+    resultCode: 0,
+    message: "dialogflow에 생성 성공",
+  });
   console.log(`Intent ${response.name} created`);
 }
 

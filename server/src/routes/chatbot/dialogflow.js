@@ -21,8 +21,8 @@ router.get('/listIntent',dialogflowListIntent.listIntents);
 router.post('/createIntent',dialogflowCreateIntent.createIntent);
 
 //Update Intent route
-router.get('/updateIntent', dialogflowUpdateIntent.updateIntent);
+router.post('/updateIntent', dialogflowUpdateIntent.updateIntent);
 
 //Delete Intent Route
-router.get('/deleteIntent',dialogflowDeleteIntent.deleteIntent);
+router.post('/deleteIntent',dialogflowDeleteIntent.deleteIntent);
 module.exports = router;

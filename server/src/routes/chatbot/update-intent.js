@@ -22,10 +22,7 @@ exports.updateIntent = async () => {
         
     // });
     // console.log(response_str);
-
     
-
-    /*
     const intent = existingIntent; //get the intent that needs to be updated from the [response];
     // const intent = {
     //     displayName: req.body.displayName,
@@ -67,5 +64,5 @@ exports.updateIntent = async () => {
     const result = await intentsClient.updateIntent(updateIntentRequest);
     console.log(result);
 
-    */
+    
 }

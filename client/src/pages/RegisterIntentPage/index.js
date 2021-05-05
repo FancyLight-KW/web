@@ -228,7 +228,7 @@ function RegisterIntentPage() {
     if (
       phrasesResult.data.resultCode === 0 &&
       responseResult.data.resultCode === 0 &&
-      registerDialogflow === 0
+      registerDialogflow.data.resultCode === 0
     ) {
       alert("인텐트가 등록됐습니다.");
       window.location.reload();
