@@ -173,8 +173,10 @@ function RegisterIntentPage() {
     let intentPhrases = {
       data: [],
     };
+    let intentPhrasesToDialogflow = [];
     trainingPhrases.forEach((e) => {
       intentPhrases.data.push({ PHRASES_INTENT_ID: intentID, PHRASE: e.text });
+      intentPhrasesToDialogflow.push( e.text, );
     });
 
     let phrasesResult = await axios.post(
@@ -189,11 +191,13 @@ function RegisterIntentPage() {
     let intentResponses = {
       data: [],
     };
+    let intentResponsesToDialogflow = [];
     responses.forEach((e) => {
       intentResponses.data.push({
         RESPONSES_INTENT_ID: intentID,
         RESPONSE: e.response,
       });
+      intentResponsesToDialogflow.push( e.response );
     });
 
     let responseResult = await axios.post(
@@ -205,9 +209,26 @@ function RegisterIntentPage() {
         },
       }
     );
+    
+    let newIntent = {
+      displayName: intentName,
+      trainingPhrasesParts: intentPhrasesToDialogflow,
+      messageTexts: intentResponsesToDialogflow
+    }
+    let registerDialogflow = await axios.post(
+      `${process.env.REACT_APP_API_HOST}/dialogflow/createIntent`,
+      newIntent,
+      {
+        headers: {
+          Authorization: `Bearer ${cookie.load("token")}`,
+        },
+      }
+    );
+
     if (
       phrasesResult.data.resultCode === 0 &&
-      responseResult.data.resultCode === 0
+      responseResult.data.resultCode === 0 &&
+      registerDialogflow === 0
     ) {
       alert("인텐트가 등록됐습니다.");
       window.location.reload();

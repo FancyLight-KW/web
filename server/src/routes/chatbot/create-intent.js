@@ -46,7 +46,7 @@ exports.createIntent = async (req, res) => {
   });
 
   const messageText = {
-    text: req.body.message,
+    text: req.body.messageTexts,
   };
 
   const message = {
