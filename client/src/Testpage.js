@@ -114,7 +114,8 @@ const HoverImage = styled.div`
   //         theme: target.name + 'Theme'    ,
   //     })
   // }
-const Testpage = (props) =>{
+
+  /*
   const newIntent = {
     displayName: 'WeatherIntent',
     trainingPhrasesParts: [
@@ -122,9 +123,11 @@ const Testpage = (props) =>{
       'How is the weather today?',
     ],
     messageTexts: ['Rainy', 'Sunny'],
-  }
+  } */
+const Testpage = (props) =>{
+  
   axios
-    .post(`${process.env.REACT_APP_API_HOST}/dialogflow/createIntent`, newIntent, {
+    .get(`${process.env.REACT_APP_API_HOST}/dialogflow/listIntent`, {
       headers: {
         Authorization: `Bearer ${cookie.load("token")}`,
       },
@@ -139,7 +142,7 @@ const Testpage = (props) =>{
   //render() {
       return (
         <div>
-          
+
         </div>
         // <ThemeProvider theme='defaultTheme'>
         //   <div>

@@ -44,24 +44,45 @@ exports.listIntents = async () => { try{
     };
   
     // Send the request for listing intents.
-    const [response] = await intentsClient.updateIntent
+    const [response] = await intentsClient.listIntents(request);
+    console.log("=================");
+    console.log(response);
+    //var response_str = JSON.stringify(response);
+    //console.log(response_str);
     response.forEach(intent => {
       console.log('====================');
-      console.log(`Intent name: ${intent.name}`);
+      //console.log(`Intent name: ${intent.name}`);
       console.log(`Intent display name: ${intent.displayName}`);
-      console.log(`Action: ${intent.action}`);
-      console.log(`Root folowup intent: ${intent.rootFollowupIntentName}`);
-      console.log(`Parent followup intent: ${intent.parentFollowupIntentName}`);
+      
+      console.log("parameters");
+      console.log(JSON.stringify(intent.parameters));
+      console.log("messgaes");
+      console.log(JSON.stringify(intent.messages));
+      // intent.outputContexts.forEach(context => {
+      //   console.log(JSON.stringify(context));
+      // }); 
+      // intent.messages.forEach(message => {
+      //   console.log(JSON.stringify(message));
+      // }); 
+      // console.log('Parameters:------');
+      // intent.parameters.forEach(parameter => {
+      //   console.log(JSON.stringify(parameter));
+      // }); 
+      // console.log(`Intent parameters: ${intent.parameters}`);
+
+      //console.log(`Action: ${intent.action}`);
+      //console.log(`Root folowup intent: ${intent.rootFollowupIntentName}`);
+      //console.log(`Parent followup intent: ${intent.parentFollowupIntentName}`);
   
-      console.log('Input contexts:');
-      intent.inputContextNames.forEach(inputContextName => {
-        console.log(`\tName: ${inputContextName}`);
-      });
+      // console.log('Input contexts:');
+      // intent.inputContextNames.forEach(inputContextName => {
+      //   console.log(`\tName: ${inputContextName}`);
+      // });
   
-      console.log('Output contexts:');
-      intent.outputContexts.forEach(outputContext => {
-        console.log(`\tName: ${outputContext.name}`);
-      });
+      // console.log('Output contexts:');
+      // intent.outputContexts.forEach(outputContext => {
+      //   console.log(`\tName: ${outputContext.name}`);
+      // });
     });
   }catch(error){
     console.log(error);

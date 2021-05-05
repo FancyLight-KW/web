@@ -1,18 +1,37 @@
-exports.updateIntent = async (newTrainingPhrases) => {
+'use strict'
+
+//newTrainingPhrases
+
+exports.updateIntent = async () => {
     const dialogflow = require('dialogflow');
 
     const intentsClient = new dialogflow.IntentsClient();
     const projectId = process.env.GOOGLE_PROJECT_ID;
-    const projectAgentPath = intentsClient.projectAgentPath([projectId]);
+    const projectAgentPath = intentsClient.projectAgentPath(projectId);
 
     const request = {
         parent: projectAgentPath,
-        intentView: 'INTENT_VIEW_FULL'
+        intentView: 'INTENT_VIEW_FULL',
     }
 
-    const [response] = await intentsClient.listIntents(request);
 
+    const [response] = await intentsClient.listIntents(request);
+    // console.log("=============================================");
+    // var response_str = JSON.stringify(response);
+    // response.array.forEach(element => {
+        
+    // });
+    // console.log(response_str);
+
+    
+
+    /*
     const intent = existingIntent; //get the intent that needs to be updated from the [response];
+    // const intent = {
+    //     displayName: req.body.displayName,
+    //     trainingPhrases: trainingPhrases,
+    //     messages: [message],
+    //   };
 
     const trainingPhrases = [];
     let previousTrainingPhrases =
@@ -47,4 +66,6 @@ exports.updateIntent = async (newTrainingPhrases) => {
     //Send the request for update the intent.
     const result = await intentsClient.updateIntent(updateIntentRequest);
     console.log(result);
+
+    */
 }

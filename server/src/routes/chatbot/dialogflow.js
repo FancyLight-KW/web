@@ -8,7 +8,7 @@ const dialogflowQueryIntent = require('./query-intent');
 const dialogflowCreateIntent = require('./create-intent');
 const dialogflowListIntent = require('./list-intent');
 const dialogflowDeleteIntent = require('./delete-intent');
-
+const dialogflowUpdateIntent = require('./update-intent');
 //Text Query Route
 router.post('/textQuery', dialogflowQueryIntent.textQuery);
 //Event Query Route
@@ -19,6 +19,9 @@ router.get('/listIntent',dialogflowListIntent.listIntents);
 
 //Create Intent route
 router.post('/createIntent',dialogflowCreateIntent.createIntent);
+
+//Update Intent route
+router.get('/updateIntent', dialogflowUpdateIntent.updateIntent);
 
 //Delete Intent Route
 router.get('/deleteIntent',dialogflowDeleteIntent.deleteIntent);
