@@ -1,7 +1,12 @@
 import * as React from 'react'
 import { IconButton, ChatIcon } from '@livechat/ui-kit'
 import chatbotimg from "../../assets/Chatbot.png";
-
+import styled from "styled-components";
+const HoverImage = styled.div`
+  &:hover {
+    opacity: 0.8;
+  }
+`;
 const Minimized = ({ maximize }) => (
 	<div
 		onClick={maximize}
@@ -16,12 +21,12 @@ const Minimized = ({ maximize }) => (
 			cursor: 'pointer',
 		}}
 	>
-		<IconButton color="#26a5d0">
+		<HoverImage>
 			<img src={chatbotimg}
 			width="80"
 			height="80"></img>
-		</IconButton>
-
+		
+		</HoverImage>
 	</div>
 )
 

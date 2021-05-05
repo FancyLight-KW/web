@@ -31,7 +31,7 @@
   // Instantiates clients
   const intentsClient = new dialogflow.IntentsClient();
 
-exports.listIntents = async () => {
+exports.listIntents = async () => { try{
     // Construct request
   
     // The path to identify the agent that owns the intents.
@@ -44,7 +44,7 @@ exports.listIntents = async () => {
     };
   
     // Send the request for listing intents.
-    const [response] = await intentsClient.listIntents(request);
+    const [response] = await intentsClient.updateIntent
     response.forEach(intent => {
       console.log('====================');
       console.log(`Intent name: ${intent.name}`);
@@ -63,5 +63,8 @@ exports.listIntents = async () => {
         console.log(`\tName: ${outputContext.name}`);
       });
     });
+  }catch(error){
+    console.log(error);
+  }
   }
 //main(...process.argv.slice(2));
