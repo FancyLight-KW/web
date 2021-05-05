@@ -114,8 +114,18 @@ const HoverImage = styled.div`
   //         theme: target.name + 'Theme'    ,
   //     })
   // }
-const Testpage = (props) =>{
 
+  /*
+  const newIntent = {
+    displayName: 'WeatherIntent',
+    trainingPhrasesParts: [
+      'Hello, What is weather today?',
+      'How is the weather today?',
+    ],
+    messageTexts: ['Rainy', 'Sunny'],
+  } */
+const Testpage = (props) =>{
+  
   axios
     .get(`${process.env.REACT_APP_API_HOST}/dialogflow/listIntent`, {
       headers: {
@@ -131,21 +141,24 @@ const Testpage = (props) =>{
 
   //render() {
       return (
-        <ThemeProvider theme='defaultTheme'>
-          <div>
-            <FixedWrapper.Root minimizedOnInit>
-              <FixedWrapper.Maximized>
-                <Maximized {...props} />
-              </FixedWrapper.Maximized>
-              <FixedWrapper.Minimized>
+        <div>
+
+        </div>
+        // <ThemeProvider theme='defaultTheme'>
+        //   <div>
+        //     <FixedWrapper.Root minimizedOnInit>
+        //       <FixedWrapper.Maximized>
+        //         <Maximized {...props} />
+        //       </FixedWrapper.Maximized>
+        //       <FixedWrapper.Minimized>
                   
-                <Minimized {...props}>
-                {/* <img src={chatbotimg}></img> */}
-                </Minimized>
-              </FixedWrapper.Minimized>
-            </FixedWrapper.Root>
-          </div>
-        </ThemeProvider>
+        //         <Minimized {...props}>
+        //         {/* <img src={chatbotimg}></img> */}
+        //         </Minimized>
+        //       </FixedWrapper.Minimized>
+        //     </FixedWrapper.Root>
+        //   </div>
+        // </ThemeProvider>
       )
   //}
 //}

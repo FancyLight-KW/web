@@ -263,14 +263,14 @@ const Maximized = ({
 				<MessageList active containScrollInSubtree>
 					{messagesFromRedux.map((message, i) => (
 						<>
-						<MessageGroup key={i} onlyFirstWithMeta>
-							{/* <Message authorName="jon" date={message.parsedDate}>
+							<MessageGroup key={i} onlyFirstWithMeta>
+								{/* <Message authorName="jon" date={message.parsedDate}>
 
 							</Message> */}
-							<Message_local key={i} who={message.who} text={message.content.text.text} moment={message.moment} />
-							
-							
-						</MessageGroup>
+								<Message_local key={i} who={message.who} text={message.content.text.text} moment={message.moment} />
+								{scrollToBottom}
+
+							</MessageGroup>
 						</>
 					))}
 				</MessageList>
