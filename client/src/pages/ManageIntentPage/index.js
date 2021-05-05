@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Button, Row, Col, Form } from "react-bootstrap";
 import axios from "axios";
-import { Link, useHistory, useParams } from "react-router-dom";
+import { Link, useHistory, useParams, useLocation } from "react-router-dom";
 import styled, { css } from "styled-components";
 import cookie from "react-cookies";
 import {
@@ -54,28 +54,13 @@ const ManageInetnetContainer = styled.div`
 
 function ManageIntentPage() {
   const { intentid } = useParams();
-  console.log(intentid);
 
   let history = useHistory();
+
   const [intents, setIntents] = useState([]);
 
-  console.log("a");
-  console.log(
-    "a" +
-      intents.filter(function (e) {
-        return (e.INTENT_ID = intentid);
-      })
-  );
-
-  //console.log(intents.map((o) => o.INTENT_ID).indexOf(intentid));
-  //intents.INTENT_ID 가 intentid인 친구의 INTENT_TITLE
-
-  //   var newArr = arr.filter(function(item){
-  //     return item.name === "orange";
-  //   });
-
   // Intent Name
-  const [intentName, setIntentName] = useState();
+  const [intentName, setIntentName] = useState("");
   const intentNameHandler = (e) => {
     setIntentName(e.target.value);
   };
@@ -168,6 +153,52 @@ function ManageIntentPage() {
     }
   };
 
+  useEffect(() => {
+    axios
+      .get(`${process.env.REACT_APP_API_HOST}/scenario/intents`, {
+        headers: {
+          Authorization: `Bearer ${cookie.load("token")}`,
+        },
+      })
+      .then((response) => {
+        //     console.log(response.data);
+        setIntents([...response.data]);
+        //   setIntentName(response.data);
+        //    console.log(response.data.INTENT_ID);
+      });
+  }, []);
+
+  useEffect(() => {
+    axios
+      .get(
+        `${process.env.REACT_APP_API_HOST}/scenario/intents?id=${intentid}`,
+        {
+          headers: {
+            Authorization: `Bearer ${cookie.load("token")}`,
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response.data);
+        setIntentName(response.data[0].INTENT_TITLE);
+      });
+  }, []);
+
+  useEffect(() => {
+    axios
+      .get(
+        `${process.env.REACT_APP_API_HOST}/scenario/phrases?rid=${intentid}`,
+        {
+          headers: {
+            Authorization: `Bearer ${cookie.load("token")}`,
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response.data);
+      });
+  }, []);
+
   const saveHandler = async () => {
     const intentTitle = {
       data: [
@@ -229,36 +260,6 @@ function ManageIntentPage() {
       window.location.reload();
     }
   };
-
-  useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_API_HOST}/scenario/intents`, {
-        headers: {
-          Authorization: `Bearer ${cookie.load("token")}`,
-        },
-      })
-      .then((response) => {
-        //     console.log(response.data);
-        setIntents([...response.data]);
-        //   setIntentName(response.data);
-        //    console.log(response.data.INTENT_ID);
-      });
-  }, []);
-
-  useEffect(() => {
-    axios
-      .get(
-        `${process.env.REACT_APP_API_HOST}/scenario/phrases?rid=${intentid}`,
-        {
-          headers: {
-            Authorization: `Bearer ${cookie.load("token")}`,
-          },
-        }
-      )
-      .then((response) => {
-        console.log(response.data);
-      });
-  }, []);
 
   return (
     <>
@@ -325,7 +326,11 @@ function ManageIntentPage() {
               Intent name
             </Form.Label>
             <Col sm="7">
-              <Form.Control type="text" onChange={intentNameHandler} />
+              <Form.Control
+                type="text"
+                value={intentName}
+                onChange={intentNameHandler}
+              />
             </Col>
             <Button
               variant="primary"
