@@ -148,8 +148,8 @@ function MySRPage() {
                 <td id="centerAlign">{request.REQ_TYPE_CODE}</td>
                 <td id="centerAlign">{request.TITLE}</td>
                 <td id="centerAlign"></td>
-                <td id="centerAlign"></td>
                 <td id="centerAlign">{request.createdAt.split(" ")[0]}</td>
+                <td id="centerAlign"></td>
                 <td id="centerAlign"></td>
                 <td id="centerAlign"></td>
                 <td id="centerAlign"></td>

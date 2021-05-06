@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, {Component, useState} from 'react'
 import { List, Avatar, Layout, Typography } from 'antd';
 //import 'antd/dist/antd.css';
 import { RobotOutlined } from '@ant-design/icons'
@@ -8,7 +8,11 @@ import { Table, Row, Col } from "react-bootstrap";
 import './style.css'
 import { ThemeProvider } from '@livechat/ui-kit'
 import { useHistory } from "react-router";
-
+import chatbotimg from '../../assets/Chatbot.png'
+import {
+    MessageButtons,
+    MessageButton
+} from '@livechat/ui-kit'
 // import styles from "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css"
 // import {
 //     MainContainer,
@@ -27,6 +31,14 @@ const { Header, Footer, Sider, Content }=Layout;
 
 function Messages(props) {
     let currentTime = new Date();
+
+    const [FileRepair, setFileRepair] = useState("");
+    const [BlueScreen, setBlueScreen] = useState("");
+    const [NetworkRepair, setNetworkRepair] = useState("");
+
+    const setFileRepairCode = (text) => {
+        setFileRepair();
+    }
 //<RobotOutlined style={{display:"flex", justifyContent:"flex-start"}} />
 //     <StyledLink to={to}>
 //      <StyledButton onClick={onClick}>{children}</StyledButton>
@@ -49,10 +61,6 @@ function Messages(props) {
     //if(props.who == 'bot' && props.text == "요청 페이지로 이동합니다."){
 
     //}
-
-    const AvatarSrc = props.who ==='bot' ? <Avatar src={RobotOutlined}/> : <Avatar src={SmileOutlined}/> 
-    const PositionSrc = props.who ==='bot' ? "flex-start" : "flex-end"
-    const SenderSrc = props.who ==='bot' ? "bot" : ""
     //const MessageSrc = props.who ==='bot' ? <Icon type="robot" /> : <Icon type="smile" />  
     
     //const nowTime = Moment().format('HH:mm');
@@ -61,7 +69,10 @@ function Messages(props) {
             {props.who === 'bot' ? (
                 <div>                  
                     <div >
-                    <Avatar style={{ display: "flex", padding: '1rem', paddingLeft: '2rem', paddingRight:'4rem' }} ><RobotOutlined /></Avatar>
+                        <img src={chatbotimg}
+                            width="50"
+                            height="50"></img>
+
                         <p className="botCard"
                             style={{
                                 paddingLeft: "16px",
@@ -73,8 +84,14 @@ function Messages(props) {
                                 //innerWidth: "50px"
                             }}
                         >
+                            
                             {props.text}
-   
+
+                            <MessageButtons>
+									<MessageButton onClick={setFileRepairCode(props.text)}label="삭제된 파일 복구" primary />
+									<MessageButton label="블루스크린" />
+                                    <MessageButton label="네트워크 연결 해제" />
+							</MessageButtons>
                         </p>
                     </div>
                 </div>

@@ -11,9 +11,9 @@ exports.create = (req, res) => {
   models.Intent_Responses.bulkCreate(req.body.data)
     .then((result) => {
       res.send({
-        reult: result,
+        result: result,
         resultCode: 0,
-        message: "구문 생성 성공",
+        message: "Response 생성 성공",
       });
     })
     .catch((err) => {
@@ -29,7 +29,7 @@ exports.create = (req, res) => {
 exports.find = (req, res) => {
   let param = req.query;
   let query = {};
-
+  console.log(param);
   if (param.id) {
     query["RESPONSES_ID"] = param.id;
   }
@@ -39,7 +39,7 @@ exports.find = (req, res) => {
   if (param.phrase) {
     query["RESPONSE"] = param.response;
   }
-
+  console.log(query);
   models.Intent_Responses.findAll({
     where: query,
   })
@@ -47,6 +47,7 @@ exports.find = (req, res) => {
       res.send(result);
     })
     .catch((err) => {
+      console.log(err);
       res.send({
         resultCode: 1,
         message: "검색 실패",

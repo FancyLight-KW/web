@@ -67,6 +67,7 @@ function RevisePage() {
         //setRequests([...response.data]);
         //    Username = Requests[0].REG_USER.User_name;
         setUserName(response.data[0].REG_USER.User_name);
+        setReqFinishDate(response.data[0].REQ_FINISH_DATE);
       });
   }, []);
 
@@ -94,7 +95,7 @@ function RevisePage() {
     return String(year + month + day);
   };
 
-  const [ReqFinishDate, setReqFinishDate] = useState(dateChanger(new Date()));
+  const [ReqFinishDate, setReqFinishDate] = useState();
 
   const [RegUserID, setRegUserID] = useState("");
 
@@ -208,7 +209,7 @@ function RevisePage() {
           요청 등록일
         </Form.Label>
         <label className="marginleft" />
-        <InfoBlock> </InfoBlock>
+        <InfoBlock>{(Requests[0].createdAt || "").split(" ")[0]} </InfoBlock>
       </Form.Group>
       <form>
         <Form.Group as={Row} controlId="normalForm">
@@ -283,9 +284,11 @@ function RevisePage() {
             <>
               <Col sm="1">
                 <InfoBlock>
-                  {(Requests[0].REQ_FINISH_DATE || "")
-                    .split(" ")[0]
-                    .replaceAll("-", "/")}
+                  {(Requests[0].REQ_FINISH_DATE || "").substring(0, 4) +
+                    "/" +
+                    (Requests[0].REQ_FINISH_DATE || "").substring(4, 6) +
+                    "/" +
+                    (Requests[0].REQ_FINISH_DATE || "").substring(6, 8)}
                 </InfoBlock>
               </Col>
               <Button variant="secondary" size="sm" onClick={changeDateHandler}>

@@ -11,7 +11,7 @@ exports.create = (req, res) => {
   models.Intents.bulkCreate(req.body.data)
     .then((result) => {
       res.send({
-        reult: result,
+        result: result,
         resultCode: 0,
         message: "인텐트 생성 성공",
       });

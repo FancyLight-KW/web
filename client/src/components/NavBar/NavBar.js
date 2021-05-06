@@ -180,17 +180,21 @@ function NavBar() {
 
       <div>
         <Navbar collapseOnSelect expand="lg" variant="dark" id="NavSecondRow">
-          <Nav.Link id="collasible-nav">
-            {authenticated ? (
+          {authenticated ? (
+            <Nav.Link id="collasible-nav">
               <Link to="/servicerequest" id="textcolorwhite">
                 요청/접수
               </Link>
-            ) : (
-              <Link to="/" id="textcolorwhite">
-                요청/접수
-              </Link>
-            )}
-          </Nav.Link>
+            </Nav.Link>
+          ) : (
+            <Nav.Link
+              id="collasible-nav"
+              onClick={loginOpenModal}
+              style={{ color: "white" }}
+            >
+              요청/접수
+            </Nav.Link>
+          )}
 
           {authenticated && userLevel === 1 ? (
             <Nav.Link id="collasible-nav">
@@ -201,7 +205,9 @@ function NavBar() {
           ) : userLevel === 2 ? (
             <NavDropdown title="요원용" id="dropDown-nav">
               <NavDropdown.Item>
-                <Link style={{ color: "black" }}>나의 요청목록</Link>
+                <Link to="/mysr" style={{ color: "black" }}>
+                  나의 요청목록
+                </Link>
               </NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item href="sragent">나의 작업목록</NavDropdown.Item>
@@ -212,8 +218,10 @@ function NavBar() {
                 <Link style={{ color: "black" }}>공지사항 관리</Link>
               </NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.3">
-                챗봇 시나리오 관리
+              <NavDropdown.Item>
+                <Link to="/intentmain" style={{ color: "black" }}>
+                  챗봇 시나리오 관리
+                </Link>
               </NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item href="#action/3.5">
@@ -223,10 +231,12 @@ function NavBar() {
               </NavDropdown.Item>
             </NavDropdown>
           ) : (
-            <Nav.Link id="collasible-nav">
-              <Link to="/" id="textcolorwhite">
-                나의 요청목록
-              </Link>
+            <Nav.Link
+              id="collasible-nav"
+              onClick={loginOpenModal}
+              style={{ color: "white" }}
+            >
+              나의 요청목록
             </Nav.Link>
           )}
 

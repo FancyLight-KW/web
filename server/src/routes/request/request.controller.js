@@ -17,6 +17,7 @@ exports.queryString = (params) => {
   let targetCode = params.targetcode ? params.targetcode : "";
   let csrStatus = params.csrstatus ? params.csrstatus : "";
 
+  console.log(query);
   if (params.reqNo) {
     let reqNo = params.reqNo ? params.reqNo : "";
     query["REQ_SEQ"] = reqNo;
@@ -209,11 +210,12 @@ exports.delete = (req, res) => {
     .then((result) => {
       if (result > 0) {
         res.send({
-          resultcode: result,
+          resultCode: 0,
           message: `${req.params.requestId} delete success`,
         });
       } else {
         res.status(500).send({
+          resultCode: 1,
           message: "no data",
         });
       }

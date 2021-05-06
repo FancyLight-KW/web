@@ -35,7 +35,7 @@ module.exports = function (sequelize, DataTypes) {
     });
     Intents.hasMany(models.Intent_Responses, {
       as: "Intent_Responses",
-      foreignKey: "RESPONSE_INTENT_ID",
+      foreignKey: "RESPONSES_INTENT_ID",
     });
   };
   return Intents;
