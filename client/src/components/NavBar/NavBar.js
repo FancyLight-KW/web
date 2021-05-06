@@ -218,8 +218,8 @@ function NavBar() {
                 <Link style={{ color: "black" }}>공지사항 관리</Link>
               </NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item href="manageintent">
-                <Link to="/manageintent" style={{ color: "black" }}>
+              <NavDropdown.Item>
+                <Link to="/intentmain" style={{ color: "black" }}>
                   챗봇 시나리오 관리
                 </Link>
               </NavDropdown.Item>

@@ -108,9 +108,11 @@ const Footer = (props) => {
               </FixedWrapper.Maximized>
               <FixedWrapper.Minimized>
                   
+                  
                 <Minimized {...props}>
                 {/* <img src={chatbotimg}></img> */}
                 </Minimized>
+                
               </FixedWrapper.Minimized>
             </FixedWrapper.Root>
           </div>

@@ -6,6 +6,15 @@
 // const trainingPhrasesParts = 'Training phrases, e.g. 'How many people are staying?';
 // const messageTexts = 'Message texts for the agent's response when the intent is detected, e.g. 'Your reservation has been confirmed';
 
+// (
+//   projectId = 'YOUR_PROJECT_ID',
+//   displayName = 'YOUR_INTENT_DISPLAY_NAME',
+//   trainingPhrasesParts = [
+//     'Hello, What is weather today?',
+//     'How is the weather today?',
+//   ],
+//   messageTexts = ['Rainy', 'Sunny']
+// )
 // Imports the Dialogflow library
 const dialogflow = require('@google-cloud/dialogflow');
 
@@ -14,11 +23,13 @@ const intentsClient = new dialogflow.IntentsClient();
 
 exports.createIntent = async (req, res) => {
   // Construct request
-  
-  // The path to identify the agent that owns the created intent.
-  const agentPath = intentsClient.agentPath(projectId);
 
-  const trainingPhrases = [req.body];
+  // The path to identify the agent that owns the created intent.
+  const agentPath = intentsClient.agentPath(process.env.GOOGLE_PROJECT_ID);
+
+  const trainingPhrases = [];
+
+  let trainingPhrasesParts = req.body.trainingPhrasesParts;
 
   trainingPhrasesParts.forEach(trainingPhrasesPart => {
     const part = {
@@ -35,7 +46,7 @@ exports.createIntent = async (req, res) => {
   });
 
   const messageText = {
-    text: messageTexts,
+    text: req.body.messageTexts,
   };
 
   const message = {
@@ -43,7 +54,7 @@ exports.createIntent = async (req, res) => {
   };
 
   const intent = {
-    displayName: displayName,
+    displayName: req.body.displayName,
     trainingPhrases: trainingPhrases,
     messages: [message],
   };
@@ -54,7 +65,15 @@ exports.createIntent = async (req, res) => {
   };
 
   // Create the intent
-  const [response] = await intentsClient.createIntent(createIntentRequest);
+  // try{
+    const [response] = await intentsClient.createIntent(createIntentRequest);
+  // }catch(error){
+
+  // }
+  res.send( {
+    resultCode: 0,
+    message: "dialogflow에 생성 성공",
+  });
   console.log(`Intent ${response.name} created`);
 }
 
