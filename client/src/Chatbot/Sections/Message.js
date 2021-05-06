@@ -8,7 +8,7 @@ import { Table, Row, Col } from "react-bootstrap";
 import './style.css'
 import { ThemeProvider } from '@livechat/ui-kit'
 import { useHistory } from "react-router";
-
+import chatbotimg from '../../assets/Chatbot.png'
 // import styles from "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css"
 // import {
 //     MainContainer,
@@ -61,8 +61,10 @@ function Messages(props) {
             {props.who === 'bot' ? (
                 <div>                  
                     <div >
-                    {/* <Avatar style={{ display: "flex", padding: '1rem', paddingLeft: '2rem', paddingRight:'4rem' }} ><RobotOutlined /></Avatar> */}
-                    <RobotOutlined style={{padding: '10px', paddingLeft: '2rem'}}></RobotOutlined>
+                        {/* <RobotOutlined style={{padding: '10px', paddingLeft: '1rem'}}></RobotOutlined> */}
+                        <img src={chatbotimg}
+                            width="50"
+                            height="50"></img>
                         <p className="botCard"
                             style={{
                                 paddingLeft: "16px",
