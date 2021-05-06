@@ -9,13 +9,10 @@ import './style.css'
 import { ThemeProvider } from '@livechat/ui-kit'
 import { useHistory } from "react-router";
 import chatbotimg from '../../assets/Chatbot.png'
-<<<<<<< HEAD
-=======
 import {
     MessageButtons,
     MessageButton
 } from '@livechat/ui-kit'
->>>>>>> b7c3fd2fd34e30998d14638b90aad059fff3d741
 // import styles from "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css"
 // import {
 //     MainContainer,
