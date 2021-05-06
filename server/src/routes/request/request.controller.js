@@ -11,13 +11,14 @@ exports.like = (keyword) => {
 };
 
 exports.queryString = (params) => {
-  console.log(params);
+  console.log(params.title);
   let query = {};
   let title = params.title ? params.title : "";
   let user = params.user ? params.user : "";
   let targetCode = params.targetcode ? params.targetcode : "";
   let csrStatus = params.csrstatus ? params.csrstatus : "";
 
+  console.log(query);
   if (params.reqNo) {
     let reqNo = params.reqNo ? params.reqNo : "";
     query["REQ_SEQ"] = reqNo;
