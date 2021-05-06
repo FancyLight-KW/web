@@ -1,29 +1,29 @@
 {
   "files": {
-    "main.css": "/static/css/main.94761674.chunk.css",
-    "main.js": "/static/js/main.dd524489.chunk.js",
-    "main.js.map": "/static/js/main.dd524489.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.347fa5da.js",
-    "runtime-main.js.map": "/static/js/runtime-main.347fa5da.js.map",
-    "static/css/2.f4a6a311.chunk.css": "/static/css/2.f4a6a311.chunk.css",
-    "static/js/2.588b240e.chunk.js": "/static/js/2.588b240e.chunk.js",
-    "static/js/2.588b240e.chunk.js.map": "/static/js/2.588b240e.chunk.js.map",
-    "static/js/3.ffa5dbe8.chunk.js": "/static/js/3.ffa5dbe8.chunk.js",
-    "static/js/3.ffa5dbe8.chunk.js.map": "/static/js/3.ffa5dbe8.chunk.js.map",
+    "main.css": "/static/css/main.0a86bc3a.chunk.css",
+    "main.js": "/static/js/main.d5dcdc35.chunk.js",
+    "main.js.map": "/static/js/main.d5dcdc35.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.85b9ed09.js",
+    "runtime-main.js.map": "/static/js/runtime-main.85b9ed09.js.map",
+    "static/css/2.c6a1f70c.chunk.css": "/static/css/2.c6a1f70c.chunk.css",
+    "static/js/2.8c22cffa.chunk.js": "/static/js/2.8c22cffa.chunk.js",
+    "static/js/2.8c22cffa.chunk.js.map": "/static/js/2.8c22cffa.chunk.js.map",
+    "static/js/3.69b1e3dd.chunk.js": "/static/js/3.69b1e3dd.chunk.js",
+    "static/js/3.69b1e3dd.chunk.js.map": "/static/js/3.69b1e3dd.chunk.js.map",
     "index.html": "/index.html",
-    "static/css/2.f4a6a311.chunk.css.map": "/static/css/2.f4a6a311.chunk.css.map",
-    "static/css/main.94761674.chunk.css.map": "/static/css/main.94761674.chunk.css.map",
-    "static/js/2.588b240e.chunk.js.LICENSE.txt": "/static/js/2.588b240e.chunk.js.LICENSE.txt",
+    "static/css/2.c6a1f70c.chunk.css.map": "/static/css/2.c6a1f70c.chunk.css.map",
+    "static/css/main.0a86bc3a.chunk.css.map": "/static/css/main.0a86bc3a.chunk.css.map",
+    "static/js/2.8c22cffa.chunk.js.LICENSE.txt": "/static/js/2.8c22cffa.chunk.js.LICENSE.txt",
     "static/media/800px-Hyundai_Transys_logo.02f14495.png": "/static/media/800px-Hyundai_Transys_logo.02f14495.png",
     "static/media/Chatbot.7650cb57.png": "/static/media/Chatbot.7650cb57.png",
     "static/media/ITSP.60d289d1.png": "/static/media/ITSP.60d289d1.png",
     "static/media/favicon.6df13f0d.ico": "/static/media/favicon.6df13f0d.ico"
   },
   "entrypoints": [
-    "static/js/runtime-main.347fa5da.js",
-    "static/css/2.f4a6a311.chunk.css",
-    "static/js/2.588b240e.chunk.js",
-    "static/css/main.94761674.chunk.css",
-    "static/js/main.dd524489.chunk.js"
+    "static/js/runtime-main.85b9ed09.js",
+    "static/css/2.c6a1f70c.chunk.css",
+    "static/js/2.8c22cffa.chunk.js",
+    "static/css/main.0a86bc3a.chunk.css",
+    "static/js/main.d5dcdc35.chunk.js"
   ]
 }

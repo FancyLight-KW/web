@@ -13,9 +13,12 @@ import MySRPage from "./pages/MySRPage/MySRPage";
 import SRAgentPage from "./pages/SRAgentPage/SRAgentPage";
 import SRAdminPage from "./pages/SRAdminPage/SRAdminPage";
 import RevisePage from "./pages/ReivsePage/RevisePage";
+import IntentMainPage from "./pages/IntentMainPage";
+import RegisterIntentPage from "./pages/RegisterIntentPage";
 import NavBar from "./components/NavBar/NavBar";
 import Footer from "./components/Footer";
 import ProtectedRoute from "./ProtectedRoute";
+import ManageIntentPage from "./pages/ManageIntentPage";
 
 function App() {
   const [authenticated, setAuthenticated] = useState(false);
@@ -58,6 +61,17 @@ function App() {
               <Route exact path="/sragent" component={SRAgentPage} />
               <Route exact path="/sradmin" component={SRAdminPage} />
               <Route exact path="/revise/:reqNo" component={RevisePage} />
+              <Route exact path="/intentmain" component={IntentMainPage} />
+              <Route
+                exact
+                path="/manageintent/:intentid"
+                component={ManageIntentPage}
+              />
+              <Route
+                exact
+                path="/registerintent"
+                component={RegisterIntentPage}
+              />
               <Route exact path="/test" component={Testpage} />
             </Switch>
           </>
