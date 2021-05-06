@@ -61,7 +61,8 @@ function Messages(props) {
             {props.who === 'bot' ? (
                 <div>                  
                     <div >
-                    <Avatar style={{ display: "flex", padding: '1rem', paddingLeft: '2rem', paddingRight:'4rem' }} ><RobotOutlined /></Avatar>
+                    {/* <Avatar style={{ display: "flex", padding: '1rem', paddingLeft: '2rem', paddingRight:'4rem' }} ><RobotOutlined /></Avatar> */}
+                    <RobotOutlined style={{padding: '10px', paddingLeft: '2rem'}}></RobotOutlined>
                         <p className="botCard"
                             style={{
                                 paddingLeft: "16px",
