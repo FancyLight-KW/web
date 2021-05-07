@@ -34,6 +34,7 @@ const RadioBlock = styled.div`
 const MarginBlock = styled.div`
   position: relative;
   top: 5px;
+  right: 10px;
 `;
 
 function ITSRPage() {
@@ -51,16 +52,7 @@ function ITSRPage() {
   const [Content, setContent] = useState("");
   const [File, setFile] = useState("");
   const [ReqFinishDate, setReqFinishDate] = useState();
-  // const dateChanger = (date) => {
-  //   let year = date.getFullYear();
-  //   let month = date.getMonth() + 1;
-  //   let day = date.getDate();
-
-  //   month = month > 9 ? month : "0" + month;
-  //   day = day > 9 ? day : "0" + day;
-
-  //   return String(year + month + day);
-  // };
+  // Error
   const [titleError, setTitleError] = useState({});
   const [contentError, setConentError] = useState({});
   const [dateError, setDateError] = useState({});
@@ -236,7 +228,13 @@ function ITSRPage() {
               <Datepicker change={finishDateHandler} />
               {Object.keys(dateError).map((key) => {
                 return (
-                  <div style={{ color: "red", fontSize: "13px" }}>
+                  <div
+                    style={{
+                      color: "red",
+                      fontSize: "13px",
+                      marginLeft: "6px",
+                    }}
+                  >
                     {dateError[key]}
                   </div>
                 );

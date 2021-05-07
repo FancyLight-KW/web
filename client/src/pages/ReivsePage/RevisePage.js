@@ -83,21 +83,45 @@ function RevisePage() {
   const [Content, setContent] = useState("");
   const [File, setFile] = useState("");
   const [changeDate, setChangeDate] = useState(false);
-
-  const dateChanger = (date) => {
-    let year = date.getFullYear();
-    let month = date.getMonth() + 1;
-    let day = date.getDate();
-
-    month = month > 9 ? month : "0" + month;
-    day = day > 9 ? day : "0" + day;
-
-    return String(year + month + day);
-  };
-
   const [ReqFinishDate, setReqFinishDate] = useState();
+  // const dateChanger = (date) => {
+  //   let year = date.getFullYear();
+  //   let month = date.getMonth() + 1;
+  //   let day = date.getDate();
 
-  const [RegUserID, setRegUserID] = useState("");
+  //   month = month > 9 ? month : "0" + month;
+  //   day = day > 9 ? day : "0" + day;
+
+  //   return String(year + month + day);
+  // };
+  // Error
+  const [titleError, setTitleError] = useState({});
+  const [contentError, setConentError] = useState({});
+  const [dateError, setDateError] = useState({});
+
+  const formValidation = () => {
+    // validation
+    const titleError = {};
+    const contentError = {};
+    const dateError = {};
+    let isValid = true;
+    if (Title === "") {
+      isValid = false;
+      titleError.mustInput = "제목을 입력해주세요.";
+    }
+    if (Content === "") {
+      isValid = false;
+      contentError.mustInput = "내용을 입력해주세요.";
+    }
+    if (!ReqFinishDate) {
+      isValid = false;
+      dateError.mustSelect = "희망완료일을 설정해주세요.";
+    }
+    setTitleError(titleError);
+    setConentError(contentError);
+    setDateError(dateError);
+    return isValid;
+  };
 
   const targetCodeHandler = (e) => {
     console.log(e.target.value);
@@ -128,10 +152,11 @@ function RevisePage() {
 
   const finishDateHandler = (date) => {
     setReqFinishDate(date);
-    console.log("ReqFinishDate" + ReqFinishDate);
+    // console.log("ReqFinishDate" + ReqFinishDate);
   };
   const changeDateHandler = () => {
     setChangeDate(true);
+    setReqFinishDate(false);
   };
 
   const fileHandler = (e) => {
@@ -145,7 +170,12 @@ function RevisePage() {
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
+    console.log(ReqFinishDate);
 
+    let isValid = formValidation();
+    if (isValid === false) {
+      return;
+    }
     const formData = new FormData();
 
     let body = JSON.stringify({
@@ -167,13 +197,10 @@ function RevisePage() {
 
     console.log("a" + Requests[0].REG_USER.User_name);
 
-    //  body.REG_USER["User_name"] = Requests[0]["REG_USER.User_name"];
-
     formData.append("imagefile", File);
     formData.append("body", body);
-
-    console.log("수정" + formData);
-    console.log("수정" + body);
+    // console.log("수정" + formData);
+    // console.log("수정" + body);
     //  console.log("Added" + body);
 
     axios
@@ -236,6 +263,13 @@ function RevisePage() {
           </Form.Label>
           <Col sm="10">
             <Form.Control type="text" onChange={titleHandler} value={Title} />
+            {Object.keys(titleError).map((key) => {
+              return (
+                <div style={{ color: "red", fontSize: "13px" }}>
+                  {titleError[key]}
+                </div>
+              );
+            })}
           </Col>
         </Form.Group>
 
@@ -254,6 +288,13 @@ function RevisePage() {
               onChange={contentHandler}
               value={Content}
             />
+            {Object.keys(contentError).map((key) => {
+              return (
+                <div style={{ color: "red", fontSize: "13px" }}>
+                  {contentError[key]}
+                </div>
+              );
+            })}
           </Col>
         </Form.Group>
 
@@ -263,9 +304,23 @@ function RevisePage() {
           </Form.Label>
 
           {changeDate ? (
-            <Col sm="1">
+            <Col sm="2">
               <MarginBlock>
                 <Datepicker change={finishDateHandler} />
+                {Object.keys(dateError).map((key) => {
+                  return (
+                    <div
+                      style={{
+                        color: "red",
+                        fontSize: "13px",
+                        marginTop: "5px",
+                        marginLeft: "7px",
+                      }}
+                    >
+                      {dateError[key]}
+                    </div>
+                  );
+                })}
               </MarginBlock>
             </Col>
           ) : (
