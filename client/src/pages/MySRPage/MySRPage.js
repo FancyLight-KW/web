@@ -24,7 +24,6 @@ const PageNameWrapper = styled.div`
   height: 100%;
   align-items: center;
 `;
-
 const SearchBlock = styled.div`
   display: flex;
   margin-top: 10px;
@@ -106,29 +105,24 @@ function MySRPage() {
                 문의대상
               </th>
               <th rowSpan="2" id="centerAlign">
-                시스템명1
-              </th>
-              <th rowSpan="2" id="centerAlign">
-                시스템명2
-              </th>
-              <th rowSpan="2" id="centerAlign">
-                문의유형
-              </th>
-              <th rowSpan="2" id="centerAlign">
                 제목
               </th>
-
-              <th colSpan="2">서비스 요청</th>
-              <th colSpan="2">서비스 접수</th>
-              <th colSpan="2">서비스 검토/처리</th>
+              <th colSpan="2" id="centerAlign">
+                서비스 요청
+              </th>
+              <th colSpan="2" id="centerAlign">
+                서비스 접수
+              </th>
+              <th colSpan="2" id="centerAlign">
+                서비스 검토/처리
+              </th>
             </tr>
             <tr>
-              <th>요청자</th>
-              <th>요청등록일</th>
-              <th>접수자</th>
-              <th>접수일</th>
-              <th>예상완료일</th>
-              <th>처리완료일</th>
+              <th id="centerAlign">요청자</th>
+              <th id="centerAlign">요청등록일</th>
+              <th id="centerAlign">접수자</th>
+              <th id="centerAlign">예상완료일</th>
+              <th id="centerAlign">처리완료일</th>
             </tr>
           </thead>
 
@@ -143,16 +137,12 @@ function MySRPage() {
                 <td id="centerAlign">{request.REQ_SEQ}</td>
                 <td id="centerAlign">{request.CSR_STATUS}</td>
                 <td id="centerAlign">{request.TARGET_CODE}</td>
-                <td id="centerAlign"></td>
-                <td id="centerAlign"></td>
-                <td id="centerAlign">{request.REQ_TYPE_CODE}</td>
                 <td id="centerAlign">{request.TITLE}</td>
-                <td id="centerAlign"></td>
+                <td id="centerAlign">{request.REG_USER.User_name}</td>
                 <td id="centerAlign">{request.createdAt.split(" ")[0]}</td>
-                <td id="centerAlign"></td>
-                <td id="centerAlign"></td>
-                <td id="centerAlign"></td>
-                <td id="centerAlign"></td>
+                <td id="centerAlign">{request.MOD_USER_ID}</td>
+                <td id="centerAlign">{request.EXPRECTED_FINISH_DATE}</td>
+                <td id="centerAlign">{request.REAL_FINISH_DATE}</td>
               </tr>
             ))}
           </tbody>

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Button, Table } from "react-bootstrap";
 import axios from "axios";
 import { Link, useHistory } from "react-router-dom";
 import styled, { css } from "styled-components";

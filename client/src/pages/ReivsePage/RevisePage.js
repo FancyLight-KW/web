@@ -155,10 +155,8 @@ function RevisePage() {
       CORP_CODE: 법인코드,
       TARGET_CODE: TargetCode,
       SYSTEM_GROUP_CODE: SystemGroupCode,
-      SYSTEM_CODE: null,
       TM_APPROVAL_REQ_YN: TMApprovalReqYN,
-      CSR_STATUS: "접수대기",
-      IMSI_YN: 임시저장,
+      CSR_STATUS: Requests[0].CSR_STATUS,
       REQ_FINISH_DATE: ReqFinishDate,
       MOD_USER_ID: Requests[0].MOD_USER_ID,
       REQ_IMG_PATH: Requests[0].REQ_IMG_PATH,
@@ -219,17 +217,7 @@ function RevisePage() {
           <label className="marginleft" />
           <InfoBlock>{Requests[0].TARGET_CODE}</InfoBlock>
         </Form.Group>
-        <Form.Group as={Row} controlId="normalForm">
-          <Form.Label column sm="1" className="labelColor">
-            시스템명
-          </Form.Label>
-          <Col sm="3">
-            <Form.Control as="select" onChange={dropdownOnChange}>
-              <option value={"test"}>0</option>
-              <option value={"test2"}>1</option>
-            </Form.Control>
-          </Col>
-        </Form.Group>
+
         <Form.Group as={Row} controlId="normalForm">
           <Form.Label column sm="1" className="labelColor">
             팀장 승인

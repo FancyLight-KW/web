@@ -196,8 +196,9 @@ function SRPage() {
               </option>
               <option value="접수대기">접수대기</option>
               <option value="접수완료">접수완료</option>
-              <option value="변경관리 처리중">변경관리 처리중</option>
-              <option value="처리 지연중">처리 지연중</option>
+              <option value="요청처리중">요청처리중</option>
+              <option value="처리완료">처리완료</option>
+              <option value="요청반려">요청반려</option>
             </Select>
           </SearchBlock>
 
@@ -225,7 +226,7 @@ function SRPage() {
             ·
             <Select onChange={searchTypeHandler}>
               <option value="title">제목</option>
-              <option value="user">작성자</option>
+              <option value="user">요청자</option>
             </Select>
             <Input size="40" onChange={keywordHandler} />
             <Button
@@ -271,7 +272,7 @@ function SRPage() {
               <th id="centerAlign">요청자</th>
               <th id="centerAlign">요청등록일</th>
 
-              <th id="centerAlign">접수일</th>
+              <th id="centerAlign">접수자</th>
               <th id="centerAlign">예상완료일</th>
               <th id="centerAlign">처리완료일</th>
             </tr>
@@ -291,9 +292,9 @@ function SRPage() {
                 <td id="centerAlign">{request.TITLE}</td>
                 <td id="centerAlign">{request.REG_USER.User_name}</td>
                 <td id="centerAlign">{request.createdAt.split(" ")[0]}</td>
-                <td id="centerAlign"></td>
-                <td id="centerAlign"></td>
-                <td id="centerAlign"></td>
+                <td id="centerAlign">{request.MOD_USER_ID}</td>
+                <td id="centerAlign">{request.EXPRECTED_FINISH_DATE}</td>
+                <td id="centerAlign">{request.REAL_FINISH_DATE}</td>
               </tr>
             ))}
           </tbody>

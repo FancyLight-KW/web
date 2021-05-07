@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Button, Row, Col, Form } from "react-bootstrap";
 import axios from "axios";
-import { Link, useHistory, useParams, useLocation } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import styled, { css } from "styled-components";
 import cookie from "react-cookies";
 import {
