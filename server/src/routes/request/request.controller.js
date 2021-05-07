@@ -13,9 +13,11 @@ exports.like = (keyword) => {
 exports.queryString = (params) => {
   let query = {};
   let title = params.title ? decodeURIComponent(params.title) : "";
-  let user = params.user ? params.user : "";
-  let targetCode = params.targetcode ? params.targetcode : "";
-  let csrStatus = params.csrstatus ? params.csrstatus : "";
+  let user = params.user ? decodeURIComponent(params.user) : "";
+  let targetCode = params.targetcode
+    ? decodeURIComponent(params.targetcode)
+    : "";
+  let csrStatus = params.csrstatus ? decodeURIComponent(params.csrstatus) : "";
 
   console.log(query);
   if (params.reqNo) {
