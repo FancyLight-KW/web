@@ -83,7 +83,7 @@ function SRPage() {
       SearchType === "title"
         ? Keyword === ""
           ? ``
-          : `&title=${Keyword}`
+          : `&title=${encodeURIComponent(Keyword)}`
         : Keyword === ""
         ? ``
         : `&user=${Keyword}`;

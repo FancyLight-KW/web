@@ -11,9 +11,8 @@ exports.like = (keyword) => {
 };
 
 exports.queryString = (params) => {
-  console.log(params.title);
   let query = {};
-  let title = params.title ? params.title : "";
+  let title = params.title ? decodeURIComponent(params.title) : "";
   let user = params.user ? params.user : "";
   let targetCode = params.targetcode ? params.targetcode : "";
   let csrStatus = params.csrstatus ? params.csrstatus : "";
