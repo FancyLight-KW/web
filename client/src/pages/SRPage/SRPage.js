@@ -201,7 +201,6 @@ function SRPage() {
               <option value="요청반려">요청반려</option>
             </Select>
           </SearchBlock>
-
           <SearchBlock>
             · 요청/접수 기간
             <Datepicker change={StartdatedHandler} />
@@ -221,7 +220,6 @@ function SRPage() {
               <option value="OA장비">OA장비</option>
             </Select>
           </SearchBlock>
-
           <SearchBlock>
             ·
             <Select onChange={searchTypeHandler}>
@@ -234,6 +232,7 @@ function SRPage() {
               size="sm"
               id="searchButton"
               onClick={SearchHandler}
+              style={{ marginLeft: "55px", height: "30px" }}
             >
               <img src={searchImg} width="18" height="17" />
               검색
