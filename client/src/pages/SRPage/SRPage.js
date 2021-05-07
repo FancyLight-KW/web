@@ -86,11 +86,11 @@ function SRPage() {
           : `&title=${encodeURIComponent(Keyword)}`
         : Keyword === ""
         ? ``
-        : `&user=${Keyword}`;
+        : `&user=${encodeURIComponent(Keyword)}`;
 
     //  console.log(queryKeyword);
-    const queryTargetCode = `&targetcode=${TargetCode}`;
-    const queryCSRStatus = `&csrstatus=${CSRStatus}`;
+    const queryTargetCode = `&targetcode=${encodeURIComponent(TargetCode)}`;
+    const queryCSRStatus = `&csrstatus=${encodeURIComponent(CSRStatus)}`;
     const queryDate =
       StartDate === ""
         ? FinishDate === ""
@@ -253,15 +253,7 @@ function SRPage() {
               <th rowSpan="2" id="centerAlign">
                 문의대상
               </th>
-              <th rowSpan="2" id="centerAlign">
-                시스템명1
-              </th>
-              <th rowSpan="2" id="centerAlign">
-                시스템명2
-              </th>
-              <th rowSpan="2" id="centerAlign">
-                문의유형
-              </th>
+
               <th rowSpan="2" id="centerAlign">
                 제목
               </th>
@@ -296,11 +288,8 @@ function SRPage() {
                 <td id="centerAlign">{request.REQ_SEQ}</td>
                 <td id="centerAlign">{request.CSR_STATUS}</td>
                 <td id="centerAlign">{request.TARGET_CODE}</td>
-                <td id="centerAlign"></td>
-                <td id="centerAlign"></td>
-                <td id="centerAlign">{request.REQ_TYPE_CODE}</td>
                 <td id="centerAlign">{request.TITLE}</td>
-                <td id="centerAlign"></td>
+                <td id="centerAlign">{request.REG_USER.User_name}</td>
                 <td id="centerAlign">{request.createdAt.split(" ")[0]}</td>
                 <td id="centerAlign"></td>
                 <td id="centerAlign"></td>

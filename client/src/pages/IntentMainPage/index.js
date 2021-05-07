@@ -4,7 +4,7 @@ import axios from "axios";
 import { Link, useHistory } from "react-router-dom";
 import styled, { css } from "styled-components";
 import cookie from "react-cookies";
-import { EyeOutlined, EllipsisOutlined, PlusOutlined } from "@ant-design/icons";
+import { EyeOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import { List } from "antd";
 
 const TopContainer = styled.div`
@@ -38,6 +38,27 @@ const TableContainer = styled.div`
 function IntentMainPage() {
   let history = useHistory();
   const [intents, setIntents] = useState([]);
+
+  const deleteIntentHandler = (intentID) => {
+    if (window.confirm("삭제하시겠습니까?")) {
+      axios
+        .delete(
+          `${process.env.REACT_APP_API_HOST}/scenario/intents/${intentID}`,
+          {
+            headers: {
+              Authorization: `Bearer ${cookie.load("token")}`,
+            },
+          }
+        )
+        .then((response) => {
+          console.log(response.data);
+          if (response.data.resultCode === 0) {
+            alert("인텐트가 삭제되었습니다.");
+            window.location.reload();
+          }
+        });
+    }
+  };
 
   useEffect(() => {
     axios
@@ -88,11 +109,19 @@ function IntentMainPage() {
             renderItem={(item) => (
               <List.Item
                 extra={
-                  <EyeOutlined
-                    onClick={() => {
-                      history.push(`/manageintent/${item.INTENT_ID}`);
-                    }}
-                  />
+                  <div>
+                    <EyeOutlined
+                      onClick={() => {
+                        history.push(`/manageintent/${item.INTENT_ID}`);
+                      }}
+                    />
+                    <DeleteOutlined
+                      style={{ marginLeft: "10px" }}
+                      onClick={() => {
+                        deleteIntentHandler(item.INTENT_ID);
+                      }}
+                    ></DeleteOutlined>
+                  </div>
                 }
               >
                 {item.INTENT_TITLE}
