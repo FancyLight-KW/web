@@ -154,10 +154,14 @@ function LoginModal({
       User_password: Password,
     };
 
+    const expires = new Date();
+    expires.setDate(Date.now() + 1000 * 60 * 60 * 1); // 9시간?
+
     dispatch(loginUser(body)).then((response) => {
       if (JSON.stringify(response.payload.resultCode) === "0") {
         cookie.save("token", response.payload.token, {
           path: "/",
+          expires,
         });
         const decoded = jwt_decode(response.payload.token);
         dispatch(authUser(decoded));

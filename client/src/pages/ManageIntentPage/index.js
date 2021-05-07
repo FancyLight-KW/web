@@ -209,6 +209,7 @@ function ManageIntentPage() {
 
   useEffect(() => {
     // phrases 가져오기
+
     axios
       .get(
         `${process.env.REACT_APP_API_HOST}/scenario/phrases?rid=${intentid}`,
@@ -220,18 +221,24 @@ function ManageIntentPage() {
       )
       .then((response) => {
         //  console.log(response.data);
+        // for(let i=0; i< trainingPhrases.length; i++){
+        //   trainingPhrases
+        // }
+        let tmp = [];
         response.data.forEach((e) => {
-          trainingPhrases.push({
+          tmp.push({
             id: nextTPId.current,
             text: e.PHRASE,
           });
           nextTPId.current += 1;
         });
+        setTrainingPhrases(tmp);
       });
   }, [intentid]);
 
   useEffect(() => {
     // responses 가져오기
+
     axios
       .get(
         `${process.env.REACT_APP_API_HOST}/scenario/responses?rid=${intentid}`,
@@ -243,13 +250,16 @@ function ManageIntentPage() {
       )
       .then((response) => {
         // console.log(response.data);
+        //setResponses([]);
+        let tmp = [];
         response.data.forEach((e) => {
-          responses.push({
+          tmp.push({
             id: nextResponseId.current,
             respond: e.RESPONSE,
           });
           nextResponseId.current += 1;
         });
+        setResponses(tmp);
       });
   }, [intentid]);
 
