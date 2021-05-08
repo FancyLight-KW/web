@@ -2,7 +2,7 @@
 
 //newTrainingPhrases
 
-exports.updateIntent = async () => {
+exports.updateIntent = async (req, res) => { try{
     const dialogflow = require('dialogflow');
 
     const intentsClient = new dialogflow.IntentsClient();
@@ -14,31 +14,32 @@ exports.updateIntent = async () => {
         intentView: 'INTENT_VIEW_FULL',
     }
 
+    let existingIntent = "";
 
     const [response] = await intentsClient.listIntents(request);
-    // console.log("=============================================");
-    // var response_str = JSON.stringify(response);
-    // response.array.forEach(element => {
-        
-    // });
-    // console.log(response_str);
-    
-    const intent = existingIntent; //get the intent that needs to be updated from the [response];
-    // const intent = {
-    //     displayName: req.body.displayName,
-    //     trainingPhrases: trainingPhrases,
-    //     messages: [message],
-    //   };
+
+    response.forEach(intent => {
+        if (intent.displayName.toString() === req.body.displayName.toString()) {
+            existingIntent = intent;
+            //console.log(intent.trainingPhrases);
+            //console.log(intent.messages);
+        }
+    })
+
+    //==========================================
+    //==========training phrases update=========
+    //==========================================
+    let newTrainingPhrases = req.body.newTrainingPhrases;
 
     const trainingPhrases = [];
     let previousTrainingPhrases =
-        intent.trainingPhrases.length > 0
-            ? intent.trainingPhrases
+    existingIntent.trainingPhrases.length > 0
+            ? existingIntent.trainingPhrases
             : [];
 
-    previousTrainingPhrases.forEach(textdata => {
-        newTrainingPhrases.push(textdata.parts[0].text)
-    });
+    //previousTrainingPhrases.forEach(textdata => {
+    //    newTrainingPhrases.push(textdata.parts[0].text)
+    //});
 
     newTrainingPhrases.forEach(phrase => {
         const part = {
@@ -53,16 +54,52 @@ exports.updateIntent = async () => {
         trainingPhrases.push(trainingPhrase);
     });
 
-    intent.trainingPhrases = trainingPhrases;
+    existingIntent.trainingPhrases = trainingPhrases;
+    //==========================================
+    //===============message update=============
+    //==========================================
+    let newMessageTexts = req.body.newMessageTexts;
+    let array = [];
+    let previousMessages =
+    existingIntent.messages.length > 0
+            ? existingIntent.messages
+            : [];
 
+    //previousMessages.forEach(textdata => {
+    //    newMessageTexts.push(textdata.parts[0].text)
+    //});
+    
+    newMessageTexts.forEach(messagepart => {
+        array.push(messagepart);
+        //Here we create a new training phrase for each provided part.
+
+        //messages.push(message);
+    });
+    const text = {
+        text: array
+    };
+    const messages = [{
+        platform: 'PLATFORM_UNSPECIFIED',
+        text: text,
+        message: 'text',
+    }];
+    console.log(messages);
+    existingIntent.messages = messages;
+
+    //==========================================
+    //===============intent update==============
+    //==========================================
     const updateIntentRequest = {
-        intent: intent,
-        intentView: 'INTENT_VIEW_FULL'
+        parent: projectAgentPath,
+        intent: existingIntent,
+        languageCode: process.env.DIALOGFLOW_LANGUAGE_CODE
     }
 
     //Send the request for update the intent.
+
     const result = await intentsClient.updateIntent(updateIntentRequest);
     console.log(result);
-
-    
+} catch (error) {
+    console.log(error);
+}
 }

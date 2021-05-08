@@ -210,6 +210,7 @@ function RegisterIntentPage() {
       }
     );
     
+    //send to dialogflow
     let newIntent = {
       displayName: intentName,
       trainingPhrasesParts: intentPhrasesToDialogflow,

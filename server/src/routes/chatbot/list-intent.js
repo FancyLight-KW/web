@@ -14,6 +14,13 @@
 
 'use strict';
 
+
+//messages OK
+//input OK
+//output OK
+//phrases OK
+//displayname
+
 /**
  * List of all intents in the specified project.
  * @param {string} projectId The project to be used
@@ -26,14 +33,81 @@
   // const projectId = 'The Project ID to use, e.g. 'YOUR_GCP_ID';
 
   // Imports the Dialogflow library
-  const dialogflow = require('@google-cloud/dialogflow');
+  const dialogflow = require('dialogflow');
 
   // Instantiates clients
   const intentsClient = new dialogflow.IntentsClient();
 
-exports.listIntents = async () => { try{
+exports.listIntents = async (req, res) => {
+  try {
     // Construct request
-  
+
+    const intentsClient = new dialogflow.IntentsClient();
+    const projectId = process.env.GOOGLE_PROJECT_ID;
+    const projectAgentPath = intentsClient.projectAgentPath(projectId);
+
+    const request = {
+      parent: projectAgentPath,
+      intentView: 'INTENT_VIEW_FULL',
+    }
+
+    let existingIntent = "";
+
+    const [response] = await intentsClient.listIntents(request);
+
+    let trainingPhrases = {};
+    let messageTexts = [];
+    let inputContexts = [];
+    let outputContext = [];
+    response.forEach((intent)=> {
+      //console.log(intent);
+      //phrase listing==================================
+      intent.trainingPhrases.forEach((phrase) => {
+        let trainingPhrasesPart = [];
+        phrase.parts.forEach((element) => {
+          trainingPhrasesPart.push(element.text);
+        })
+        if(!trainingPhrases[intent.displayName]){
+          trainingPhrases[intent.displayName] = [trainingPhrasesPart];
+        }else{
+          trainingPhrases[intent.displayName].push(trainingPhrasesPart);
+        }
+      })
+
+      //message listing==================================
+      intent.messages.forEach((message) => {
+        messageTexts.push([intent.displayName, message.text.text]);
+        //console.log(message.text.text);
+          //messageTexts.push([intent.displayName, element.text]);
+      })
+      
+      //inputcontext listing==================================
+      intent.inputContextNames.forEach((contexts) => {
+        inputContexts.push([intent.displayName, contexts]);
+        //console.log(contexts);
+      })
+
+      //outputcontext listing==================================
+      intent.outputContexts.forEach((contexts) => {
+        outputContext.push([intent.displayName, contexts.name]);
+        //console.log(contexts);
+      })
+    })
+    
+    
+    console.log("trainingPhrases here");
+    console.log(trainingPhrases);
+    console.log("messageText here");
+    console.log(messageTexts);
+    console.log("inputContexts here");
+    console.log(inputContexts);
+    console.log("outputContexts here");
+    console.log(outputContext);
+    
+    
+    //console.log(`trainingphrases: ${trainingPhrases}`);
+
+    /*
     // The path to identify the agent that owns the intents.
     const projectAgentPath = intentsClient.agentPath(process.env.GOOGLE_PROJECT_ID);
   
@@ -51,7 +125,8 @@ exports.listIntents = async () => { try{
     //console.log(response_str);
     response.forEach(intent => {
       console.log('====================');
-      //console.log(`Intent name: ${intent.name}`);
+      console.log(`Intent name: ${intent.name}`);
+      console.log(`Intent id: ${intent.id}`);
       console.log(`Intent display name: ${intent.displayName}`);
       
       console.log("parameters");
@@ -74,18 +149,21 @@ exports.listIntents = async () => { try{
       //console.log(`Root folowup intent: ${intent.rootFollowupIntentName}`);
       //console.log(`Parent followup intent: ${intent.parentFollowupIntentName}`);
   
-      // console.log('Input contexts:');
-      // intent.inputContextNames.forEach(inputContextName => {
-      //   console.log(`\tName: ${inputContextName}`);
-      // });
+       console.log('Input contexts:');
+       intent.inputContextNames.forEach(inputContextName => {
+         console.log(`\tName: ${inputContextName}`);
+       });
   
-      // console.log('Output contexts:');
-      // intent.outputContexts.forEach(outputContext => {
-      //   console.log(`\tName: ${outputContext.name}`);
-      // });
+       console.log('Output contexts:');
+       intent.outputContexts.forEach(outputContext => {
+         console.log(`\tName: ${outputContext.name}`);
+       });
     });
   }catch(error){
     console.log(error);
   }
-  }
-//main(...process.argv.slice(2));
+  */
+}catch(error){
+  console.log(error);
+}
+}
