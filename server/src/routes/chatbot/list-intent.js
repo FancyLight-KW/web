@@ -12,7 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-"use strict";
+'use strict';
+
 
 //messages OK
 //input OK
@@ -25,17 +26,17 @@
  * @param {string} projectId The project to be used
  */
 
-// [START dialogflow_list_intents]
-/**
- * TODO(developer): Uncomment the following lines before running the sample.
- */
-// const projectId = 'The Project ID to use, e.g. 'YOUR_GCP_ID';
+  // [START dialogflow_list_intents]
+  /**
+   * TODO(developer): Uncomment the following lines before running the sample.
+   */
+  // const projectId = 'The Project ID to use, e.g. 'YOUR_GCP_ID';
 
-// Imports the Dialogflow library
-const dialogflow = require("dialogflow");
+  // Imports the Dialogflow library
+  const dialogflow = require('dialogflow');
 
-// Instantiates clients
-const intentsClient = new dialogflow.IntentsClient();
+  // Instantiates clients
+  const intentsClient = new dialogflow.IntentsClient();
 
 exports.listIntents = async (req, res) => {
   try {
@@ -47,8 +48,8 @@ exports.listIntents = async (req, res) => {
 
     const request = {
       parent: projectAgentPath,
-      intentView: "INTENT_VIEW_FULL",
-    };
+      intentView: 'INTENT_VIEW_FULL',
+    }
 
     let existingIntent = "";
 
@@ -60,53 +61,58 @@ exports.listIntents = async (req, res) => {
     let outputContext = {};
     let result = [];
 
-    response.forEach((intent) => {
+    response.forEach((intent)=> {
       //console.log(intent);
       //phrase listing==================================
       intent.trainingPhrases.forEach((phrase) => {
         let trainingPhrasesPart = [];
         phrase.parts.forEach((element) => {
           trainingPhrasesPart.push(element.text);
-        });
-        if (!trainingPhrases[intent.displayName]) {
+        })
+        if(!trainingPhrases[intent.displayName]){
           trainingPhrases[intent.displayName] = [trainingPhrasesPart];
-        } else {
+        }else{
           trainingPhrases[intent.displayName].push(trainingPhrasesPart);
         }
-      });
+      })
 
       //message listing==================================
       intent.messages.forEach((message) => {
-        messageTexts.push([intent.displayName, message.text.text]);
+        if(!messageTexts[intent.displayName]){
+          messageTexts[intent.displayName] = [message.text.text];
+        }else{
+          messageTexts[intent.displayName].push([message.text.text]);
+        }
+        //messageTexts.push([intent.displayName, message.text.text]);
         //console.log(message.text.text);
-        //messageTexts.push([intent.displayName, element.text]);
-      });
-
+          //messageTexts.push([intent.displayName, element.text]);
+      })
+      
       //inputcontext listing==================================
       intent.inputContextNames.forEach((contexts) => {
         let contextName = String(contexts);
-        var inputArray = contextName.split("/");
-        if (!inputContexts[intent.displayName]) {
+        var inputArray = contextName.split('/');
+        if(!inputContexts[intent.displayName]){
           inputContexts[intent.displayName] = [inputArray[6]];
-        } else {
+        }else{
           inputContexts[intent.displayName].push([inputArray[6]]);
         }
         //inputContexts[intent.displayName].push([contexts]);
         //console.log(contexts);
-      });
+      })
 
       //outputcontext listing==================================
       intent.outputContexts.forEach((contexts) => {
         let contextName = String(contexts.name);
-        var outputArray = contextName.split("/");
-        if (!outputContext[intent.displayName]) {
+        var outputArray = contextName.split('/');
+        if(!outputContext[intent.displayName]){
           outputContext[intent.displayName] = [outputArray[6]];
-        } else {
+        }else{
           outputContext[intent.displayName].push([outputArray[6]]);
         }
         //outputContext[intent.displayName].push([contexts.name]);
         //console.log(contexts);
-      });
+      })
 
       result.push({
         intentName: intent.displayName,
@@ -130,7 +136,7 @@ exports.listIntents = async (req, res) => {
         return 0;
       });
       //})
-    });
+    })
 
     /*
     console.log("trainingPhrases here");
@@ -142,10 +148,9 @@ exports.listIntents = async (req, res) => {
     console.log("outputContexts here");
     console.log(outputContext);
 */
-    console.log(result);
+  console.log(result);
     res.send({
-      result: result,
-    });
+      result: result});
     /*
     res.send({
       trainingPhrases: trainingPhrases,
@@ -212,7 +217,7 @@ exports.listIntents = async (req, res) => {
     console.log(error);
   }
   */
-  } catch (error) {
-    console.log(error);
-  }
-};
+}catch(error){
+  console.log(error);
+}
+}
