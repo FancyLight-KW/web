@@ -40,7 +40,7 @@ exports.deleteIntent = async (req, res) => {
         const [intents] = await intentsClient.listIntents(agentrequest);
         intents.forEach(intent =>{
             console.log(intent.displayName);
-            if(intent.displayName.toString() === req.body.displayName.toString()){
+            if(intent.displayName.toString() === req.body.intentName.toString()){
                 
                 var nameArray = intent.name.split('/');
                 //console.log(`=======searched intent name: ${intent.name}`);

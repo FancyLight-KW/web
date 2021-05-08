@@ -91,11 +91,15 @@ exports.listIntents = async (req, res) => {
       //inputcontext listing==================================
       intent.inputContextNames.forEach((contexts) => {
         let contextName = String(contexts);
-        var inputArray = contextName.split('/');
+        let inputArrayWithFollowup = contextName.split('/');
+        //console.log(inputArrayWithFollowup);
+        //let inputArrayWithFollowupString = String(inputArrayWithFollowup);
+        //let inputContextNameArray = inputArrayWithFollowupString.split('-');
+        let inputContextName = inputArrayWithFollowup[6];
         if(!inputContexts[intent.displayName]){
-          inputContexts[intent.displayName] = [inputArray[6]];
+          inputContexts[intent.displayName] = inputContextName;
         }else{
-          inputContexts[intent.displayName].push([inputArray[6]]);
+          inputContexts[intent.displayName].push(inputContextName);
         }
         //inputContexts[intent.displayName].push([contexts]);
         //console.log(contexts);
@@ -104,11 +108,15 @@ exports.listIntents = async (req, res) => {
       //outputcontext listing==================================
       intent.outputContexts.forEach((contexts) => {
         let contextName = String(contexts.name);
-        var outputArray = contextName.split('/');
+        var outputArrayWithFollowup = contextName.split('/');
+        //console.log(outputArrayWithFollowup);
+        //let outputArrayWithFollowupString = String(outputArrayWithFollowup);
+        //let outputContextNameArray = outputArrayWithFollowupString.split('-');
+        let outputContextName = outputArrayWithFollowup[6];
         if(!outputContext[intent.displayName]){
-          outputContext[intent.displayName] = [outputArray[6]];
+          outputContext[intent.displayName] = outputContextName;
         }else{
-          outputContext[intent.displayName].push([outputArray[6]]);
+          outputContext[intent.displayName].push(outputContextName);
         }
         //outputContext[intent.displayName].push([contexts.name]);
         //console.log(contexts);
@@ -147,7 +155,8 @@ exports.listIntents = async (req, res) => {
     console.log(inputContexts);
     console.log("outputContexts here");
     console.log(outputContext);
-*/
+    */
+
   console.log(result);
     res.send({
       result: result});
