@@ -124,8 +124,17 @@ const HoverImage = styled.div`
     ],
     messageTexts: ['Rainy', 'Sunny'],
   } */
+
+ /* const newIntent = {
+    displayName: 'WeatherIntent',
+    newTrainingPhrases: [
+      'Hello, What is weather today?',
+      'How is the weather today?',
+      'added',
+    ],
+    newMessageTexts: ['Rainy', 'Sunny', 'cloudy'],
+  } */
 const Testpage = (props) =>{
-  
   axios
     .get(`${process.env.REACT_APP_API_HOST}/dialogflow/listIntent`, {
       headers: {
