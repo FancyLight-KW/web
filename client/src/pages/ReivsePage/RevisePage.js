@@ -220,7 +220,7 @@ function RevisePage() {
 
   return (
     <ITSRBlock>
-      <Header>※ IT서비스 수정</Header>
+      <Header>※ 나의 요청 수정</Header>
       <Form.Group as={Row} controlId="normalForm">
         <Form.Label column sm="1" className="labelColor">
           요청자

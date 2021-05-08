@@ -285,7 +285,7 @@ function SRAgentPage() {
                 <td id="centerAlign">{request.TITLE}</td>
                 <td id="centerAlign">{request.REG_USER.User_name}</td>
                 <td id="centerAlign">{request.createdAt.split(" ")[0]}</td>
-                <td id="centerAlign">{request.EXPRECTED_FINISH_DATE}</td>
+                <td id="centerAlign">{request.EXPECTED_FINISH_DATE}</td>
                 <td id="centerAlign">
                   {" "}
                   <Button

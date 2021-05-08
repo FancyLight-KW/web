@@ -204,19 +204,6 @@ function SRAdminPage() {
               ※ 나의 결재목록
             </span>
           </div>
-          <div
-            style={{
-              display: "flex",
-              width: "10%",
-              justifyContent: "flex-end",
-            }}
-          >
-            <Link to="/itsr">
-              <Button variant="primary" size="sm" id="itsrButton">
-                IT 서비스 요청
-              </Button>
-            </Link>
-          </div>
         </PageNameWrapper>
         <TopFirstRowhWrapper>
           <SearchBlock>
