@@ -44,11 +44,15 @@ function IntentMainPage() {
   let history = useHistory();
   const [intents, setIntents] = useState([]);
 
-  const deleteIntentHandler = (intentID) => {
+  const deleteIntentHandler = (intentName) => {
+    const displayName = {
+      intentName,
+    };
     if (window.confirm("삭제하시겠습니까?")) {
       axios
-        .delete(
-          `${process.env.REACT_APP_API_HOST}/scenario/intents/${intentID}`,
+        .post(
+          `${process.env.REACT_APP_API_HOST}/dialogflow/deleteIntent`,
+          displayName,
           {
             headers: {
               Authorization: `Bearer ${cookie.load("token")}`,
@@ -73,24 +77,24 @@ function IntentMainPage() {
         },
       })
       .then((response) => {
-        console.log(response);
-        console.log(response.data);
-        // setIntents([...response.data]);
+        //   console.log(response);
+        console.log(response.data.result);
+        setIntents([...response.data.result]);
       });
   }, []);
 
-  useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_API_HOST}/scenario/intents`, {
-        headers: {
-          Authorization: `Bearer ${cookie.load("token")}`,
-        },
-      })
-      .then((response) => {
-        //  console.log(response.data);
-        setIntents([...response.data]);
-      });
-  }, []);
+  // useEffect(() => {
+  //   axios
+  //     .get(`${process.env.REACT_APP_API_HOST}/scenario/intents`, {
+  //       headers: {
+  //         Authorization: `Bearer ${cookie.load("token")}`,
+  //       },
+  //     })
+  //     .then((response) => {
+  //       console.log(response.data);
+  //       // setIntents([...response.data]);
+  //     });
+  // }, []);
 
   return (
     <>
@@ -130,27 +134,30 @@ function IntentMainPage() {
                 extra={
                   <>
                     <div>
-                      <img
-                        src={arrow}
-                        width="15"
-                        style={{
-                          marginRight: "5px",
-                          fontSize: "10px",
-                          marginTop: "-10px",
-                        }}
-                      />
-                      {item.INTENT_TITLE}
+                      {item.inputContexts ? (
+                        <img
+                          src={arrow}
+                          width="15"
+                          style={{
+                            marginRight: "5px",
+                            fontSize: "10px",
+                            marginTop: "-10px",
+                          }}
+                        />
+                      ) : null}
+
+                      {item.intentName}
                     </div>
                     <div>
                       <EyeOutlined
                         onClick={() => {
-                          history.push(`/manageintent/${item.INTENT_ID}`);
+                          // history.push(`/manageintent/${item.intentName}`);
                         }}
                       />
                       <DeleteOutlined
                         style={{ marginLeft: "10px" }}
                         onClick={() => {
-                          deleteIntentHandler(item.INTENT_ID);
+                          deleteIntentHandler(item.intentName);
                         }}
                       ></DeleteOutlined>
                     </div>
