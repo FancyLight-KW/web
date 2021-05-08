@@ -85,7 +85,6 @@ exports.update = (req, res) => {
 
 exports.delete = (req, res) => {
   let id = req.params.id;
-
   models.Intents.destroy({
     where: {
       INTENT_ID: id,

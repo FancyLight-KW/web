@@ -3,8 +3,14 @@ import axios from "axios";
 import { Link, useHistory } from "react-router-dom";
 import styled, { css } from "styled-components";
 import cookie from "react-cookies";
-import { EyeOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
+import {
+  EyeOutlined,
+  DeleteOutlined,
+  PlusOutlined,
+  ArrowRightOutlined,
+} from "@ant-design/icons";
 import { List } from "antd";
+import arrow from "../../assets/arrow.png";
 
 const TopContainer = styled.div`
   display: flex;
@@ -73,6 +79,19 @@ function IntentMainPage() {
       });
   }, []);
 
+  useEffect(() => {
+    axios
+      .get(`${process.env.REACT_APP_API_HOST}/scenario/intents`, {
+        headers: {
+          Authorization: `Bearer ${cookie.load("token")}`,
+        },
+      })
+      .then((response) => {
+        //  console.log(response.data);
+        setIntents([...response.data]);
+      });
+  }, []);
+
   return (
     <>
       <TopContainer>
@@ -109,23 +128,35 @@ function IntentMainPage() {
             renderItem={(item) => (
               <List.Item
                 extra={
-                  <div>
-                    <EyeOutlined
-                      onClick={() => {
-                        history.push(`/manageintent/${item.INTENT_ID}`);
-                      }}
-                    />
-                    <DeleteOutlined
-                      style={{ marginLeft: "10px" }}
-                      onClick={() => {
-                        deleteIntentHandler(item.INTENT_ID);
-                      }}
-                    ></DeleteOutlined>
-                  </div>
+                  <>
+                    <div>
+                      <img
+                        src={arrow}
+                        width="15"
+                        style={{
+                          marginRight: "5px",
+                          fontSize: "10px",
+                          marginTop: "-10px",
+                        }}
+                      />
+                      {item.INTENT_TITLE}
+                    </div>
+                    <div>
+                      <EyeOutlined
+                        onClick={() => {
+                          history.push(`/manageintent/${item.INTENT_ID}`);
+                        }}
+                      />
+                      <DeleteOutlined
+                        style={{ marginLeft: "10px" }}
+                        onClick={() => {
+                          deleteIntentHandler(item.INTENT_ID);
+                        }}
+                      ></DeleteOutlined>
+                    </div>
+                  </>
                 }
-              >
-                {item.INTENT_TITLE}
-              </List.Item>
+              ></List.Item>
             )}
             style={{ marginLeft: "-15px" }}
           ></List>
