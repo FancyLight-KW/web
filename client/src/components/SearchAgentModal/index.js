@@ -212,29 +212,31 @@ function SearchAgentModal({
             </TypeText>
             <AgentInfoTableWrapper>
               <Table striped bordered hover>
-                <thead>
+                <thead style={{ verticalAlign: "middle", textAlign: "center" }}>
                   <tr>
-                    <th id="thCenterAlign">No</th>
-                    <th id="thCenterAlign">요원 이름</th>
-                    <th id="thCenterAlign">할당된 작업 개수</th>
-                    <th id="thCenterAlign">작업 중인 개수</th>
-                    <th id="thCenterAlign">할당</th>
+                    <th>No</th>
+                    <th>요원 이름</th>
+                    <th>할당된 작업 개수</th>
+                    <th>작업 중인 개수</th>
+                    <th>할당</th>
                   </tr>
                 </thead>
 
                 <tbody>
                   {agentInfos.map((info, index) => (
-                    <tr key={index}>
-                      <td id="thCenterAlign">{index}</td>
-                      <td id="thCenterAlign">{info.User_name}</td>
-                      <td id="thCenterAlign">{info.READY}</td>
-                      <td id="thCenterAlign">{info.DOING}</td>
+                    <tr
+                      key={index}
+                      style={{ verticalAlign: "middle", textAlign: "center" }}
+                    >
+                      <td>{index}</td>
+                      <td>{info.User_name}</td>
+                      <td>{info.READY}</td>
+                      <td>{info.DOING}</td>
 
-                      <td id="thCenterAlign">
+                      <td>
                         {" "}
                         <Button
                           variant="success"
-                          id="thCenterAlign"
                           size="sm"
                           onClick={() => {
                             allocateAgent(info.User_id);

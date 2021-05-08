@@ -12,28 +12,151 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-'use strict';
+"use strict";
+
+//messages OK
+//input OK
+//output OK
+//phrases OK
+//displayname
 
 /**
  * List of all intents in the specified project.
  * @param {string} projectId The project to be used
  */
 
-  // [START dialogflow_list_intents]
-  /**
-   * TODO(developer): Uncomment the following lines before running the sample.
-   */
-  // const projectId = 'The Project ID to use, e.g. 'YOUR_GCP_ID';
+// [START dialogflow_list_intents]
+/**
+ * TODO(developer): Uncomment the following lines before running the sample.
+ */
+// const projectId = 'The Project ID to use, e.g. 'YOUR_GCP_ID';
 
-  // Imports the Dialogflow library
-  const dialogflow = require('@google-cloud/dialogflow');
+// Imports the Dialogflow library
+const dialogflow = require("dialogflow");
 
-  // Instantiates clients
-  const intentsClient = new dialogflow.IntentsClient();
+// Instantiates clients
+const intentsClient = new dialogflow.IntentsClient();
 
-exports.listIntents = async () => { try{
+exports.listIntents = async (req, res) => {
+  try {
     // Construct request
-  
+
+    const intentsClient = new dialogflow.IntentsClient();
+    const projectId = process.env.GOOGLE_PROJECT_ID;
+    const projectAgentPath = intentsClient.projectAgentPath(projectId);
+
+    const request = {
+      parent: projectAgentPath,
+      intentView: "INTENT_VIEW_FULL",
+    };
+
+    let existingIntent = "";
+
+    const [response] = await intentsClient.listIntents(request);
+
+    let trainingPhrases = {};
+    let messageTexts = {};
+    let inputContexts = {};
+    let outputContext = {};
+    let result = [];
+
+    response.forEach((intent) => {
+      //console.log(intent);
+      //phrase listing==================================
+      intent.trainingPhrases.forEach((phrase) => {
+        let trainingPhrasesPart = [];
+        phrase.parts.forEach((element) => {
+          trainingPhrasesPart.push(element.text);
+        });
+        if (!trainingPhrases[intent.displayName]) {
+          trainingPhrases[intent.displayName] = [trainingPhrasesPart];
+        } else {
+          trainingPhrases[intent.displayName].push(trainingPhrasesPart);
+        }
+      });
+
+      //message listing==================================
+      intent.messages.forEach((message) => {
+        messageTexts.push([intent.displayName, message.text.text]);
+        //console.log(message.text.text);
+        //messageTexts.push([intent.displayName, element.text]);
+      });
+
+      //inputcontext listing==================================
+      intent.inputContextNames.forEach((contexts) => {
+        let contextName = String(contexts);
+        var inputArray = contextName.split("/");
+        if (!inputContexts[intent.displayName]) {
+          inputContexts[intent.displayName] = [inputArray[6]];
+        } else {
+          inputContexts[intent.displayName].push([inputArray[6]]);
+        }
+        //inputContexts[intent.displayName].push([contexts]);
+        //console.log(contexts);
+      });
+
+      //outputcontext listing==================================
+      intent.outputContexts.forEach((contexts) => {
+        let contextName = String(contexts.name);
+        var outputArray = contextName.split("/");
+        if (!outputContext[intent.displayName]) {
+          outputContext[intent.displayName] = [outputArray[6]];
+        } else {
+          outputContext[intent.displayName].push([outputArray[6]]);
+        }
+        //outputContext[intent.displayName].push([contexts.name]);
+        //console.log(contexts);
+      });
+
+      result.push({
+        intentName: intent.displayName,
+        trainingPhrases: trainingPhrases[intent.displayName],
+        messageTexts: messageTexts[intent.displayName],
+        inputContexts: inputContexts[intent.displayName],
+        outputContext: outputContext[intent.displayName],
+      });
+
+      result.sort((a, b) => {
+        var nameA = a.intentName.toUpperCase(); // ignore upper and lowercase
+        var nameB = b.intentName.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+
+        // 이름이 같을 경우
+        return 0;
+      });
+      //})
+    });
+
+    /*
+    console.log("trainingPhrases here");
+    console.log(trainingPhrases);
+    console.log("messageText here");
+    console.log(messageTexts);
+    console.log("inputContexts here");
+    console.log(inputContexts);
+    console.log("outputContexts here");
+    console.log(outputContext);
+*/
+    console.log(result);
+    res.send({
+      result: result,
+    });
+    /*
+    res.send({
+      trainingPhrases: trainingPhrases,
+      messageTexts: messageTexts,
+      inputContexts: inputContexts,
+      outputContext: outputContext,
+    })
+    */
+    //console.log(`trainingphrases: ${trainingPhrases}`);
+
+    /*
     // The path to identify the agent that owns the intents.
     const projectAgentPath = intentsClient.agentPath(process.env.GOOGLE_PROJECT_ID);
   
@@ -51,7 +174,8 @@ exports.listIntents = async () => { try{
     //console.log(response_str);
     response.forEach(intent => {
       console.log('====================');
-      //console.log(`Intent name: ${intent.name}`);
+      console.log(`Intent name: ${intent.name}`);
+      console.log(`Intent id: ${intent.id}`);
       console.log(`Intent display name: ${intent.displayName}`);
       
       console.log("parameters");
@@ -74,18 +198,21 @@ exports.listIntents = async () => { try{
       //console.log(`Root folowup intent: ${intent.rootFollowupIntentName}`);
       //console.log(`Parent followup intent: ${intent.parentFollowupIntentName}`);
   
-      // console.log('Input contexts:');
-      // intent.inputContextNames.forEach(inputContextName => {
-      //   console.log(`\tName: ${inputContextName}`);
-      // });
+       console.log('Input contexts:');
+       intent.inputContextNames.forEach(inputContextName => {
+         console.log(`\tName: ${inputContextName}`);
+       });
   
-      // console.log('Output contexts:');
-      // intent.outputContexts.forEach(outputContext => {
-      //   console.log(`\tName: ${outputContext.name}`);
-      // });
+       console.log('Output contexts:');
+       intent.outputContexts.forEach(outputContext => {
+         console.log(`\tName: ${outputContext.name}`);
+       });
     });
   }catch(error){
     console.log(error);
   }
+  */
+  } catch (error) {
+    console.log(error);
   }
-//main(...process.argv.slice(2));
+};

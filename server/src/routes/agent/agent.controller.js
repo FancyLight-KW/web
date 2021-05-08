@@ -90,7 +90,7 @@ exports.updateRequest = (req, res) => {
     models.Requests.update(
       {
         CSR_STATUS: body.CSR_STATUS,
-        EXPRECTED_FINISH_DATE: body.DATE,
+        EXPECTED_FINISH_DATE: body.DATE,
       },
       {
         where: {

@@ -204,19 +204,6 @@ function SRAdminPage() {
               ※ 나의 결재목록
             </span>
           </div>
-          <div
-            style={{
-              display: "flex",
-              width: "10%",
-              justifyContent: "flex-end",
-            }}
-          >
-            <Link to="/itsr">
-              <Button variant="primary" size="sm" id="itsrButton">
-                IT 서비스 요청
-              </Button>
-            </Link>
-          </div>
         </PageNameWrapper>
         <TopFirstRowhWrapper>
           <SearchBlock>
@@ -285,39 +272,21 @@ function SRAdminPage() {
                 문의대상
               </th>
               <th rowSpan="2" id="centerAlign">
-                시스템명1
-              </th>
-              <th rowSpan="2" id="centerAlign">
-                시스템명2
-              </th>
-              <th rowSpan="2" id="centerAlign">
-                문의유형
-              </th>
-              <th rowSpan="2" id="centerAlign">
                 제목
               </th>
-
               <th colSpan="2" id="centerAlign">
                 서비스 요청
               </th>
-              <th colSpan="2" id="centerAlign">
+              <th colSpan="1" id="centerAlign">
                 서비스 접수
               </th>
               <th colSpan="2" id="centerAlign">
-                서비스 검토/처리
-              </th>
-              <th colSpan="4" id="centerAlign">
                 요청 처리
               </th>
             </tr>
             <tr>
               <th id="centerAlign">요청자</th>
               <th id="centerAlign">요청등록일</th>
-              <th id="centerAlign">성명</th>
-              <th id="centerAlign">접수일</th>
-
-              <th id="centerAlign">예상완료일</th>
-              <th id="centerAlign"> 처리완료일</th>
               <th id="centerAlign">세부정보</th>
               <th id="centerAlign">승인</th>
               <th id="centerAlign">반려</th>
@@ -330,16 +299,10 @@ function SRAdminPage() {
                 <td id="centerAlign">{request.REQ_SEQ}</td>
                 <td id="centerAlign">{request.CSR_STATUS}</td>
                 <td id="centerAlign">{request.TARGET_CODE}</td>
-                <td id="centerAlign"></td>
-                <td id="centerAlign">{request.REQ_TYPE_CODE}</td>
-                <td id="centerAlign"></td>
-                <td>{request.TITLE}</td>
-                <td id="centerAlign"></td>
+                <td id="centerAlign">{request.TITLE}</td>
+                <td id="centerAlign">{request.REG_USER.User_name}</td>
                 <td id="centerAlign">{request.createdAt.split(" ")[0]}</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+
                 <td id="centerAlign">
                   {" "}
                   <Button

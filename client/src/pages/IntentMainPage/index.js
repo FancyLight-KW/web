@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Button, Table } from "react-bootstrap";
 import axios from "axios";
 import { Link, useHistory } from "react-router-dom";
 import styled, { css } from "styled-components";
 import cookie from "react-cookies";
-import { EyeOutlined, EllipsisOutlined, PlusOutlined } from "@ant-design/icons";
+import {
+  EyeOutlined,
+  DeleteOutlined,
+  PlusOutlined,
+  ArrowRightOutlined,
+} from "@ant-design/icons";
 import { List } from "antd";
+import arrow from "../../assets/arrow.png";
 
 const TopContainer = styled.div`
   display: flex;
@@ -39,6 +44,41 @@ function IntentMainPage() {
   let history = useHistory();
   const [intents, setIntents] = useState([]);
 
+  const deleteIntentHandler = (intentID) => {
+    if (window.confirm("삭제하시겠습니까?")) {
+      axios
+        .delete(
+          `${process.env.REACT_APP_API_HOST}/scenario/intents/${intentID}`,
+          {
+            headers: {
+              Authorization: `Bearer ${cookie.load("token")}`,
+            },
+          }
+        )
+        .then((response) => {
+          console.log(response.data);
+          if (response.data.resultCode === 0) {
+            alert("인텐트가 삭제되었습니다.");
+            window.location.reload();
+          }
+        });
+    }
+  };
+
+  useEffect(() => {
+    axios
+      .get(`${process.env.REACT_APP_API_HOST}/dialogflow/listIntent`, {
+        headers: {
+          Authorization: `Bearer ${cookie.load("token")}`,
+        },
+      })
+      .then((response) => {
+        console.log(response);
+        console.log(response.data);
+        // setIntents([...response.data]);
+      });
+  }, []);
+
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_API_HOST}/scenario/intents`, {
@@ -47,7 +87,7 @@ function IntentMainPage() {
         },
       })
       .then((response) => {
-        console.log(response.data);
+        //  console.log(response.data);
         setIntents([...response.data]);
       });
   }, []);
@@ -88,15 +128,35 @@ function IntentMainPage() {
             renderItem={(item) => (
               <List.Item
                 extra={
-                  <EyeOutlined
-                    onClick={() => {
-                      history.push(`/manageintent/${item.INTENT_ID}`);
-                    }}
-                  />
+                  <>
+                    <div>
+                      <img
+                        src={arrow}
+                        width="15"
+                        style={{
+                          marginRight: "5px",
+                          fontSize: "10px",
+                          marginTop: "-10px",
+                        }}
+                      />
+                      {item.INTENT_TITLE}
+                    </div>
+                    <div>
+                      <EyeOutlined
+                        onClick={() => {
+                          history.push(`/manageintent/${item.INTENT_ID}`);
+                        }}
+                      />
+                      <DeleteOutlined
+                        style={{ marginLeft: "10px" }}
+                        onClick={() => {
+                          deleteIntentHandler(item.INTENT_ID);
+                        }}
+                      ></DeleteOutlined>
+                    </div>
+                  </>
                 }
-              >
-                {item.INTENT_TITLE}
-              </List.Item>
+              ></List.Item>
             )}
             style={{ marginLeft: "-15px" }}
           ></List>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Button, Row, Col, Form } from "react-bootstrap";
 import axios from "axios";
-import { Link, useHistory, useParams, useLocation } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import styled, { css } from "styled-components";
 import cookie from "react-cookies";
 import {
@@ -59,8 +59,33 @@ function ManageIntentPage() {
 
   const [intents, setIntents] = useState([]);
 
+  const deleteIntentHandler = (intentID) => {
+    if (window.confirm("삭제하시겠습니까?")) {
+      axios
+        .delete(
+          `${process.env.REACT_APP_API_HOST}/scenario/intents/${intentID}`,
+          {
+            headers: {
+              Authorization: `Bearer ${cookie.load("token")}`,
+            },
+          }
+        )
+        .then((response) => {
+          console.log(response.data);
+          if (response.data.resultCode === 0) {
+            alert("인텐트가 삭제되었습니다.");
+            if (intentID == intentid) {
+              history.push("/intentmain");
+            } else {
+              window.location.reload();
+            }
+          }
+        });
+    }
+  };
+
   // Intent Name
-  const [intentName, setIntentName] = useState("");
+  const [intentName, setIntentName] = useState();
   const intentNameHandler = (e) => {
     setIntentName(e.target.value);
   };
@@ -68,10 +93,10 @@ function ManageIntentPage() {
   const [trainingPhrasesVisible, setTrainingPhrasesVisible] = useState(false);
   const [trainingPhrasesInput, setTrainingPhrasesInput] = useState("");
   const [trainingPhrases, setTrainingPhrases] = useState([
-    {
-      id: null,
-      text: "",
-    },
+    // {
+    //   id: null,
+    //   text: "",
+    // },
   ]);
   const nextTPId = useRef(0);
 
@@ -112,10 +137,10 @@ function ManageIntentPage() {
   const [responsesVisible, setResponsesVisible] = useState(false);
   const [responsesInput, setResponsesInput] = useState("");
   const [responses, setResponses] = useState([
-    {
-      id: null,
-      response: "",
-    },
+    // {
+    //   id: null,
+    //   response: "",
+    // },
   ]);
   const nextResponseId = useRef(0);
 
@@ -128,7 +153,7 @@ function ManageIntentPage() {
   };
   const responsesDeleteHandler = (id) => {
     if (responses.length === 1) {
-      setResponses([{ id: null, response: "" }]);
+      setResponses([{ id: null, respond: "" }]);
     } else {
       setResponses(responses.filter((response) => response.id !== id));
     }
@@ -141,7 +166,7 @@ function ManageIntentPage() {
       }
       let newResponse = {
         id: nextResponseId.current,
-        response: responsesInput,
+        respond: responsesInput,
       };
       if (newResponse.id === 0) {
         setResponses(responses.splice(0, 1));
@@ -161,14 +186,12 @@ function ManageIntentPage() {
         },
       })
       .then((response) => {
-        //     console.log(response.data);
         setIntents([...response.data]);
-        //   setIntentName(response.data);
-        //    console.log(response.data.INTENT_ID);
       });
   }, []);
 
   useEffect(() => {
+    // intent name 가져오기
     axios
       .get(
         `${process.env.REACT_APP_API_HOST}/scenario/intents?id=${intentid}`,
@@ -182,9 +205,11 @@ function ManageIntentPage() {
         console.log(response.data);
         setIntentName(response.data[0].INTENT_TITLE);
       });
-  }, []);
+  }, [intentid]);
 
   useEffect(() => {
+    // phrases 가져오기
+
     axios
       .get(
         `${process.env.REACT_APP_API_HOST}/scenario/phrases?rid=${intentid}`,
@@ -195,19 +220,54 @@ function ManageIntentPage() {
         }
       )
       .then((response) => {
-        console.log(response.data);
+        //  console.log(response.data);
+        // for(let i=0; i< trainingPhrases.length; i++){
+        //   trainingPhrases
+        // }
+        let tmp = [];
+        response.data.forEach((e) => {
+          tmp.push({
+            id: nextTPId.current,
+            text: e.PHRASE,
+          });
+          nextTPId.current += 1;
+        });
+        setTrainingPhrases(tmp);
       });
-  }, []);
+  }, [intentid]);
+
+  useEffect(() => {
+    // responses 가져오기
+
+    axios
+      .get(
+        `${process.env.REACT_APP_API_HOST}/scenario/responses?rid=${intentid}`,
+        {
+          headers: {
+            Authorization: `Bearer ${cookie.load("token")}`,
+          },
+        }
+      )
+      .then((response) => {
+        // console.log(response.data);
+        //setResponses([]);
+        let tmp = [];
+        response.data.forEach((e) => {
+          tmp.push({
+            id: nextResponseId.current,
+            respond: e.RESPONSE,
+          });
+          nextResponseId.current += 1;
+        });
+        setResponses(tmp);
+      });
+  }, [intentid]);
 
   const saveHandler = async () => {
     const intentTitle = {
-      data: [
-        {
-          INTENT_TITLE: intentName,
-        },
-      ],
+      INTENT_TITLE: intentName,
     };
-    let titleResult = await axios.post(
+    let titleResult = await axios.put(
       `${process.env.REACT_APP_API_HOST}/scenario/intents`,
       intentTitle,
       {
@@ -216,49 +276,49 @@ function ManageIntentPage() {
         },
       }
     );
-    let intentID = titleResult.data.result[0].INTENT_ID;
-    let intentPhrases = {
-      data: [],
-    };
-    trainingPhrases.forEach((e) => {
-      intentPhrases.data.push({ PHRASES_INTENT_ID: intentID, PHRASE: e.text });
-    });
+    // let intentID = titleResult.data.result[0].INTENT_ID;
+    // let intentPhrases = {
+    //   data: [],
+    // };
+    // trainingPhrases.forEach((e) => {
+    //   intentPhrases.data.push({ PHRASES_INTENT_ID: intentID, PHRASE: e.text });
+    // });
 
-    let phrasesResult = await axios.post(
-      `${process.env.REACT_APP_API_HOST}/scenario/phrases`,
-      intentPhrases,
-      {
-        headers: {
-          Authorization: `Bearer ${cookie.load("token")}`,
-        },
-      }
-    );
-    let intentResponses = {
-      data: [],
-    };
-    responses.forEach((e) => {
-      intentResponses.data.push({
-        RESPONSES_INTENT_ID: intentID,
-        RESPONSE: e.response,
-      });
-    });
+    // let phrasesResult = await axios.post(
+    //   `${process.env.REACT_APP_API_HOST}/scenario/phrases`,
+    //   intentPhrases,
+    //   {
+    //     headers: {
+    //       Authorization: `Bearer ${cookie.load("token")}`,
+    //     },
+    //   }
+    // );
+    // let intentResponses = {
+    //   data: [],
+    // };
+    // responses.forEach((e) => {
+    //   intentResponses.data.push({
+    //     RESPONSES_INTENT_ID: intentID,
+    //     RESPONSE: e.respond,
+    //   });
+    // });
 
-    let responseResult = await axios.post(
-      `${process.env.REACT_APP_API_HOST}/scenario/responses`,
-      intentResponses,
-      {
-        headers: {
-          Authorization: `Bearer ${cookie.load("token")}`,
-        },
-      }
-    );
-    if (
-      phrasesResult.data.resultCode === 0 &&
-      responseResult.data.resultCode === 0
-    ) {
-      alert("인텐트가 등록됐습니다.");
-      window.location.reload();
-    }
+    // let responseResult = await axios.post(
+    //   `${process.env.REACT_APP_API_HOST}/scenario/responses`,
+    //   intentResponses,
+    //   {
+    //     headers: {
+    //       Authorization: `Bearer ${cookie.load("token")}`,
+    //     },
+    //   }
+    // );
+    // if (
+    //   phrasesResult.data.resultCode === 0 &&
+    //   responseResult.data.resultCode === 0
+    // ) {
+    //   alert("인텐트가 수정됐습니다.");
+    //   window.location.reload();
+    // }
   };
 
   return (
@@ -298,11 +358,19 @@ function ManageIntentPage() {
             renderItem={(item) => (
               <List.Item
                 extra={
-                  <EyeOutlined
-                    onClick={() => {
-                      history.push(`/manageintent/${item.INTENT_ID}`);
-                    }}
-                  />
+                  <div>
+                    <EyeOutlined
+                      onClick={() => {
+                        history.push(`/manageintent/${item.INTENT_ID}`);
+                      }}
+                    />
+                    <DeleteOutlined
+                      style={{ marginLeft: "10px" }}
+                      onClick={() => {
+                        deleteIntentHandler(item.INTENT_ID);
+                      }}
+                    ></DeleteOutlined>
+                  </div>
                 }
               >
                 {item.INTENT_TITLE}
@@ -460,7 +528,7 @@ function ManageIntentPage() {
                       />
                     }
                   >
-                    {item.response}
+                    {item.respond}
                   </List.Item>
                 )
               }

@@ -33,12 +33,6 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING(10),
       },
-      SYSTEM_CODE: {
-        type: Sequelize.STRING(10),
-      },
-      REQ_TYPE_CODE: {
-        type: Sequelize.STRING(10),
-      },
       TM_APPROVAL_REQ_YN: {
         allowNull: false,
         type: Sequelize.CHAR(1),
@@ -47,18 +41,11 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING(10),
       },
-      IMSI_YN: {
-        allowNull: false,
-        type: Sequelize.CHAR(1),
-      },
       REQ_FINISH_DATE: {
         type: Sequelize.STRING(14),
       },
       REG_USER_ID: {
         type: Sequelize.STRING(20),
-      },
-      REG_DATE: {
-        type: Sequelize.STRING(14),
       },
       MOD_USER_ID: {
         type: Sequelize.STRING(20),

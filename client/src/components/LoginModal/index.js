@@ -158,6 +158,7 @@ function LoginModal({
       if (JSON.stringify(response.payload.resultCode) === "0") {
         cookie.save("token", response.payload.token, {
           path: "/",
+          maxAge: 60 * 60 * 9, // 9시간
         });
         const decoded = jwt_decode(response.payload.token);
         dispatch(authUser(decoded));
