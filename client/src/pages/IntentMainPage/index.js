@@ -61,14 +61,15 @@ function IntentMainPage() {
 
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_API_HOST}/scenario/intents`, {
+      .get(`${process.env.REACT_APP_API_HOST}/dialogflow/listIntent`, {
         headers: {
           Authorization: `Bearer ${cookie.load("token")}`,
         },
       })
       .then((response) => {
+        console.log(response);
         console.log(response.data);
-        setIntents([...response.data]);
+        // setIntents([...response.data]);
       });
   }, []);
 

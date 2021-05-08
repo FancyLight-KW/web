@@ -56,9 +56,9 @@ exports.listIntents = async (req, res) => {
     const [response] = await intentsClient.listIntents(request);
 
     let trainingPhrases = {};
-    let messageTexts = [];
-    let inputContexts = [];
-    let outputContext = [];
+    let messageTexts = {};
+    let inputContexts = {};
+    let outputContext = {};
     response.forEach((intent)=> {
       //console.log(intent);
       //phrase listing==================================
@@ -76,20 +76,35 @@ exports.listIntents = async (req, res) => {
 
       //message listing==================================
       intent.messages.forEach((message) => {
-        messageTexts.push([intent.displayName, message.text.text]);
+        if(!messageTexts[intent.displayName]){
+          messageTexts[intent.displayName] = [message.text.text];
+        }else{
+          messageTexts[intent.displayName].push([message.text.text]);
+        }
+        //messageTexts.push([intent.displayName, message.text.text]);
         //console.log(message.text.text);
           //messageTexts.push([intent.displayName, element.text]);
       })
       
       //inputcontext listing==================================
       intent.inputContextNames.forEach((contexts) => {
-        inputContexts.push([intent.displayName, contexts]);
+        if(!inputContexts[intent.displayName]){
+          inputContexts[intent.displayName] = [contexts];
+        }else{
+          inputContexts[intent.displayName].push([contexts]);
+        }
+        //inputContexts[intent.displayName].push([contexts]);
         //console.log(contexts);
       })
 
       //outputcontext listing==================================
       intent.outputContexts.forEach((contexts) => {
-        outputContext.push([intent.displayName, contexts.name]);
+        if(!outputContext[intent.displayName]){
+          outputContext[intent.displayName] = [contexts.name];
+        }else{
+          outputContext[intent.displayName].push([contexts.name]);
+        }
+        //outputContext[intent.displayName].push([contexts.name]);
         //console.log(contexts);
       })
     })
@@ -104,7 +119,12 @@ exports.listIntents = async (req, res) => {
     console.log("outputContexts here");
     console.log(outputContext);
     
-    
+    res.send({
+      trainingPhrases: trainingPhrases,
+      messageTexts: messageTexts,
+      inputContexts: inputContexts,
+      outputContext: outputContext,
+    })
     //console.log(`trainingphrases: ${trainingPhrases}`);
 
     /*
