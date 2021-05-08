@@ -5,6 +5,19 @@ const dialogflow = require('@google-cloud/dialogflow');
 // Instantiates the Intent Client
 const intentsClient = new dialogflow.IntentsClient();
 
+
+/*
+const newIntent = {
+    displayName: 'WeatherIntent',
+    trainingPhrasesParts: [
+      'Hello, What is weather today?',
+      'How is the weather today?',
+    ],
+    messageTexts: ['Rainy', 'Sunny'],
+    inputContextNames: 'asdf',
+    outputContexts: 'adsf',
+  }
+*/
 exports.createIntent = async (req, res) => {
   // Construct request
 

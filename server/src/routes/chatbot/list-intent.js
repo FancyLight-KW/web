@@ -59,6 +59,8 @@ exports.listIntents = async (req, res) => {
     let messageTexts = {};
     let inputContexts = {};
     let outputContext = {};
+    let result = [];
+
     response.forEach((intent)=> {
       //console.log(intent);
       //phrase listing==================================
@@ -88,10 +90,12 @@ exports.listIntents = async (req, res) => {
       
       //inputcontext listing==================================
       intent.inputContextNames.forEach((contexts) => {
+        let contextName = String(contexts);
+        var inputArray = contextName.split('/');
         if(!inputContexts[intent.displayName]){
-          inputContexts[intent.displayName] = [contexts];
+          inputContexts[intent.displayName] = [inputArray[6]];
         }else{
-          inputContexts[intent.displayName].push([contexts]);
+          inputContexts[intent.displayName].push([inputArray[6]]);
         }
         //inputContexts[intent.displayName].push([contexts]);
         //console.log(contexts);
@@ -99,17 +103,42 @@ exports.listIntents = async (req, res) => {
 
       //outputcontext listing==================================
       intent.outputContexts.forEach((contexts) => {
+        let contextName = String(contexts.name);
+        var outputArray = contextName.split('/');
         if(!outputContext[intent.displayName]){
-          outputContext[intent.displayName] = [contexts.name];
+          outputContext[intent.displayName] = [outputArray[6]];
         }else{
-          outputContext[intent.displayName].push([contexts.name]);
+          outputContext[intent.displayName].push([outputArray[6]]);
         }
         //outputContext[intent.displayName].push([contexts.name]);
         //console.log(contexts);
       })
+
+      result.push({
+        intentName: intent.displayName,
+        trainingPhrases: trainingPhrases[intent.displayName],
+        messageTexts: messageTexts[intent.displayName],
+        inputContexts: inputContexts[intent.displayName],
+        outputContext: outputContext[intent.displayName],
+      });
+
+      result.sort((a, b) => {
+        var nameA = a.intentName.toUpperCase(); // ignore upper and lowercase
+        var nameB = b.intentName.toUpperCase(); // ignore upper and lowercase
+        if (nameA < nameB) {
+          return -1;
+        }
+        if (nameA > nameB) {
+          return 1;
+        }
+
+        // 이름이 같을 경우
+        return 0;
+      });
+      //})
     })
-    
-    
+
+    /*
     console.log("trainingPhrases here");
     console.log(trainingPhrases);
     console.log("messageText here");
@@ -118,13 +147,18 @@ exports.listIntents = async (req, res) => {
     console.log(inputContexts);
     console.log("outputContexts here");
     console.log(outputContext);
-    
+*/
+  console.log(result);
+    res.send({
+      result: result});
+    /*
     res.send({
       trainingPhrases: trainingPhrases,
       messageTexts: messageTexts,
       inputContexts: inputContexts,
       outputContext: outputContext,
     })
+    */
     //console.log(`trainingphrases: ${trainingPhrases}`);
 
     /*
