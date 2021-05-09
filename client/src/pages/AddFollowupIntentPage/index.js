@@ -1,18 +1,20 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Button, Row, Col, Form } from "react-bootstrap";
-import axios from "axios";
-import { useHistory, useParams } from "react-router-dom";
-import styled, { css } from "styled-components";
-import cookie from "react-cookies";
+import "antd/dist/antd.css";
+import { List } from "antd";
 import {
-  EyeOutlined,
-  PlusOutlined,
-  PlusSquareOutlined,
   CaretDownOutlined,
   CaretUpOutlined,
   DeleteOutlined,
+  EyeOutlined,
+  PlusOutlined,
+  PlusSquareOutlined,
 } from "@ant-design/icons";
-import { List } from "antd";
+import { Row, Col, Button } from "react-bootstrap";
+import { useHistory, useParams } from "react-router-dom";
+import Form from "react-bootstrap/Form";
+import axios from "axios";
+import styled, { css } from "styled-components";
+import cookie from "react-cookies";
 import arrow from "../../assets/arrow.png";
 
 const TopContainer = styled.div`
@@ -21,7 +23,7 @@ const TopContainer = styled.div`
   background-color: aliceblue;
   color: #0069c0;
   font-weight: bold;
-  flex-direction: row;
+  flex-direction: column;
   border-bottom: solid #0069c0;
 `;
 const PageNameWrapper = styled.div`
@@ -38,13 +40,13 @@ const IntentContainer = styled.div`
 const Blank = styled.div`
   width: 1%;
 `;
+const BiggerBlank = styled.div`
+  width: 5%;
+`;
 const TableContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 40%;
-`;
-const BiggerBlank = styled.div`
-  width: 5%;
 `;
 const ManageInetnetContainer = styled.div`
   display: flex;
@@ -71,11 +73,12 @@ const Arrow = styled.img`
       ? "40px"
       : "48px"};
 `;
-//   font-size: ${(props) => (props.fontSize === "big" ? "32px" : "16px")};
-function ManageIntentPage() {
+
+function AddFollowupIntentPage() {
   let history = useHistory();
-  const { intentname } = useParams();
   const [intents, setIntents] = useState([]);
+  const { parentName } = useParams();
+
   const deleteIntentHandler = (intentName) => {
     const displayName = {
       intentName,
@@ -102,14 +105,19 @@ function ManageIntentPage() {
   };
 
   // Intent Name
-  const [intentName, setIntentName] = useState();
-  const intentNameHandler = (e) => {
-    setIntentName(e.target.value);
-  };
+  const [intentName, setIntentName] = useState("");
+  //   const intentNameHandler = (e) => {
+  //     setIntentName(e.target.value);
+  //   };
   // TrainingPhrases
   const [trainingPhrasesVisible, setTrainingPhrasesVisible] = useState(false);
   const [trainingPhrasesInput, setTrainingPhrasesInput] = useState("");
-  const [trainingPhrases, setTrainingPhrases] = useState([]);
+  const [trainingPhrases, setTrainingPhrases] = useState([
+    {
+      id: null,
+      text: "",
+    },
+  ]);
   const nextTPId = useRef(0);
 
   const trainingPhrasesVisibleHandler = () => {
@@ -148,7 +156,12 @@ function ManageIntentPage() {
   // Responses
   const [responsesVisible, setResponsesVisible] = useState(false);
   const [responsesInput, setResponsesInput] = useState("");
-  const [responses, setResponses] = useState([]);
+  const [responses, setResponses] = useState([
+    {
+      id: null,
+      response: "",
+    },
+  ]);
   const nextResponseId = useRef(0);
 
   const responsesVisibleHandler = () => {
@@ -160,7 +173,7 @@ function ManageIntentPage() {
   };
   const responsesDeleteHandler = (id) => {
     if (responses.length === 1) {
-      setResponses([{ id: null, respond: "" }]);
+      setResponses([{ id: null, response: "" }]);
     } else {
       setResponses(responses.filter((response) => response.id !== id));
     }
@@ -173,7 +186,7 @@ function ManageIntentPage() {
       }
       let newResponse = {
         id: nextResponseId.current,
-        respond: responsesInput,
+        response: responsesInput,
       };
       if (newResponse.id === 0) {
         setResponses(responses.splice(0, 1));
@@ -185,60 +198,8 @@ function ManageIntentPage() {
     }
   };
 
-  useEffect(() => {
-    // 전체 데이터
-    axios
-      .get(`${process.env.REACT_APP_API_HOST}/dialogflow/listIntent`, {
-        headers: {
-          Authorization: `Bearer ${cookie.load("token")}`,
-        },
-      })
-      .then((response) => {
-        console.log(response.data.result);
-        setIntents([...response.data.result]);
-        setIntentName(response.data.result.intentName);
-
-        let indexOfResult;
-        for (let i = 0; i < response.data.result.length; i++) {
-          if (response.data.result[i].intentName === intentname) {
-            indexOfResult = i;
-            break;
-          }
-        }
-        if (response.data.result[indexOfResult].trainingPhrases === undefined) {
-          setTrainingPhrases([{ id: null, text: "" }]);
-        } else {
-          let tmp = [];
-          response.data.result[indexOfResult].trainingPhrases.forEach((e) => {
-            tmp.push({
-              id: nextTPId.current,
-              text: e,
-            });
-            nextTPId.current += 1;
-          });
-          setTrainingPhrases(tmp);
-        }
-        if (response.data.result[indexOfResult].messageTexts === undefined) {
-          setResponses([{ id: null, respond: "" }]);
-        } else {
-          let tmp2 = [];
-          response.data.result[indexOfResult].messageTexts.forEach((e) => {
-            tmp2.push({
-              id: nextResponseId.current,
-              respond: e,
-            });
-            nextResponseId.current += 1;
-          });
-          setResponses(tmp2);
-        }
-      });
-  }, [intentname]);
-
   const saveHandler = async () => {
-    // const intentTitle = {
-    //   INTENT_TITLE: intentName,
-    // };
-    // ---------------------------------------
+    // 값입력 안됐을 때 요청 등록 못하게 하기
     let intentPhrasesToDialogflow = [];
     trainingPhrases.forEach((e) => {
       intentPhrasesToDialogflow.push(e.text);
@@ -248,69 +209,57 @@ function ManageIntentPage() {
     responses.forEach((e) => {
       intentResponsesToDialogflow.push(e.response);
     });
-    let changedIntent = {
+
+    let newIntent = {
       displayName: intentName,
       trainingPhrasesParts: intentPhrasesToDialogflow,
       messageTexts: intentResponsesToDialogflow,
+      parentName: parentName,
     };
-    let manageDialogflow = await axios.post(
-      `${process.env.REACT_APP_API_HOST}/dialogflow/intents`,
-      changedIntent,
+    let registerDialogflow = await axios.post(
+      `${process.env.REACT_APP_API_HOST}/dialogflow/createFollowupIntent`,
+      newIntent,
       {
         headers: {
           Authorization: `Bearer ${cookie.load("token")}`,
         },
       }
     );
-    if (manageDialogflow.data.resultCode === 0) {
-      alert("인텐트가 수정됐습니다.");
+
+    if (registerDialogflow.data.resultCode === 0) {
+      alert("Followup 인텐트가 등록됐습니다.");
       window.location.reload();
     }
-    // ----------------------------------------------------------------
-    // let intentID = titleResult.data.result[0].INTENT_ID;
-    // let intentPhrases = {
-    //   data: [],
-    // };
-    // trainingPhrases.forEach((e) => {
-    //   intentPhrases.data.push({ PHRASES_INTENT_ID: intentID, PHRASE: e.text });
-    // });
-
-    // let phrasesResult = await axios.post(
-    //   `${process.env.REACT_APP_API_HOST}/scenario/phrases`,
-    //   intentPhrases,
-    //   {
-    //     headers: {
-    //       Authorization: `Bearer ${cookie.load("token")}`,
-    //     },
-    //   }
-    // );
-    // let intentResponses = {
-    //   data: [],
-    // };
-    // responses.forEach((e) => {
-    //   intentResponses.data.push({
-    //     RESPONSES_INTENT_ID: intentID,
-    //     RESPONSE: e.respond,
-    //   });
-    // });
-
-    // let responseResult = await axios.post(
-    //   `${process.env.REACT_APP_API_HOST}/scenario/responses`,
-    //   intentResponses,
-    //   {
-    //     headers: {
-    //       Authorization: `Bearer ${cookie.load("token")}`,
-    //     },
-    //   }
-    // );
-    // if (
-    //   phrasesResult.data.resultCode === 0 &&
-    //   responseResult.data.resultCode === 0
-    // ) {
-    //   alert("인텐트가 수정됐습니다.");
-    //   window.location.reload();
-    // }
   };
+
+  useEffect(() => {
+    axios
+      .get(`${process.env.REACT_APP_API_HOST}/dialogflow/listIntent`, {
+        headers: {
+          Authorization: `Bearer ${cookie.load("token")}`,
+        },
+      })
+      .then((response) => {
+        let indexToFindDegree;
+        for (let i = 0; i < response.data.result.length; i++) {
+          if (response.data.result[i].intentName === parentName) {
+            indexToFindDegree = i;
+            break;
+          }
+        }
+        setIntents([...response.data.result]);
+        if (response.data.result[indexToFindDegree].childDegree) {
+          let customNum = response.data.result[indexToFindDegree].childDegree;
+          let customString = "";
+          for (let i = 0; i < customNum; i++) {
+            customString += " -custom";
+          }
+          setIntentName(parentName + customString);
+        } else {
+          setIntentName(parentName + " -custom");
+        }
+      });
+  }, [parentName]);
 
   return (
     <>
@@ -372,6 +321,7 @@ function ManageIntentPage() {
                           }}
                         />
                       ) : null}
+
                       <EyeOutlined
                         style={{ marginLeft: "10px" }}
                         onClick={() => {
@@ -391,11 +341,8 @@ function ManageIntentPage() {
             )}
             style={{ marginLeft: "-15px" }}
           ></List>
-          <Blank />
         </TableContainer>
-
         <BiggerBlank />
-
         <ManageInetnetContainer>
           <Form.Group as={Row} controlId="normalForm">
             <Form.Label
@@ -407,18 +354,15 @@ function ManageIntentPage() {
               Intent name
             </Form.Label>
             <Col sm="7">
-              <Form.Control
-                type="text"
-                value={intentname}
-                onChange={intentNameHandler}
-              />
+              <Form.Control plaintext readOnly defaultValue={intentName} />
             </Col>
+
             <Button
               variant="primary"
               size="md"
               style={{ marginLeft: "10px" }}
               onClick={() => {
-                // saveHandler();
+                saveHandler();
               }}
             >
               저장하기
@@ -471,16 +415,15 @@ function ManageIntentPage() {
                 item.text === "" ? null : (
                   <List.Item
                     extra={
-                      <>
-                        {item.text}
-                        <DeleteOutlined
-                          onClick={() => {
-                            traingingPhrasesDeleteHandler(item.id);
-                          }}
-                        />
-                      </>
+                      <DeleteOutlined
+                        onClick={() => {
+                          traingingPhrasesDeleteHandler(item.id);
+                        }}
+                      />
                     }
-                  ></List.Item>
+                  >
+                    {item.text}
+                  </List.Item>
                 )
               }
               style={{ marginLeft: "-15px" }}
@@ -532,28 +475,28 @@ function ManageIntentPage() {
               bordered
               dataSource={responses}
               renderItem={(item) =>
-                item.respond === "" ? null : (
+                item.response === "" ? null : (
                   <List.Item
                     extra={
-                      <>
-                        {item.respond}
-                        <DeleteOutlined
-                          onClick={() => {
-                            responsesDeleteHandler(item.id);
-                          }}
-                        />
-                      </>
+                      <DeleteOutlined
+                        onClick={() => {
+                          responsesDeleteHandler(item.id);
+                        }}
+                      />
                     }
-                  ></List.Item>
+                  >
+                    {item.response}
+                  </List.Item>
                 )
               }
               style={{ marginLeft: "-15px" }}
             ></List>
           ) : null}
         </ManageInetnetContainer>
+        <Blank />
       </IntentContainer>
     </>
   );
 }
 
-export default ManageIntentPage;
+export default AddFollowupIntentPage;

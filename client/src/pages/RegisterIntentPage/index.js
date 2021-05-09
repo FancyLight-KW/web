@@ -7,13 +7,15 @@ import {
   DeleteOutlined,
   EyeOutlined,
   PlusOutlined,
+  PlusSquareOutlined,
 } from "@ant-design/icons";
 import { Row, Col, Button } from "react-bootstrap";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import axios from "axios";
 import styled, { css } from "styled-components";
 import cookie from "react-cookies";
+import arrow from "../../assets/arrow.png";
 
 const TopContainer = styled.div`
   display: flex;
@@ -44,7 +46,7 @@ const BiggerBlank = styled.div`
 const TableContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 30%;
+  width: 40%;
 `;
 const ManageInetnetContainer = styled.div`
   display: flex;
@@ -53,16 +55,38 @@ const ManageInetnetContainer = styled.div`
   margin-top: 30px;
   margin-left: 40px;
 `;
+const Arrow = styled.img`
+  margin-top: -10px;
+  margin-right: 3px;
+  margin-left: ${(props) =>
+    props.childDegree === 1
+      ? "0px"
+      : props.childDegree === 2
+      ? "8px"
+      : props.childDegree === 3
+      ? "16px"
+      : props.childDegree === 4
+      ? "24px"
+      : props.childDegree === 4
+      ? "32px"
+      : props.childDegree === 5
+      ? "40px"
+      : "48px"};
+`;
 
 function RegisterIntentPage() {
   let history = useHistory();
   const [intents, setIntents] = useState([]);
 
-  const deleteIntentHandler = (intentID) => {
+  const deleteIntentHandler = (intentName) => {
+    const displayName = {
+      intentName,
+    };
     if (window.confirm("삭제하시겠습니까?")) {
       axios
-        .delete(
-          `${process.env.REACT_APP_API_HOST}/scenario/intents/${intentID}`,
+        .post(
+          `${process.env.REACT_APP_API_HOST}/dialogflow/deleteIntent`,
+          displayName,
           {
             headers: {
               Authorization: `Bearer ${cookie.load("token")}`,
@@ -175,69 +199,20 @@ function RegisterIntentPage() {
 
   const saveHandler = async () => {
     // 값입력 안됐을 때 요청 등록 못하게 하기
-    const intentTitle = {
-      data: [
-        {
-          INTENT_TITLE: intentName,
-        },
-      ],
-    };
-    let titleResult = await axios.post(
-      `${process.env.REACT_APP_API_HOST}/scenario/intents`,
-      intentTitle,
-      {
-        headers: {
-          Authorization: `Bearer ${cookie.load("token")}`,
-        },
-      }
-    );
-    let intentID = titleResult.data.result[0].INTENT_ID;
-    let intentPhrases = {
-      data: [],
-    };
     let intentPhrasesToDialogflow = [];
     trainingPhrases.forEach((e) => {
-      intentPhrases.data.push({ PHRASES_INTENT_ID: intentID, PHRASE: e.text });
-      intentPhrasesToDialogflow.push( e.text, );
+      intentPhrasesToDialogflow.push(e.text);
     });
 
-    let phrasesResult = await axios.post(
-      `${process.env.REACT_APP_API_HOST}/scenario/phrases`,
-      intentPhrases,
-      {
-        headers: {
-          Authorization: `Bearer ${cookie.load("token")}`,
-        },
-      }
-    );
-    let intentResponses = {
-      data: [],
-    };
     let intentResponsesToDialogflow = [];
     responses.forEach((e) => {
-      intentResponses.data.push({
-        RESPONSES_INTENT_ID: intentID,
-        RESPONSE: e.response,
-      });
-      intentResponsesToDialogflow.push( e.response );
+      intentResponsesToDialogflow.push(e.response);
     });
-
-    let responseResult = await axios.post(
-      `${process.env.REACT_APP_API_HOST}/scenario/responses`,
-      intentResponses,
-      {
-        headers: {
-          Authorization: `Bearer ${cookie.load("token")}`,
-        },
-      }
-    );
-    
-    //send to dialogflow
     let newIntent = {
       displayName: intentName,
       trainingPhrasesParts: intentPhrasesToDialogflow,
-      messageTexts: intentResponsesToDialogflow
-    }
+      messageTexts: intentResponsesToDialogflow,
+    };
     let registerDialogflow = await axios.post(
       `${process.env.REACT_APP_API_HOST}/dialogflow/createIntent`,
       newIntent,
@@ -247,12 +222,7 @@ function RegisterIntentPage() {
         },
       }
     );
-
-    if (
-      phrasesResult.data.resultCode === 0 &&
-      responseResult.data.resultCode === 0 &&
-      registerDialogflow.data.resultCode === 0
-    ) {
+    if (registerDialogflow.data.resultCode === 0) {
       alert("인텐트가 등록됐습니다.");
       window.location.reload();
     }
@@ -260,14 +230,13 @@ function RegisterIntentPage() {
 
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_API_HOST}/scenario/intents`, {
+      .get(`${process.env.REACT_APP_API_HOST}/dialogflow/listIntent`, {
         headers: {
           Authorization: `Bearer ${cookie.load("token")}`,
         },
       })
       .then((response) => {
-        console.log(response.data);
-        setIntents([...response.data]);
+        setIntents([...response.data.result]);
       });
   }, []);
 
@@ -308,23 +277,45 @@ function RegisterIntentPage() {
             renderItem={(item) => (
               <List.Item
                 extra={
-                  <div>
-                    <EyeOutlined
-                      onClick={() => {
-                        history.push(`/manageintent/${item.INTENT_ID}`);
-                      }}
-                    />
-                    <DeleteOutlined
-                      style={{ marginLeft: "10px" }}
-                      onClick={() => {
-                        deleteIntentHandler(item.INTENT_ID);
-                      }}
-                    ></DeleteOutlined>
-                  </div>
+                  <>
+                    <div>
+                      {item.childDegree ? (
+                        <Arrow
+                          src={arrow}
+                          width="10"
+                          childDegree={item.childDegree}
+                        />
+                      ) : null}
+                      {item.intentName}
+                    </div>
+                    <div>
+                      {!item.childDegree ||
+                      (item.childDegree < 6 && item.childDegree > 0) ? (
+                        <PlusSquareOutlined
+                          title="Followup intent 추가"
+                          onClick={() => {
+                            history.push(
+                              `/addfollowupintent/${item.intentName}`
+                            );
+                          }}
+                        />
+                      ) : null}
+                      <EyeOutlined
+                        style={{ marginLeft: "10px" }}
+                        onClick={() => {
+                          history.push(`/manageintent/${item.intentName}`);
+                        }}
+                      />
+                      <DeleteOutlined
+                        style={{ marginLeft: "10px" }}
+                        onClick={() => {
+                          deleteIntentHandler(item.intentName);
+                        }}
+                      ></DeleteOutlined>
+                    </div>
+                  </>
                 }
-              >
-                {item.INTENT_TITLE}
-              </List.Item>
+              ></List.Item>
             )}
             style={{ marginLeft: "-15px" }}
           ></List>

@@ -5,8 +5,15 @@ import { useSelector } from "react-redux";
 import styled from "styled-components";
 import Chatbot from "../../Chatbot/index/index";
 import Maximized from "../Chat/Maximized";
-import Minimized from '../Chat/Minimized'
-import { ThemeProvider, FixedWrapper, darkTheme, elegantTheme, purpleTheme, defaultTheme } from '@livechat/ui-kit'
+import Minimized from "../Chat/Minimized";
+import {
+  ThemeProvider,
+  FixedWrapper,
+  darkTheme,
+  elegantTheme,
+  purpleTheme,
+  defaultTheme,
+} from "@livechat/ui-kit";
 const HoverImage = styled.div`
   &:hover {
     opacity: 0.8;
@@ -37,13 +44,7 @@ const SideChat = styled(Maximized)`
 
 const Footer = (props) => {
   const [authenticated, setAuthenticated] = useState(false);
-  const [chatbotVisible, setChatbotVisible] = useState(false);
   const userInfos = useSelector((state) => state.auth.userInfos);
-
-  const chatbotHandler = () => {
-    setChatbotVisible(!chatbotVisible);
-    console.log(chatbotVisible);
-  };
 
   useEffect(() => {
     if (cookie.load("token")) {
@@ -52,72 +53,41 @@ const Footer = (props) => {
   }, [userInfos]);
 
   return (
-    // <div
-    //   style={{
-    //     width: "100%",
-    //     position: "relative",
-    //     bottom: "0",
-    //   }}
-    // >
-    //   {authenticated ? (
-    //     chatbotVisible ? (
-    //       <>
-    //         <ChatContainer>
-    //           <SideChat />
-    //         </ChatContainer>
-    //         <IconContainer>
-    //           <HoverImage>
-    //             <img
-    //               src={chatbotimg}
-    //               width="80"
-    //               height="80"
-    //               onClick={chatbotHandler}
-    //             />
-    //           </HoverImage>
-    //         </IconContainer>
-    //       </>
-    //     ) : (
-    //       <IconContainer>
-    //         <HoverImage>
-    //           <img
-    //             src={chatbotimg}
-    //             width="80"
-    //             height="80"
-    //             onClick={chatbotHandler}
-    //           />
-    //         </HoverImage>
-    //       </IconContainer>
-    //     )
-    //   ) : null}
-
-    //   <div
-    //     style={{
-    //       display: "flex",
-    //       justifyContent: "center",
-    //       fontSize: "x-small",
-    //     }}
-    //   >
-    //     <p>&copy;{new Date().getFullYear()} FANCY LIGHT</p>
-    //   </div>
-    // </div>
-    <ThemeProvider theme='defaultTheme'>
+    <div
+      style={{
+        width: "100%",
+        position: "relative",
+        bottom: "0",
+      }}
+    >
+      {authenticated ? (
+        <ThemeProvider theme="defaultTheme">
           <div>
             <FixedWrapper.Root minimizedOnInit>
               <FixedWrapper.Maximized>
                 <Maximized {...props} />
               </FixedWrapper.Maximized>
               <FixedWrapper.Minimized>
-                  
-                  
                 <Minimized {...props}>
-                {/* <img src={chatbotimg}></img> */}
+                  {/* <img src={chatbotimg}></img> */}
                 </Minimized>
-                
               </FixedWrapper.Minimized>
             </FixedWrapper.Root>
           </div>
-    </ThemeProvider>
+        </ThemeProvider>
+      ) : null}
+
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          fontSize: "x-small",
+        }}
+      >
+        <p>&copy;{new Date().getFullYear()} FANCY LIGHT</p>
+      </div>
+    </div>
   );
-}
+};
 
 export default Footer;
