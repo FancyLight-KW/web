@@ -138,15 +138,15 @@ const Testpage = (props) =>{
   const newIntent = {
     displayName: 'WeatherIntent',
     trainingPhrasesParts: [
-      'Hello, What is weather today?',
-      'How is the weather today?',
+      'fixed',
     ],
-    messageTexts: ['Rainy', 'Sunny'],
-    inputContextNames: '',
+    messageTexts: ['fixed'],
+    inputContextNames: 'WeatherIntent-followup',
     outputContexts: '',
   }
   axios
-    .get(`${process.env.REACT_APP_API_HOST}/dialogflow/createIntent`, {
+    .post(`${process.env.REACT_APP_API_HOST}/dialogflow/createFollowupIntent`,
+    newIntent, {
       headers: {
         Authorization: `Bearer ${cookie.load("token")}`,
       },

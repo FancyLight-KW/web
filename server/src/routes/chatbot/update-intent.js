@@ -86,12 +86,17 @@ exports.updateIntent = async (req, res) => { try{
     console.log(messages);
     existingIntent.messages = messages;
 
+    //inputContext update
+    let output = String(existingIntent.displayName) + "-followup";
+    console.log(output);
+    //existingIntent.outputContexts = [output];
     //==========================================
     //===============intent update==============
     //==========================================
     const updateIntentRequest = {
         parent: projectAgentPath,
         intent: existingIntent,
+        outputContexts: [output],
         languageCode: process.env.DIALOGFLOW_LANGUAGE_CODE
     }
 

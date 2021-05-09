@@ -1,7 +1,7 @@
 'use strict'
 
 const dialogflow = require('@google-cloud/dialogflow');
-
+const update = require('./update-intent');
 // Instantiates the Intent Client
 const intentsClient = new dialogflow.IntentsClient();
 
@@ -54,8 +54,12 @@ exports.createIntent = async (req, res) => {
     displayName: req.body.displayName,
     trainingPhrases: trainingPhrases,
     messages: [message],
+    followupIntentInfo: [
+      {}
+    ],
   };
 
+  //update parent intent
   const createIntentRequest = {
     parent: agentPath,
     intent: intent,
