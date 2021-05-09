@@ -158,7 +158,7 @@ function RegisterIntentPage() {
   const [responses, setResponses] = useState([
     {
       id: null,
-      response: "",
+      respond: "",
     },
   ]);
   const nextResponseId = useRef(0);
@@ -172,7 +172,7 @@ function RegisterIntentPage() {
   };
   const responsesDeleteHandler = (id) => {
     if (responses.length === 1) {
-      setResponses([{ id: null, response: "" }]);
+      setResponses([{ id: null, respond: "" }]);
     } else {
       setResponses(responses.filter((response) => response.id !== id));
     }
@@ -185,7 +185,7 @@ function RegisterIntentPage() {
       }
       let newResponse = {
         id: nextResponseId.current,
-        response: responsesInput,
+        respond: responsesInput,
       };
       if (newResponse.id === 0) {
         setResponses(responses.splice(0, 1));
@@ -206,7 +206,7 @@ function RegisterIntentPage() {
 
     let intentResponsesToDialogflow = [];
     responses.forEach((e) => {
-      intentResponsesToDialogflow.push(e.response);
+      intentResponsesToDialogflow.push(e.respond);
     });
     let newIntent = {
       displayName: intentName,
@@ -452,7 +452,7 @@ function RegisterIntentPage() {
               bordered
               dataSource={responses}
               renderItem={(item) =>
-                item.response === "" ? null : (
+                item.respond === "" ? null : (
                   <List.Item
                     extra={
                       <DeleteOutlined
@@ -462,7 +462,7 @@ function RegisterIntentPage() {
                       />
                     }
                   >
-                    {item.response}
+                    {item.respond}
                   </List.Item>
                 )
               }
