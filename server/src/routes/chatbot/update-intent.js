@@ -22,7 +22,7 @@ exports.updateIntent = async (req, res) => { try{
         if (intent.displayName.toString() === req.body.displayName.toString()) {
             existingIntent = intent;
             //console.log(intent.trainingPhrases);
-            //console.log(intent.messages);
+            console.log(intent.messages);
         }
     })
 
@@ -69,21 +69,30 @@ exports.updateIntent = async (req, res) => { try{
     //    newMessageTexts.push(textdata.parts[0].text)
     //});
     
-    updatedMessageTexts.forEach(messagepart => {
-        array.push(messagepart);
+    //updatedMessageTexts.forEach(messagepart => {
+        //array.push(messagepart);
+        //console.log(`messagepart: ${messagepart}`);
         //Here we create a new training phrase for each provided part.
 
         //messages.push(message);
-    });
+   // });
+   //console.log(`message: ${updatedMessageTexts}`);
+   for(let message of updatedMessageTexts){
+    array.push(message);
+   }
+   console.log(`array: ${array}`);
     const text = {
-        text: array
+        text: updatedMessageTexts,
     };
     const messages = [{
         platform: 'PLATFORM_UNSPECIFIED',
-        text: text,
+        text: [text],
         message: 'text',
     }];
-    console.log(messages);
+    console.log(messages[0].text.text);
+
+    console.log(`messages[0]: ${messages[0]}`)
+    console.log(`existingIntent.messages: ${existingIntent.messages}`);
     existingIntent.messages = messages;
 
     //==========================================
