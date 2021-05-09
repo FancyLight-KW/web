@@ -145,8 +145,8 @@ const Testpage = (props) =>{
     parentName: 'WeatherIntent',
   }
   axios
-    .post(`${process.env.REACT_APP_API_HOST}/dialogflow/createFollowupIntent`,
-    newIntent, {
+    .post(`${process.env.REACT_APP_API_HOST}/dialogflow/updateParentIntent`, newIntent,
+    {
       headers: {
         Authorization: `Bearer ${cookie.load("token")}`,
       },
