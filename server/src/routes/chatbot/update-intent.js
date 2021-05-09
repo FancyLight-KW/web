@@ -29,7 +29,7 @@ exports.updateIntent = async (req, res) => { try{
     //==========================================
     //==========training phrases update=========
     //==========================================
-    let newTrainingPhrases = req.body.newTrainingPhrases;
+    let newTrainingPhrases = req.body.updatedTrainingPhrases;
 
     const trainingPhrases = [];
     let previousTrainingPhrases =
@@ -58,7 +58,7 @@ exports.updateIntent = async (req, res) => { try{
     //==========================================
     //===============message update=============
     //==========================================
-    let newMessageTexts = req.body.newMessageTexts;
+    let newMessageTexts = req.body.updatedMessageTexts;
     let array = [];
     let previousMessages =
     existingIntent.messages.length > 0
