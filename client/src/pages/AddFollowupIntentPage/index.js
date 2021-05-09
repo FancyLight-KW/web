@@ -10,7 +10,7 @@ import {
   PlusSquareOutlined,
 } from "@ant-design/icons";
 import { Row, Col, Button } from "react-bootstrap";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import axios from "axios";
 import styled, { css } from "styled-components";
@@ -74,9 +74,10 @@ const Arrow = styled.img`
       : "48px"};
 `;
 
-function RegisterIntentPage() {
+function AddFollowupIntentPage() {
   let history = useHistory();
   const [intents, setIntents] = useState([]);
+  const { parentName } = useParams();
 
   const deleteIntentHandler = (intentName) => {
     const displayName = {
@@ -105,9 +106,9 @@ function RegisterIntentPage() {
 
   // Intent Name
   const [intentName, setIntentName] = useState("");
-  const intentNameHandler = (e) => {
-    setIntentName(e.target.value);
-  };
+  //   const intentNameHandler = (e) => {
+  //     setIntentName(e.target.value);
+  //   };
   // TrainingPhrases
   const [trainingPhrasesVisible, setTrainingPhrasesVisible] = useState(false);
   const [trainingPhrasesInput, setTrainingPhrasesInput] = useState("");
@@ -208,13 +209,15 @@ function RegisterIntentPage() {
     responses.forEach((e) => {
       intentResponsesToDialogflow.push(e.response);
     });
+
     let newIntent = {
       displayName: intentName,
       trainingPhrasesParts: intentPhrasesToDialogflow,
       messageTexts: intentResponsesToDialogflow,
+      parentName: parentName,
     };
     let registerDialogflow = await axios.post(
-      `${process.env.REACT_APP_API_HOST}/dialogflow/createIntent`,
+      `${process.env.REACT_APP_API_HOST}/dialogflow/createFollowupIntent`,
       newIntent,
       {
         headers: {
@@ -222,8 +225,9 @@ function RegisterIntentPage() {
         },
       }
     );
+
     if (registerDialogflow.data.resultCode === 0) {
-      alert("인텐트가 등록됐습니다.");
+      alert("Followup 인텐트가 등록됐습니다.");
       window.location.reload();
     }
   };
@@ -236,9 +240,26 @@ function RegisterIntentPage() {
         },
       })
       .then((response) => {
+        let indexToFindDegree;
+        for (let i = 0; i < response.data.result.length; i++) {
+          if (response.data.result[i].intentName === parentName) {
+            indexToFindDegree = i;
+            break;
+          }
+        }
         setIntents([...response.data.result]);
+        if (response.data.result[indexToFindDegree].childDegree) {
+          let customNum = response.data.result[indexToFindDegree].childDegree;
+          let customString = "";
+          for (let i = 0; i < customNum; i++) {
+            customString += " -custom";
+          }
+          setIntentName(parentName + customString);
+        } else {
+          setIntentName(parentName + " -custom");
+        }
       });
-  }, []);
+  }, [parentName]);
 
   return (
     <>
@@ -300,6 +321,7 @@ function RegisterIntentPage() {
                           }}
                         />
                       ) : null}
+
                       <EyeOutlined
                         style={{ marginLeft: "10px" }}
                         onClick={() => {
@@ -332,8 +354,9 @@ function RegisterIntentPage() {
               Intent name
             </Form.Label>
             <Col sm="7">
-              <Form.Control type="text" onChange={intentNameHandler} />
+              <Form.Control plaintext readOnly defaultValue={intentName} />
             </Col>
+
             <Button
               variant="primary"
               size="md"
@@ -476,4 +499,4 @@ function RegisterIntentPage() {
   );
 }
 
-export default RegisterIntentPage;
+export default AddFollowupIntentPage;
