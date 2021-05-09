@@ -95,7 +95,11 @@ function ManageIntentPage() {
           console.log(response.data);
           if (response.data.resultCode === 0) {
             alert("인텐트가 삭제되었습니다.");
-            window.location.reload();
+            if (intentName === intentname) {
+              history.push("/intentmain");
+            } else {
+              window.location.reload();
+            }
           }
         });
     }
@@ -369,12 +373,14 @@ function ManageIntentPage() {
                         />
                       ) : null}
                       <EyeOutlined
+                        title="Intent 수정"
                         style={{ marginLeft: "10px" }}
                         onClick={() => {
                           history.push(`/manageintent/${item.intentName}`);
                         }}
                       />
                       <DeleteOutlined
+                        title="Intent 삭제"
                         style={{ marginLeft: "10px" }}
                         onClick={() => {
                           deleteIntentHandler(item.intentName);

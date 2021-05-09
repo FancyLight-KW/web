@@ -162,12 +162,14 @@ function IntentMainPage() {
                         />
                       ) : null}
                       <EyeOutlined
+                        title="Intent 수정"
                         style={{ marginLeft: "10px" }}
                         onClick={() => {
                           history.push(`/manageintent/${item.intentName}`);
                         }}
                       />
                       <DeleteOutlined
+                        title="Intent 삭제"
                         style={{ marginLeft: "10px" }}
                         onClick={() => {
                           deleteIntentHandler(item.intentName);
