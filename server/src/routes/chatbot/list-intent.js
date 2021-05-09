@@ -34,6 +34,7 @@
 
   // Imports the Dialogflow library
   const dialogflow = require('dialogflow');
+const { search } = require('./dialogflow');
 
   // Instantiates clients
   const intentsClient = new dialogflow.IntentsClient();
@@ -59,10 +60,11 @@ exports.listIntents = async (req, res) => {
     let messageTexts = {};
     let inputContexts = {};
     let outputContext = {};
+    let childDegree = {};
     let result = [];
-
+    
     response.forEach((intent)=> {
-      //console.log(intent);
+      console.log(intent);
       //phrase listing==================================
       intent.trainingPhrases.forEach((phrase) => {
         let trainingPhrasesPart = [];
@@ -120,7 +122,16 @@ exports.listIntents = async (req, res) => {
         }
         //outputContext[intent.displayName].push([contexts.name]);
         //console.log(contexts);
+
+        //
+        
       })
+      //var displayName = String(intent.displayName);
+      var count = intent.displayName.match(/custom/g);
+      console.log(`count: ${count}`);
+      if(count != null) {
+        childDegree[intent.displayName] = count.length;
+      }
 
       result.push({
         intentName: intent.displayName,
@@ -128,24 +139,82 @@ exports.listIntents = async (req, res) => {
         messageTexts: messageTexts[intent.displayName],
         inputContexts: inputContexts[intent.displayName],
         outputContext: outputContext[intent.displayName],
+        childIntents:'',
+        childDegree: childDegree[intent.displayName],
       });
-
-      result.sort((a, b) => {
-        var nameA = a.intentName.toUpperCase(); // ignore upper and lowercase
-        var nameB = b.intentName.toUpperCase(); // ignore upper and lowercase
-        if (nameA < nameB) {
-          return -1;
-        }
-        if (nameA > nameB) {
-          return 1;
-        }
-
-        // 이름이 같을 경우
-        return 0;
-      });
-      //})
     })
+    result.sort((a, b) => {
+      var nameA = a.intentName.toUpperCase(); // ignore upper and lowercase
+      var nameB = b.intentName.toUpperCase(); // ignore upper and lowercase
+      if (nameA < nameB) {
+        return -1;
+      }
+      if (nameA > nameB) {
+        return 1;
+      }
 
+      // 이름이 같을 경우
+      return 0;
+    });
+    // if(!subIntents[result[i].displayName]){
+    //   subIntents[result[i].displayName] = result[j]
+    // }else{
+    //   subIntents.push(result[j]);
+    // }
+
+    /*
+    let newResult = [];
+    for(let i = 0; i < result.length; i++){
+      newResult.push(result[i]);
+      if(result[i].outputContext){
+        let parentIntent = result[i];
+        let childIntents = searchChild(result, result[i], ++i);
+        for(let j = i+1; j < result.length; j++){ //find child
+          if(parentIntent.outputContext === result[j].inputContexts){ //found child intent
+            childIntents.push(result[j]);
+            result.splice(j, 1);
+          }
+        }
+        newResult.childIntents = childIntents;
+      }
+    }
+*/
+    let childIntents = [];
+    //for문안에서 순회하며 호출
+    const searchChild = (intentArray, childIntents, index, childIndex, degree) =>{
+      if(!intentArray[index].outputContext){  //자식이 없다면
+        console.log(childIntents);
+        return childIntents[intentArray[index].displayName].push(intentArray[index]); //부모 - 자식
+      }else{  //자식이 있다면
+        let parentIntent = intentArray[index];
+        for(let i = 0; i < intentArray.length; i++){  //let intent in intentArray
+          //console.log(parentIntent);
+          let childIntent = intentArray[i];
+          if(parentIntent.outputContext === childIntent.inputContexts){
+            if(!childIntents[parentIntent.displayName]){
+              childIntents[parentIntent.displayName] = childIntent;
+            }else{
+              //childIntents.push(childIntent);
+            }
+            //intentArrayWithChild.splice(i, 1);
+          }
+          
+        }
+        return searchChild(intentArray, childIntents, ++index, childIndex, degree); //[parentIntent.displayName]
+      }
+
+
+      let childArray = [];
+      for(let i = index; i < intentArray.length; i++){
+        if(intentArray[i].inputContexts === parentIntent.outputContext){
+          childArray.push(intentArray[i]);
+        }
+      }
+      return childArray;
+    }
+    
+    //let childIntentsResult = searchChild(result, childIntents, 0, 0, 0);
+    //console.log(childIntentsResult);
     /*
     console.log("trainingPhrases here");
     console.log(trainingPhrases);
@@ -157,7 +226,7 @@ exports.listIntents = async (req, res) => {
     console.log(outputContext);
     */
 
-  console.log(result);
+    console.log(result);
     res.send({
       result: result});
     /*
