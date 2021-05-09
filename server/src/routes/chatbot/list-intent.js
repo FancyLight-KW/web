@@ -127,7 +127,6 @@ exports.listIntents = async (req, res) => {
       })
       //var displayName = String(intent.displayName);
       var count = intent.displayName.match(/custom/g);
-      console.log(`count: ${count}`);
       if(count != null) {
         childDegree[intent.displayName] = count.length;
       }
@@ -225,7 +224,6 @@ exports.listIntents = async (req, res) => {
     console.log(outputContext);
     */
 
-    console.log(result);
     res.send({
       result: result});
     /*
