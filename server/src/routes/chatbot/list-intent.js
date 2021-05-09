@@ -64,7 +64,6 @@ exports.listIntents = async (req, res) => {
     let result = [];
     
     response.forEach((intent)=> {
-      console.log(intent);
       //phrase listing==================================
       intent.trainingPhrases.forEach((phrase) => {
         let trainingPhrasesPart = [];
