@@ -92,7 +92,6 @@ exports.updateIntent = async (req, res) => { try{
     const updateIntentRequest = {
         parent: projectAgentPath,
         intent: existingIntent,
-        outputContexts: [output],
         languageCode: process.env.DIALOGFLOW_LANGUAGE_CODE
     }
 
