@@ -7,7 +7,7 @@ import {
   EyeOutlined,
   DeleteOutlined,
   PlusOutlined,
-  ArrowRightOutlined,
+  PlusSquareOutlined,
 } from "@ant-design/icons";
 import { List } from "antd";
 import arrow from "../../assets/arrow.png";
@@ -37,7 +37,25 @@ const Blank = styled.div`
 const TableContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 30%;
+  width: 40%;
+`;
+const Arrow = styled.img`
+  margin-top: -10px;
+  margin-right: 3px;
+  margin-left: ${(props) =>
+    props.childDegree === 1
+      ? "0px"
+      : props.childDegree === 2
+      ? "8px"
+      : props.childDegree === 3
+      ? "16px"
+      : props.childDegree === 4
+      ? "24px"
+      : props.childDegree === 4
+      ? "32px"
+      : props.childDegree === 5
+      ? "40px"
+      : "48px"};
 `;
 
 function IntentMainPage() {
@@ -83,19 +101,6 @@ function IntentMainPage() {
       });
   }, []);
 
-  // useEffect(() => {
-  //   axios
-  //     .get(`${process.env.REACT_APP_API_HOST}/scenario/intents`, {
-  //       headers: {
-  //         Authorization: `Bearer ${cookie.load("token")}`,
-  //       },
-  //     })
-  //     .then((response) => {
-  //       console.log(response.data);
-  //       // setIntents([...response.data]);
-  //     });
-  // }, []);
-
   return (
     <>
       <TopContainer>
@@ -134,24 +139,32 @@ function IntentMainPage() {
                 extra={
                   <>
                     <div>
-                      {item.inputContexts ? (
-                        <img
+                      {item.childDegree ? (
+                        <Arrow
                           src={arrow}
-                          width="15"
-                          style={{
-                            marginRight: "5px",
-                            fontSize: "10px",
-                            marginTop: "-10px",
-                          }}
+                          width="10"
+                          childDegree={item.childDegree}
                         />
                       ) : null}
 
                       {item.intentName}
                     </div>
                     <div>
+                      {!item.childDegree ||
+                      (item.childDegree < 6 && item.childDegree > 0) ? (
+                        <PlusSquareOutlined
+                          title="Followup intent 추가"
+                          onClick={() => {
+                            history.push(
+                              `/addfollowupintent/${item.intentName}`
+                            );
+                          }}
+                        />
+                      ) : null}
                       <EyeOutlined
+                        style={{ marginLeft: "10px" }}
                         onClick={() => {
-                          // history.push(`/manageintent/${item.intentName}`);
+                          history.push(`/manageintent/${item.intentName}`);
                         }}
                       />
                       <DeleteOutlined

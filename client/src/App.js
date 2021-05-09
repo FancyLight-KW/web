@@ -19,6 +19,7 @@ import NavBar from "./components/NavBar/NavBar";
 import Footer from "./components/Footer";
 import ProtectedRoute from "./ProtectedRoute";
 import ManageIntentPage from "./pages/ManageIntentPage";
+import AddFollowupIntentPage from "./pages/AddFollowupIntentPage";
 
 function App() {
   const [authenticated, setAuthenticated] = useState(false);
@@ -64,13 +65,18 @@ function App() {
               <Route exact path="/intentmain" component={IntentMainPage} />
               <Route
                 exact
-                path="/manageintent/:intentid"
+                path="/manageintent/:intentname"
                 component={ManageIntentPage}
               />
               <Route
                 exact
                 path="/registerintent"
                 component={RegisterIntentPage}
+              />
+              <Route
+                exac
+                path="/addfollowupintent/:parentName"
+                component={AddFollowupIntentPage}
               />
               <Route exact path="/test" component={Testpage} />
             </Switch>
