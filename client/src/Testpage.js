@@ -138,11 +138,11 @@ const Testpage = (props) =>{
   const newIntent = {
     displayName: 'WeatherIntent',
     trainingPhrasesParts: [
-      'fixed',
+      'child',
+      'child',
     ],
-    messageTexts: ['fixed'],
-    inputContextNames: 'WeatherIntent-followup',
-    outputContexts: '',
+    messageTexts: ['child','child'],
+    parentName: 'WeatherIntent',
   }
   axios
     .post(`${process.env.REACT_APP_API_HOST}/dialogflow/createFollowupIntent`,

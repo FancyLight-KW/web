@@ -10,6 +10,7 @@ const dialogflowListIntent = require('./list-intent');
 const dialogflowDeleteIntent = require('./delete-intent');
 const dialogflowUpdateIntent = require('./update-intent');
 const dialogflowcreateFollowupIntent = require('./create-followup');
+const dialogflowUpdateParentIntent = require('./update-parent');
 
 //Text Query Route
 router.post('/textQuery', dialogflowQueryIntent.textQuery);
@@ -27,6 +28,9 @@ router.post('/createFollowupIntent',dialogflowcreateFollowupIntent.createIntent)
 
 //Update Intent route
 router.post('/updateIntent', dialogflowUpdateIntent.updateIntent);
+
+//Update Followup Intent Route
+router.post('/updateParentIntent', dialogflowUpdateParentIntent.updateIntent);
 
 //Delete Intent Route
 router.post('/deleteIntent',dialogflowDeleteIntent.deleteIntent);
