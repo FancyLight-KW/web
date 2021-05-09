@@ -242,7 +242,7 @@ function ManageIntentPage() {
 
     let intentResponsesToDialogflow = [];
     responses.forEach((e) => {
-      intentResponsesToDialogflow.push(e.response);
+      intentResponsesToDialogflow.push(e.respond);
     });
     let updatedIntent = {
       displayName: intentName,
