@@ -86,10 +86,6 @@ exports.updateIntent = async (req, res) => { try{
     console.log(messages);
     existingIntent.messages = messages;
 
-    //inputContext update
-    let output = String(existingIntent.displayName) + "-followup";
-    console.log(output);
-    //existingIntent.outputContexts = [output];
     //==========================================
     //===============intent update==============
     //==========================================
@@ -104,6 +100,11 @@ exports.updateIntent = async (req, res) => { try{
 
     const result = await intentsClient.updateIntent(updateIntentRequest);
     console.log(result);
+
+    res.send({
+        resultCode: 0,
+        message: 'Update 성공',
+    })
 } catch (error) {
     console.log(error);
 }

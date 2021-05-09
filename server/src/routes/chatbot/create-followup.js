@@ -1,7 +1,7 @@
 'use strict'
 
 const dialogflow = require('@google-cloud/dialogflow');
-const update = require('./update-intent');
+const update = require('./update-parent');
 // Instantiates the Intent Client
 const intentsClient = new dialogflow.IntentsClient();
 
@@ -14,8 +14,7 @@ const newIntent = {
       'How is the weather today?',
     ],
     messageTexts: ['Rainy', 'Sunny'],
-    inputContextNames: 'asdf',
-    outputContexts: 'adsf',
+    parentName: '',
   }
 */
 exports.createIntent = async (req, res) => {
@@ -50,16 +49,23 @@ exports.createIntent = async (req, res) => {
     text: messageText,
   };
 
+  const newdisplayName = req.body.displayName + ' - custom';
   const intent = {
-    displayName: req.body.displayName,
+    displayName: newdisplayName,
     trainingPhrases: trainingPhrases,
     messages: [message],
-    followupIntentInfo: [
-      {}
-    ],
   };
 
-  //update parent intent
+  //update parent intent output===========================================
+  update(req.body.parentName);
+
+  //create child intent input==========================================
+  let inputName = String(req.body.name) + "-followup";
+  console.log(inputName);
+  existingIntent.inputContextNames = [
+    inputName,
+  ];
+
   const createIntentRequest = {
     parent: agentPath,
     intent: intent,
@@ -73,7 +79,7 @@ exports.createIntent = async (req, res) => {
   // }
   res.send( {
     resultCode: 0,
-    message: "dialogflow에 생성 성공",
+    message: "Followup Intent 생성 성공",
   });
   console.log(`Intent ${response.name} created`);
 }
