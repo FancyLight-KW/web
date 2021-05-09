@@ -50,6 +50,7 @@ admin.initializeApp({
 
 app.use(logger("dev"));
 app.use(express.json());
+app.use(express.bodyParser());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(express.static(path.join(__dirname, "public")));
