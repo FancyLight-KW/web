@@ -103,9 +103,9 @@ function ManageIntentPage() {
 
   // Intent Name
   const [intentName, setIntentName] = useState();
-  const intentNameHandler = (e) => {
-    setIntentName(e.target.value);
-  };
+  // const intentNameHandler = (e) => {
+  //   setIntentName(e.target.value);
+  // };
   // TrainingPhrases
   const [trainingPhrasesVisible, setTrainingPhrasesVisible] = useState(false);
   const [trainingPhrasesInput, setTrainingPhrasesInput] = useState("");
@@ -196,8 +196,8 @@ function ManageIntentPage() {
       .then((response) => {
         console.log(response.data.result);
         setIntents([...response.data.result]);
-        setIntentName(response.data.result.intentName);
-
+        //      setIntentName(response.data.result.intentName);
+        setIntentName(intentname);
         let indexOfResult;
         for (let i = 0; i < response.data.result.length; i++) {
           if (response.data.result[i].intentName === intentname) {
@@ -235,10 +235,6 @@ function ManageIntentPage() {
   }, [intentname]);
 
   const saveHandler = async () => {
-    // const intentTitle = {
-    //   INTENT_TITLE: intentName,
-    // };
-    // ---------------------------------------
     let intentPhrasesToDialogflow = [];
     trainingPhrases.forEach((e) => {
       intentPhrasesToDialogflow.push(e.text);
@@ -248,14 +244,14 @@ function ManageIntentPage() {
     responses.forEach((e) => {
       intentResponsesToDialogflow.push(e.response);
     });
-    let changedIntent = {
+    let updatedIntent = {
       displayName: intentName,
-      trainingPhrasesParts: intentPhrasesToDialogflow,
-      messageTexts: intentResponsesToDialogflow,
+      updatedTrainingPhrasesParts: intentPhrasesToDialogflow,
+      updatedMessageTexts: intentResponsesToDialogflow,
     };
     let manageDialogflow = await axios.post(
-      `${process.env.REACT_APP_API_HOST}/dialogflow/intents`,
-      changedIntent,
+      `${process.env.REACT_APP_API_HOST}/dialogflow/updateIntent`,
+      updatedIntent,
       {
         headers: {
           Authorization: `Bearer ${cookie.load("token")}`,
@@ -407,18 +403,19 @@ function ManageIntentPage() {
               Intent name
             </Form.Label>
             <Col sm="7">
-              <Form.Control
+              {/* <Form.Control
                 type="text"
                 value={intentname}
-                onChange={intentNameHandler}
-              />
+                 onChange={intentNameHandler}
+                /> */}
+              <Form.Control plaintext readOnly defaultValue={intentName} />
             </Col>
             <Button
               variant="primary"
               size="md"
               style={{ marginLeft: "10px" }}
               onClick={() => {
-                // saveHandler();
+                saveHandler();
               }}
             >
               저장하기
