@@ -127,25 +127,29 @@ const HoverImage = styled.div`
 
  /* const newIntent = {
     displayName: 'WeatherIntent',
-    newTrainingPhrases: [
+    updatedTrainingPhrasesParts: [
       'Hello, What is weather today?',
       'How is the weather today?',
       'added',
     ],
-    newMessageTexts: ['Rainy', 'Sunny', 'cloudy'],
+    updatedMessageTexts: ['Rainy', 'Sunny', 'cloudy'],
   } */
 const Testpage = (props) =>{
   const newIntent = {
-    displayName: 'WeatherIntent',
-    trainingPhrasesParts: [
-      'child',
-      'child',
+    displayName: '3',
+    updatedTrainingPhrasesParts: [
+      'updatechild',
+      'updatechildchild1',
+      'updatechildchild2',
+      'updatechildchild3',
+      'updatechildchild4',
+      'updatechildchild5',
     ],
-    messageTexts: ['child','child'],
+    updatedMessageTexts: ['updatechildchild','updatechildchild'],
     parentName: 'WeatherIntent',
   }
   axios
-    .post(`${process.env.REACT_APP_API_HOST}/dialogflow/updateParentIntent`, newIntent,
+    .get(`${process.env.REACT_APP_API_HOST}/dialogflow/listIntent`,
     {
       headers: {
         Authorization: `Bearer ${cookie.load("token")}`,

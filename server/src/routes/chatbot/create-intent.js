@@ -27,6 +27,11 @@ exports.createIntent = async (req, res) => {
   // The path to identify the agent that owns the created intent.
   const agentPath = intentsClient.agentPath(process.env.GOOGLE_PROJECT_ID);
 
+
+
+   //==================create phrases====================
+   //==================create phrases====================
+   //==================create phrases====================
   const trainingPhrases = [];
 
   let trainingPhrasesParts = req.body.trainingPhrasesParts;
@@ -45,6 +50,34 @@ exports.createIntent = async (req, res) => {
     trainingPhrases.push(trainingPhrase);
   });
 
+  //==================create messageTexts====================
+  //==================create messageTexts====================
+  //==================create messageTexts====================
+  const messages = [];
+  /*
+  
+  let messageTexts = req.body.messageTexts;
+  messageTexts.forEach(message => {
+    const text = {
+      text: message,
+    };
+    const messagePart = {
+      text: [text],
+    };
+
+    messages.text.push(messagePart);
+  })
+  console.log(messages.text);
+  console.log(req.body.messageTexts);
+  */
+  //console.log(messages);
+  /*
+  let texts = [];
+  for(let i = 0; i < req.body.messageTexts.length; i++){
+    texts[i] = [req.body.messageTexts[i]];
+  }
+  console.log(texts);
+*/
   const messageText = {
     text: req.body.messageTexts,
   };
@@ -53,6 +86,9 @@ exports.createIntent = async (req, res) => {
     text: messageText,
   };
 
+  //==================create intent====================
+  //==================create phrases====================
+  //==================create phrases====================
   const intent = {
     displayName: req.body.displayName,
     trainingPhrases: trainingPhrases,
