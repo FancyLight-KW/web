@@ -78,17 +78,25 @@ exports.listIntents = async (req, res) => {
       })
 
       //message listing==================================
+      
       intent.messages.forEach((message) => {
+        //console.log(message.text.text);
+        const instantMessageTextArray = message.text.text;
+        let gatheredTexts = [];
+        
+        instantMessageTextArray.forEach((each) => {
+          gatheredTexts.push([each]);
+        })
+        //console.log(gatheredTexts);
         if(!messageTexts[intent.displayName]){
-          messageTexts[intent.displayName] = [message.text.text];
+          messageTexts[intent.displayName] = gatheredTexts;
         }else{
-          messageTexts[intent.displayName].push([message.text.text]);
+          messageTexts[intent.displayName].push(gatheredTexts);
         }
         //messageTexts.push([intent.displayName, message.text.text]);
         //console.log(message.text.text);
           //messageTexts.push([intent.displayName, element.text]);
       })
-      
       //inputcontext listing==================================
       intent.inputContextNames.forEach((contexts) => {
         let contextName = String(contexts);
@@ -224,6 +232,7 @@ exports.listIntents = async (req, res) => {
     console.log(outputContext);
     */
 
+    //console.log(result);
     res.send({
       result: result});
     /*

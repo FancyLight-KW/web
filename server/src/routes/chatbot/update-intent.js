@@ -59,7 +59,6 @@ exports.updateIntent = async (req, res) => { try{
     //===============message update=============
     //==========================================
     let updatedMessageTexts = req.body.updatedMessageTexts;
-    let array = [];
     let previousMessages =
     existingIntent.messages.length > 0
             ? existingIntent.messages
@@ -77,22 +76,16 @@ exports.updateIntent = async (req, res) => { try{
         //messages.push(message);
    // });
    //console.log(`message: ${updatedMessageTexts}`);
-   for(let message of updatedMessageTexts){
-    array.push(message);
-   }
-   console.log(`array: ${array}`);
+
     const text = {
         text: updatedMessageTexts,
     };
     const messages = [{
         platform: 'PLATFORM_UNSPECIFIED',
-        text: [text],
+        text: text,
         message: 'text',
     }];
-    console.log(messages[0].text.text);
 
-    console.log(`messages[0]: ${messages[0]}`)
-    console.log(`existingIntent.messages: ${existingIntent.messages}`);
     existingIntent.messages = messages;
 
     //==========================================
