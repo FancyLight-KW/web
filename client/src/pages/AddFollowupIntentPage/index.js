@@ -295,6 +295,7 @@ function AddFollowupIntentPage() {
               >
                 Intent 목록
                 <PlusOutlined
+                  title="새로운 intent 추가"
                   onClick={() => {
                     history.push("/registerintent");
                   }}
