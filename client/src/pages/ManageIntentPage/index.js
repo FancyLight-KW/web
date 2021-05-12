@@ -209,6 +209,8 @@ function ManageIntentPage() {
             break;
           }
         }
+        console.log(response.data.result[indexOfResult]);
+        console.log(typeof response.data.result[indexOfResult]);
         if (response.data.result[indexOfResult].trainingPhrases === undefined) {
           setTrainingPhrases([{ id: null, text: "" }]);
         } else {
@@ -266,50 +268,6 @@ function ManageIntentPage() {
       alert("인텐트가 수정됐습니다.");
       window.location.reload();
     }
-    // ----------------------------------------------------------------
-    // let intentID = titleResult.data.result[0].INTENT_ID;
-    // let intentPhrases = {
-    //   data: [],
-    // };
-    // trainingPhrases.forEach((e) => {
-    //   intentPhrases.data.push({ PHRASES_INTENT_ID: intentID, PHRASE: e.text });
-    // });
-
-    // let phrasesResult = await axios.post(
-    //   `${process.env.REACT_APP_API_HOST}/scenario/phrases`,
-    //   intentPhrases,
-    //   {
-    //     headers: {
-    //       Authorization: `Bearer ${cookie.load("token")}`,
-    //     },
-    //   }
-    // );
-    // let intentResponses = {
-    //   data: [],
-    // };
-    // responses.forEach((e) => {
-    //   intentResponses.data.push({
-    //     RESPONSES_INTENT_ID: intentID,
-    //     RESPONSE: e.respond,
-    //   });
-    // });
-
-    // let responseResult = await axios.post(
-    //   `${process.env.REACT_APP_API_HOST}/scenario/responses`,
-    //   intentResponses,
-    //   {
-    //     headers: {
-    //       Authorization: `Bearer ${cookie.load("token")}`,
-    //     },
-    //   }
-    // );
-    // if (
-    //   phrasesResult.data.resultCode === 0 &&
-    //   responseResult.data.resultCode === 0
-    // ) {
-    //   alert("인텐트가 수정됐습니다.");
-    //   window.location.reload();
-    // }
   };
 
   return (
@@ -339,6 +297,7 @@ function ManageIntentPage() {
               >
                 Intent 목록
                 <PlusOutlined
+                  title="새로운 intent 추가"
                   onClick={() => {
                     history.push("/registerintent");
                   }}
@@ -409,11 +368,6 @@ function ManageIntentPage() {
               Intent name
             </Form.Label>
             <Col sm="7">
-              {/* <Form.Control
-                type="text"
-                value={intentname}
-                 onChange={intentNameHandler}
-                /> */}
               <Form.Control plaintext readOnly defaultValue={intentName} />
             </Col>
             <Button
