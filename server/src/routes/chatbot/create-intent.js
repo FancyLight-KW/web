@@ -65,17 +65,17 @@ exports.createIntent = async (req, res) => { try{
   //==========================================
 
   if(req.body.displayName.includes(' - custom')){ //자식 인텐트에 팔로업 생성시
+    let tempExpectedForNum = req.body.displayName.toString().substr(req.body.displayName.length-1, 1);
     let displayNameWithoutNum;
-    if(isNaN(req.body.displayName.slice(req.body.displayName-1, -1))){  //끝에 숫자가 있다면
+    if(!isNaN(tempExpectedForNum)){  //끝에 숫자가 있다면
       displayNameWithoutNum = req.body.displayName.slice(0, req.body.displayName.length-2)
     }else{
       displayNameWithoutNum = req.body.displayName;
     }
-    console.log(displayNameWithoutNum);
-  // test() ㅡ 찾는 문자열이 들어있는지 확인
+  
 
-  let parentNameForContext = displayNameWithoutNum.slice(0, -9);
-  console.log(parentNameForContext);
+  let parentNameForContext = displayNameWithoutNum.slice(0, -9); //부모 이름으로 파싱
+
   if(reg.test(displayNameWithoutNum)){
     nameWithoutSCin = parentNameForContext.replace(reg, ""); // 찾은 특수 문자를 제거
     nameWithoutSCout = displayNameWithoutNum.replace(reg, ""); // 찾은 특수 문자를 제거
@@ -86,6 +86,7 @@ exports.createIntent = async (req, res) => { try{
   //공백 제거
   let nameWithoutSCESin;
   let nameWithoutSCESout;
+  // test() ㅡ 찾는 문자열이 들어있는지 확인
   if(regSpace.test(nameWithoutSCout)){
     nameWithoutSCESout = nameWithoutSCout.replace(/ /g, "");  //찾은 공백을 제거
     nameWithoutSCESin = nameWithoutSCin.replace(/ /g, "");
@@ -94,6 +95,7 @@ exports.createIntent = async (req, res) => { try{
     nameWithoutSCESin = nameWithoutSCin;
   }
 
+  //making contexts
   let headContext = 'projects/itsp-chatbot-app/agent/sessions/-/contexts/';
   const inputContext = headContext + nameWithoutSCESin + '-followup'
   const outputContext = headContext + nameWithoutSCESout + '-followup'
@@ -186,7 +188,7 @@ exports.createIntent = async (req, res) => { try{
   };
   // Create the intent
   // try{
-  const [response] = await intentsClient.createIntent(createIntentRequest);
+  //const [response] = await intentsClient.createIntent(createIntentRequest);
   // }catch(error){
 
   // }

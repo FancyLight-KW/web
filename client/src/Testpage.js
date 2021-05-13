@@ -136,11 +136,11 @@ const HoverImage = styled.div`
   } */
 const Testpage = (props) =>{
   const newIntent = {
-    displayName: 'neoguri - custom-2',
+    displayName: 'neoguri - custom-3',
     trainingPhrasesParts: [
       'neeoguricustom2',
     ],
-    messageTexts: ['this is neoguri - custom-2'],
+    messageTexts: ['this is neoguri - custom-3'],
   };
   axios
     .post(`${process.env.REACT_APP_API_HOST}/dialogflow/createIntent`, newIntent,

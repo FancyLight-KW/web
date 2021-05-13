@@ -62,7 +62,38 @@ exports.listIntents = async (req, res) => {
     let outputContext = {};
     let childDegree = {};
     let result = [];
-    
+    let childCardinality = [];
+    let cardinalCount = 0;
+
+    // response.forEach((intent)=> {
+    //   let cardinalCount = 0;
+    //   if(intent.displayName.includes(' - custom')){
+        
+    //     let temp = intent.displayName.toString().substr(intent.displayName.length-1, 1);
+    //     //console.log(temp);
+    //     let displayNameWithoutNum;
+    //     if (!isNaN(temp)) {  //끝에 숫자가 있다면
+    //       //console.log(intent.displayName.slice(intent.displayName - 1, -1));
+    //       displayNameWithoutNum = intent.displayName.slice(0, intent.displayName.length - 2)
+          
+    //     } else {
+    //       displayNameWithoutNum = intent.displayName;
+    //     }
+    //     cardinalCount++;
+    //     //search parent
+    //     let parentIntentDisplayName = displayNameWithoutNum.slice(0, -9);
+    //     //console.log(intent.displayName);
+    //     //console.log(parentIntentDisplayName);
+
+    //     if(!childCardinality[parentIntentDisplayName]){
+    //       childCardinality[parentIntentDisplayName] = ['1'];
+    //     }else{
+    //       childCardinality[parentIntentDisplayName].push('1');
+    //     }
+
+    //   }
+    // })
+
     response.forEach((intent)=> {
       //phrase listing==================================
       intent.trainingPhrases.forEach((phrase) => {
@@ -97,6 +128,36 @@ exports.listIntents = async (req, res) => {
         //console.log(message.text.text);
           //messageTexts.push([intent.displayName, element.text]);
       })
+
+
+      //
+      let cardinalCount = 0;
+      if(intent.displayName.includes(' - custom')){
+        
+        let temp = intent.displayName.toString().substr(intent.displayName.length-1, 1);
+        //console.log(temp);
+        let displayNameWithoutNum;
+        if (!isNaN(temp)) {  //끝에 숫자가 있다면
+          //console.log(intent.displayName.slice(intent.displayName - 1, -1));
+          displayNameWithoutNum = intent.displayName.slice(0, intent.displayName.length - 2)
+          
+        } else {
+          displayNameWithoutNum = intent.displayName;
+        }
+        cardinalCount++;
+        //search parent
+        let parentIntentDisplayName = displayNameWithoutNum.slice(0, -9);
+        //console.log(intent.displayName);
+        //console.log(parentIntentDisplayName);
+
+        if(!childCardinality[parentIntentDisplayName]){
+          childCardinality[parentIntentDisplayName] = ['1'];
+        }else{
+          childCardinality[parentIntentDisplayName].push('1');
+        }
+
+      }
+      //
       //inputcontext listing==================================
       /*
       intent.inputContextNames.forEach((contexts) => {
@@ -107,7 +168,7 @@ exports.listIntents = async (req, res) => {
         //let inputContextNameArray = inputArrayWithFollowupString.split('-');
         let inputContextName = inputArrayWithFollowup[6];
         if(!inputContexts[intent.displayName]){
-          inputContexts[intent.displayName] = inputContextName;
+          inputContexts[intent.displayName] = [inputContextName];
         }else{
           inputContexts[intent.displayName].push(inputContextName);
         }
@@ -125,7 +186,7 @@ exports.listIntents = async (req, res) => {
         //let outputContextNameArray = outputArrayWithFollowupString.split('-');
         let outputContextName = outputArrayWithFollowup[6];
         if(!outputContext[intent.displayName]){
-          outputContext[intent.displayName] = outputContextName;
+          outputContext[intent.displayName] = [outputContextName];
         }else{
           outputContext[intent.displayName].push(outputContextName);
         }
@@ -133,8 +194,7 @@ exports.listIntents = async (req, res) => {
         //console.log(contexts);
         
         //
-        
-      })
+      }
       */
       //console.log(`displayname: ${intent.displayName}
       //followupinfo: ${intent.followupIntentInfo}`);
@@ -151,16 +211,25 @@ exports.listIntents = async (req, res) => {
         childDegree[intent.displayName] = count.length;
       }
 
+      //자식이 없는 인텐트의 card num을 0으로 채움
+      let cardinalityNum = [];
+      if(!childCardinality[intent.displayName]){
+        cardinalityNum[intent.displayName] = 0;
+      }else{
+        cardinalityNum[intent.displayName] = childCardinality[intent.displayName].length;
+      }
+      
       result.push({
         intentName: intent.displayName,
         trainingPhrases: trainingPhrases[intent.displayName],
         messageTexts: messageTexts[intent.displayName],
         inputContexts: inputContexts[intent.displayName],
         outputContext: outputContext[intent.displayName],
-        childIntents:'',
         childDegree: childDegree[intent.displayName],
+        cardinalityNum: cardinalityNum[intent.displayName],
       });
     })
+    
     result.sort((a, b) => {
       var nameA = a.intentName.toUpperCase(); // ignore upper and lowercase
       var nameB = b.intentName.toUpperCase(); // ignore upper and lowercase
@@ -174,6 +243,7 @@ exports.listIntents = async (req, res) => {
       // 이름이 같을 경우
       return 0;
     });
+
     // if(!subIntents[result[i].displayName]){
     //   subIntents[result[i].displayName] = result[j]
     // }else{
