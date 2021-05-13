@@ -188,7 +188,7 @@ exports.createIntent = async (req, res) => { try{
   };
   // Create the intent
   // try{
-  //const [response] = await intentsClient.createIntent(createIntentRequest);
+  const [response] = await intentsClient.createIntent(createIntentRequest);
   // }catch(error){
 
   // }
