@@ -198,7 +198,15 @@ function RegisterIntentPage() {
   };
 
   const saveHandler = async () => {
-    // 값입력 안됐을 때 요청 등록 못하게 하기
+    // 값입력 안됐을 때 빈값으로 바꿔서 보내기
+
+    if (trainingPhrases[0].text === "") {
+      setTrainingPhrases([]);
+    }
+    if (responses[0].respond === "") {
+      setResponses([]);
+    }
+
     let intentPhrasesToDialogflow = [];
     trainingPhrases.forEach((e) => {
       intentPhrasesToDialogflow.push(e.text);
@@ -213,6 +221,7 @@ function RegisterIntentPage() {
       trainingPhrasesParts: intentPhrasesToDialogflow,
       messageTexts: intentResponsesToDialogflow,
     };
+
     let registerDialogflow = await axios.post(
       `${process.env.REACT_APP_API_HOST}/dialogflow/createIntent`,
       newIntent,
@@ -269,6 +278,7 @@ function RegisterIntentPage() {
               >
                 Intent 목록
                 <PlusOutlined
+                  title="새로운 intent 추가"
                   onClick={() => {
                     history.push("/registerintent");
                   }}
@@ -303,12 +313,14 @@ function RegisterIntentPage() {
                         />
                       ) : null}
                       <EyeOutlined
+                        title="Intent 수정"
                         style={{ marginLeft: "10px" }}
                         onClick={() => {
                           history.push(`/manageintent/${item.intentName}`);
                         }}
                       />
                       <DeleteOutlined
+                        title="Intent 삭제"
                         style={{ marginLeft: "10px" }}
                         onClick={() => {
                           deleteIntentHandler(item.intentName);

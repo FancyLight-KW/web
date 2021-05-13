@@ -127,6 +127,7 @@ function IntentMainPage() {
               >
                 Intent 목록
                 <PlusOutlined
+                  title="새로운 intent 추가"
                   onClick={() => {
                     history.push("/registerintent");
                   }}
@@ -162,12 +163,14 @@ function IntentMainPage() {
                         />
                       ) : null}
                       <EyeOutlined
+                        title="Intent 수정"
                         style={{ marginLeft: "10px" }}
                         onClick={() => {
                           history.push(`/manageintent/${item.intentName}`);
                         }}
                       />
                       <DeleteOutlined
+                        title="Intent 삭제"
                         style={{ marginLeft: "10px" }}
                         onClick={() => {
                           deleteIntentHandler(item.intentName);

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./LandingPage.css";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { Row, Col, Card, CardGroup } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import LoginModal from "../../components/LoginModal";
@@ -28,7 +28,7 @@ const ImageContainer = styled.div`
   background-color: #e0f6ff;
   text-align: center;
 `;
-const FastSRBox = styled.div`
+const FastBox = styled.div`
   background-color: #23adeb;
   height: 300px;
   color: white;
@@ -36,15 +36,8 @@ const FastSRBox = styled.div`
   line-height: 280px;
   font-weight: bold;
   font-size: large;
-`;
-const MySRBox = styled.div`
-  background-color: #ffc600;
-  height: 300px;
-  color: white;
-  text-align: center;
-  line-height: 280px;
-  font-weight: bold;
-  font-size: large;
+  background-color: ${(props) =>
+    props.typeOf === "fastSR" ? "#23adeb" : "#ffc600"};
 `;
 const LiBox = styled.div`
   text-align: start;
@@ -63,20 +56,42 @@ const RestBox = styled.div`
   text-align: center;
   font-size: 12px;
 `;
+const CountBox = styled.div`
+  display: inline-flex;
+  font-size: 60px;
+  color: ${(props) =>
+    props.type === "접수대기"
+      ? "black"
+      : props.type === "접수완료"
+      ? "#65b67f"
+      : props.type === "요청처리중"
+      ? "#488dc0"
+      : "#f9816c"};
+`;
 
 function LandingPage() {
-  let dispatch = useDispatch();
   const [CSRInfos, setCSRInfos] = useState([]);
   const [CSRCount, setCSRCount] = useState("0");
   const [authenticated, setAuthenticated] = useState(false);
   const [LoginModalVisible, setLoginModalVisible] = useState(false);
   //  const userInfos = useSelector((state) => state.auth.userInfos);
   const csrStatusTypes = [
-    "결제 건수",
-    "접수 대기",
-    "접수완료",
-    "요청처리중",
-    "처리 완료",
+    {
+      id: 0,
+      text: "접수대기",
+    },
+    {
+      id: 1,
+      text: "접수완료",
+    },
+    {
+      id: 2,
+      text: "요청처리중",
+    },
+    {
+      id: 3,
+      text: "처리완료",
+    },
   ];
 
   useEffect(() => {
@@ -89,18 +104,26 @@ function LandingPage() {
   }, []);
 
   useEffect(() => {
-    // const endpoint = `${process.env.REACT_APP_API_HOST}/requests/getAllRequest?`;
     axios
       .get(`${process.env.REACT_APP_API_HOST}/csrstatus`)
       .then((response) => {
         console.log(response);
-        setCSRInfos(response.data);
+        let tmp = [];
+        csrStatusTypes.forEach((e) => {
+          tmp.push({
+            typeName: e.text,
+            count:
+              response.data[e.text] === undefined ? 0 : response.data[e.text],
+          });
+        });
+        setCSRInfos(tmp);
         countCSR(response.data);
       });
   }, []);
 
   const loginOpenModal = () => {
     setLoginModalVisible(true);
+    console.log(CSRInfos);
   };
   const loginCloseModal = () => {
     setLoginModalVisible(false);
@@ -128,13 +151,20 @@ function LandingPage() {
             <Col xs={3} md={2} id="padding-zero">
               {cookie.load("token") ? (
                 <Link to="/itsr">
-                  <FastSRBox id="padding-zero"> 빠른 요청/접수</FastSRBox>
+                  <FastBox id="padding-zero" typeOf="fastSR">
+                    {" "}
+                    빠른 요청/접수
+                  </FastBox>
                 </Link>
               ) : (
-                <FastSRBox id="padding-zero" onClick={loginOpenModal}>
+                <FastBox
+                  id="padding-zero"
+                  typeOf="fastSR"
+                  onClick={loginOpenModal}
+                >
                   {" "}
                   빠른 요청/접수
-                </FastSRBox>
+                </FastBox>
               )}
               {LoginModalVisible && (
                 <LoginModal
@@ -146,7 +176,7 @@ function LandingPage() {
               )}
             </Col>
             <Col xs={3} md={2} id="padding-zero">
-              <MySRBox>공지사항</MySRBox>
+              <FastBox>공지사항</FastBox>
             </Col>
           </Row>
         </FirstRowContainer>
@@ -161,65 +191,70 @@ function LandingPage() {
                   }}
                 >
                   <Card.Body>
-                    <Card.Title id="bold">{csrStatusTypes[0]}</Card.Title>
+                    <div>
+                      <Card.Title style={{ fontWeight: "600" }}>
+                        결제 건수
+                      </Card.Title>
 
-                    <Card.Text>
-                      <div id="text_yellow">{CSRCount}</div>
-                      <div id="text_gray">건</div>
-                    </Card.Text>
+                      <Card.Text>
+                        <div
+                          style={{
+                            display: "inline-flex",
+                            fontSize: "60px",
+                            color: "#bfbf34",
+                          }}
+                        >
+                          {CSRCount}
+                        </div>
+                        <div
+                          style={{
+                            marginTop: "38px",
+                            display: "inline-flex",
+                            color: "#727272",
+                            fontSize: "28px",
+                          }}
+                        >
+                          건
+                        </div>
+                      </Card.Text>
+                    </div>
                   </Card.Body>
                 </Card>
-
-                <Card style={{ width: "14rem", backgroundColor: "#f2f4f6" }}>
-                  <Card.Body>
-                    <Card.Title id="bold">{csrStatusTypes[1]}</Card.Title>
-
-                    <Card.Text>
-                      <div id="text_black">
-                        {CSRInfos.접수대기 ? CSRInfos.접수대기 : "0"}
-                      </div>
-                      <div id="text_gray">건</div>
-                    </Card.Text>
-                  </Card.Body>
-                </Card>
-                <Card style={{ width: "14rem", backgroundColor: "#e5f5e5" }}>
-                  <Card.Body>
-                    <Card.Title id="bold">{csrStatusTypes[2]}</Card.Title>
-
-                    <Card.Text>
-                      <div id="text_green">
-                        {CSRInfos.접수완료 ? CSRInfos.접수완료 : "0"}
-                      </div>
-                      <div id="text_gray">건</div>
-                    </Card.Text>
-                  </Card.Body>
-                </Card>
-
-                <Card style={{ width: "14rem", backgroundColor: "#dbf5fe" }}>
-                  <Card.Body>
-                    <Card.Title id="bold"> {csrStatusTypes[3]}</Card.Title>
-
-                    <Card.Text>
-                      <div id="text_blue">
-                        {CSRInfos.요청처리중 ? CSRInfos.요청처리중 : "0"}
-                      </div>
-                      <div id="text_gray">건</div>
-                    </Card.Text>
-                  </Card.Body>
-                </Card>
-                <Card style={{ width: "14rem", backgroundColor: "#fff0ee" }}>
-                  <Card.Body>
-                    <Card.Title id="bold"> {csrStatusTypes[4]}</Card.Title>
-
-                    <Card.Text>
-                      <div id="text_red">
-                        {" "}
-                        {CSRInfos.처리완료 ? CSRInfos.처리완료 : "0"}
-                      </div>
-                      <div id="text_gray">건</div>
-                    </Card.Text>
-                  </Card.Body>
-                </Card>
+                {CSRInfos.map((type, index) => (
+                  <Card
+                    key={index}
+                    style={{
+                      width: "14rem",
+                      backgroundColor:
+                        type.typeName === "접수대기"
+                          ? "#f2f4f6"
+                          : type.typeName === "접수완료"
+                          ? "#e5f5e5"
+                          : type.typeName === "요청처리중"
+                          ? "#dbf5fe"
+                          : "#fff0ee",
+                    }}
+                  >
+                    <Card.Body>
+                      <Card.Title style={{ fontWeight: "600" }}>
+                        {type.typeName}
+                      </Card.Title>
+                      <Card.Text>
+                        <CountBox type={type.typeName}>{type.count}</CountBox>
+                        <div
+                          style={{
+                            marginTop: "38px",
+                            display: "inline-flex",
+                            color: "#727272",
+                            fontSize: "28px",
+                          }}
+                        >
+                          건
+                        </div>
+                      </Card.Text>
+                    </Card.Body>
+                  </Card>
+                ))}
               </CardGroup>
             </Col>
 
