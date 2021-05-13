@@ -212,10 +212,22 @@ const Maximized = ({
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
     }
 
+
+
     useEffect(() => {
         scrollToBottom()
       });
-	  
+
+	const today = new Date();   
+
+	let year = today.getFullYear(); // 년도
+	let month = today.getMonth() + 1;  // 월
+	let date = today.getDate();  // 날짜
+	let day = today.getDay();  // 요일
+	let hour = today.getHours();
+	let minute = today.getMinutes();
+	
+	let writeTimeStmap = year + '년 ' + month + '월 ' + date + '일 ' + '오전 '+  hour + ':' + minute;
 	return (
 		<div
 			style={{
@@ -261,6 +273,7 @@ const Maximized = ({
 			>
 				
 				<MessageList active containScrollInSubtree>
+					<div style={{textAlign:'center'}}>{writeTimeStmap}</div>
 					{messagesFromRedux.map((message, i) => (
 						<>
 						<MessageGroup key={i} onlyFirstWithMeta>

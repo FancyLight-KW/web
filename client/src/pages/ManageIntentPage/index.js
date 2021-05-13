@@ -261,6 +261,8 @@ function ManageIntentPage() {
     if (manageDialogflow.data.resultCode === 0) {
       alert("인텐트가 수정됐습니다.");
       window.location.reload();
+    }else{
+      alert("인텐트를 수정하지 못했습니다. 입력한 내용을 한번 더 확인해주세요.");
     }
     // ----------------------------------------------------------------
     // let intentID = titleResult.data.result[0].INTENT_ID;

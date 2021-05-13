@@ -136,20 +136,14 @@ const HoverImage = styled.div`
   } */
 const Testpage = (props) =>{
   const newIntent = {
-    displayName: '3',
-    updatedTrainingPhrasesParts: [
-      'updatechild',
-      'updatechildchild1',
-      'updatechildchild2',
-      'updatechildchild3',
-      'updatechildchild4',
-      'updatechildchild5',
+    displayName: 'neoguri - custom-2',
+    trainingPhrasesParts: [
+      'neeoguricustom2',
     ],
-    updatedMessageTexts: ['updatechildchild','updatechildchild'],
-    parentName: 'WeatherIntent',
-  }
+    messageTexts: ['this is neoguri - custom-2'],
+  };
   axios
-    .get(`${process.env.REACT_APP_API_HOST}/dialogflow/listIntent`,
+    .post(`${process.env.REACT_APP_API_HOST}/dialogflow/createIntent`, newIntent,
     {
       headers: {
         Authorization: `Bearer ${cookie.load("token")}`,

@@ -10,7 +10,8 @@ const dialogflowListIntent = require('./list-intent');
 const dialogflowDeleteIntent = require('./delete-intent');
 const dialogflowUpdateIntent = require('./update-intent');
 const dialogflowcreateFollowupIntent = require('./create-followup');
-const dialogflowUpdateParentIntent = require('./update-parent');
+const dialogflowUpdateParentIntent = require('./update-parentIntent');
+//const dialogflowFullfilment = require('./fulfillment');
 
 //Text Query Route
 router.post('/textQuery', dialogflowQueryIntent.textQuery);
@@ -34,4 +35,6 @@ router.post('/updateParentIntent', dialogflowUpdateParentIntent.updateIntent);
 
 //Delete Intent Route
 router.post('/deleteIntent',dialogflowDeleteIntent.deleteIntent);
+
+//router.post('/fulfillment', dialogflowFullfilment.dialogflowFirebaseFulfillment)
 module.exports = router;

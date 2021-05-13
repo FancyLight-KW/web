@@ -98,6 +98,7 @@ exports.listIntents = async (req, res) => {
           //messageTexts.push([intent.displayName, element.text]);
       })
       //inputcontext listing==================================
+      /*
       intent.inputContextNames.forEach((contexts) => {
         let contextName = String(contexts);
         let inputArrayWithFollowup = contextName.split('/');
@@ -113,8 +114,9 @@ exports.listIntents = async (req, res) => {
         //inputContexts[intent.displayName].push([contexts]);
         //console.log(contexts);
       })
-
+      */
       //outputcontext listing==================================
+      /*
       intent.outputContexts.forEach((contexts) => {
         let contextName = String(contexts.name);
         var outputArrayWithFollowup = contextName.split('/');
@@ -129,10 +131,20 @@ exports.listIntents = async (req, res) => {
         }
         //outputContext[intent.displayName].push([contexts.name]);
         //console.log(contexts);
-
+        
         //
         
       })
+      */
+      //console.log(`displayname: ${intent.displayName}
+      //followupinfo: ${intent.followupIntentInfo}`);
+      //console.log(intent.displayName);
+      //console.log(intent.name);
+      //console.log('루트팔로업인텐트');
+      //console.log(intent.rootFollowupIntentName);
+      //console.log('패런트팔로업인텐트');
+      //console.log(intent.parentFollowupIntentName);
+      //console.log(intent.followupIntentInfo);
       //var displayName = String(intent.displayName);
       var count = intent.displayName.match(/custom/g);
       if(count != null) {

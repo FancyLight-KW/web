@@ -217,7 +217,7 @@ function AddFollowupIntentPage() {
       parentName: parentName,
     };
     let registerDialogflow = await axios.post(
-      `${process.env.REACT_APP_API_HOST}/dialogflow/createFollowupIntent`,
+      `${process.env.REACT_APP_API_HOST}/dialogflow/createIntent`,
       newIntent,
       {
         headers: {
@@ -229,6 +229,8 @@ function AddFollowupIntentPage() {
     if (registerDialogflow.data.resultCode === 0) {
       alert("Followup 인텐트가 등록됐습니다.");
       window.location.reload();
+    }else{
+      alert("인텐트를 등록하지 못했습니다. 입력한 내용을 한번 더 확인해주세요.");
     }
   };
 
@@ -252,11 +254,11 @@ function AddFollowupIntentPage() {
           let customNum = response.data.result[indexToFindDegree].childDegree;
           let customString = "";
           for (let i = 0; i < customNum; i++) {
-            customString += " -custom";
+            customString += " - custom";
           }
           setIntentName(parentName + customString);
         } else {
-          setIntentName(parentName + " -custom");
+          setIntentName(parentName + " - custom");
         }
       });
   }, [parentName]);
