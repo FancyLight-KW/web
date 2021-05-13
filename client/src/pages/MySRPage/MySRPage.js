@@ -50,6 +50,27 @@ const Input = styled.input`
 `;
 
 function MySRPage() {
+  // const [data, setData] = useState([]);
+  // const [loading, setLoading] = useState(false);
+  // const [currentPage, setCurrentPage] = useState(1);
+  // const [postPerPage, setPostPerPage] = useState(15);
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     setLoading(true);
+  //     const res = await axios.get(`${process.env.REACT_APP_API_HOST}/mypage`, {
+  //       headers: {
+  //         Authorization: `Bearer ${cookie.load("token")}`,
+  //       },
+  //     });
+  //     setData(res.data);
+  //     setLoading(false);
+  //   };
+  //   fetchData();
+  // }, []);
+
+  // ------------------
+
   const [Requests, setRequests] = useState([]);
   const [mySRModalVisible, setMySRModalVisible] = useState(false);
   const [myModalSRInfos, setMyModalSRInfos] = useState([]);

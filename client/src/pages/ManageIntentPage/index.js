@@ -95,7 +95,11 @@ function ManageIntentPage() {
           console.log(response.data);
           if (response.data.resultCode === 0) {
             alert("인텐트가 삭제되었습니다.");
-            window.location.reload();
+            if (intentName === intentname) {
+              history.push("/intentmain");
+            } else {
+              window.location.reload();
+            }
           }
         });
     }
@@ -205,6 +209,8 @@ function ManageIntentPage() {
             break;
           }
         }
+        console.log(response.data.result[indexOfResult]);
+        console.log(typeof response.data.result[indexOfResult]);
         if (response.data.result[indexOfResult].trainingPhrases === undefined) {
           setTrainingPhrases([{ id: null, text: "" }]);
         } else {
@@ -264,50 +270,6 @@ function ManageIntentPage() {
     }else{
       alert("인텐트를 수정하지 못했습니다. 입력한 내용을 한번 더 확인해주세요.");
     }
-    // ----------------------------------------------------------------
-    // let intentID = titleResult.data.result[0].INTENT_ID;
-    // let intentPhrases = {
-    //   data: [],
-    // };
-    // trainingPhrases.forEach((e) => {
-    //   intentPhrases.data.push({ PHRASES_INTENT_ID: intentID, PHRASE: e.text });
-    // });
-
-    // let phrasesResult = await axios.post(
-    //   `${process.env.REACT_APP_API_HOST}/scenario/phrases`,
-    //   intentPhrases,
-    //   {
-    //     headers: {
-    //       Authorization: `Bearer ${cookie.load("token")}`,
-    //     },
-    //   }
-    // );
-    // let intentResponses = {
-    //   data: [],
-    // };
-    // responses.forEach((e) => {
-    //   intentResponses.data.push({
-    //     RESPONSES_INTENT_ID: intentID,
-    //     RESPONSE: e.respond,
-    //   });
-    // });
-
-    // let responseResult = await axios.post(
-    //   `${process.env.REACT_APP_API_HOST}/scenario/responses`,
-    //   intentResponses,
-    //   {
-    //     headers: {
-    //       Authorization: `Bearer ${cookie.load("token")}`,
-    //     },
-    //   }
-    // );
-    // if (
-    //   phrasesResult.data.resultCode === 0 &&
-    //   responseResult.data.resultCode === 0
-    // ) {
-    //   alert("인텐트가 수정됐습니다.");
-    //   window.location.reload();
-    // }
   };
 
   return (
@@ -337,6 +299,7 @@ function ManageIntentPage() {
               >
                 Intent 목록
                 <PlusOutlined
+                  title="새로운 intent 추가"
                   onClick={() => {
                     history.push("/registerintent");
                   }}
@@ -371,12 +334,14 @@ function ManageIntentPage() {
                         />
                       ) : null}
                       <EyeOutlined
+                        title="Intent 수정"
                         style={{ marginLeft: "10px" }}
                         onClick={() => {
                           history.push(`/manageintent/${item.intentName}`);
                         }}
                       />
                       <DeleteOutlined
+                        title="Intent 삭제"
                         style={{ marginLeft: "10px" }}
                         onClick={() => {
                           deleteIntentHandler(item.intentName);
@@ -405,11 +370,6 @@ function ManageIntentPage() {
               Intent name
             </Form.Label>
             <Col sm="7">
-              {/* <Form.Control
-                type="text"
-                value={intentname}
-                 onChange={intentNameHandler}
-                /> */}
               <Form.Control plaintext readOnly defaultValue={intentName} />
             </Col>
             <Button
