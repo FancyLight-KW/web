@@ -329,7 +329,7 @@ exports.listIntents = async (req, res) => {
     console.log(outputContext);
     */
 
-    console.log(result);
+    //console.log(result);
     res.send({
       result: result});
     /*
