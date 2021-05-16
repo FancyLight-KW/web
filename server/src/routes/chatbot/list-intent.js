@@ -76,7 +76,7 @@ exports.listIntents = async (req, res) => {
     let result = [];
     let childCardinality = {};
     let cardinalCount = 0;
-
+    let cardinalityNum = [];
     // response.forEach((intent)=> {
     //   let cardinalCount = 0;
     //   if(intent.displayName.includes(' - custom')){
@@ -224,15 +224,15 @@ exports.listIntents = async (req, res) => {
       }
 
       //자식이 없는 인텐트의 card num을 0으로 채움
-      let cardinalityNum = [];
+      
       if(!childCardinality[intent.displayName]){
         cardinalityNum[intent.displayName] = 0;
       }else{
         cardinalityNum[intent.displayName] = childCardinality[intent.displayName].length;
       }
-      console.log(intent.displayName);
-      console.log(childCardinality[intent.displayName]);
-      console.log(cardinalityNum);
+      //console.log(intent.displayName);
+      //console.log(childCardinality[intent.displayName]);
+      //console.log(cardinalityNum);
 
       result.push({
         intentName: intent.displayName,
@@ -244,7 +244,7 @@ exports.listIntents = async (req, res) => {
         cardinalityNum: cardinalityNum[intent.displayName],
       });
     })
-    
+    console.log(cardinalityNum);
     result.sort((a, b) => {
       var nameA = a.intentName.toUpperCase(); // ignore upper and lowercase
       var nameB = b.intentName.toUpperCase(); // ignore upper and lowercase
