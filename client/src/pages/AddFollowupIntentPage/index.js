@@ -236,8 +236,10 @@ function AddFollowupIntentPage() {
     if (registerDialogflow.data.resultCode === 0) {
       alert("Followup 인텐트가 등록됐습니다.");
       window.location.reload();
-    }else{
-      alert("인텐트를 등록하지 못했습니다. 입력한 내용을 한번 더 확인해주세요.");
+    } else {
+      alert(
+        "인텐트를 등록하지 못했습니다. 입력한 내용을 한번 더 확인해주세요."
+      );
     }
   };
 
@@ -258,13 +260,21 @@ function AddFollowupIntentPage() {
         }
         setIntents([...response.data.result]);
         if (response.data.result[indexToFindDegree].childDegree) {
+          // childDegree 있으면 ?
           let customNum = response.data.result[indexToFindDegree].childDegree;
           let customString = "";
           for (let i = 0; i < customNum; i++) {
             customString += " - custom";
           }
           setIntentName(parentName + customString);
+        } else if (response.data.result[indexToFindDegree].cardinalityNum > 0) {
+          setIntentName(
+            parentName +
+              " - custom" +
+              String(response.data.result[indexToFindDegree].cardinalityNum + 1)
+          );
         } else {
+          // 없으면
           setIntentName(parentName + " - custom");
         }
       });
