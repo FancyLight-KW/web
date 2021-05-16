@@ -2,6 +2,7 @@ const models = require("../../DB/models");
 const Sequelize = require("sequelize");
 const moment = require("../../config/moment.config");
 const fs = require("fs");
+const path = require("path");
 
 const Op = Sequelize.Op;
 
@@ -10,13 +11,15 @@ exports.like = (keyword) => {
 };
 
 exports.queryString = (params) => {
-  console.log(params);
   let query = {};
-  let title = params.title ? params.title : "";
-  let user = params.user ? params.user : "";
-  let targetCode = params.targetcode ? params.targetcode : "";
-  let csrStatus = params.csrstatus ? params.csrstatus : "";
+  let title = params.title ? decodeURIComponent(params.title) : "";
+  let user = params.user ? decodeURIComponent(params.user) : "";
+  let targetCode = params.targetcode
+    ? decodeURIComponent(params.targetcode)
+    : "";
+  let csrStatus = params.csrstatus ? decodeURIComponent(params.csrstatus) : "";
 
+  console.log(query);
   if (params.reqNo) {
     let reqNo = params.reqNo ? params.reqNo : "";
     query["REQ_SEQ"] = reqNo;
@@ -66,11 +69,8 @@ exports.create = (req, res) => {
     CORP_CODE: body.CORP_CODE,
     TARGET_CODE: body.TARGET_CODE,
     SYSTEM_GROUP_CODE: body.SYSTEM_GROUP_CODE,
-    SYSTEM_CODE: body.SYSTEM_CODE,
-    REQ_TYPE_CODE: body.REQ_TYPE_CODE,
     TM_APPROVAL_REQ_YN: body.TM_APPROVAL_REQ_YN,
     CSR_STATUS: body.CSR_STATUS,
-    IMSI_YN: body.IMSI_YN,
     REQ_FINISH_DATE: body.REQ_FINISH_DATE,
     REG_USER_ID: req.user.User_id,
     //REG_DATE: moment().format('YYYYMMDD-HH:mm:ss'),
@@ -117,7 +117,7 @@ exports.findImage = (req, res) => {
 
 exports.update = (req, res) => {
   let body = JSON.parse(req.body.body);
-  console.log(body);
+
   while (typeof body != "object") {
     console.log("while" + body);
     body = JSON.parse(body);
@@ -125,20 +125,19 @@ exports.update = (req, res) => {
 
   if (!body) {
     res.status(400).send({
+      resultCode: 2,
       message: "Content cannot empty",
     });
   }
+
   let query = {
     TITLE: body.TITLE,
     CONTENT: body.CONTENT,
     CORP_CODE: body.CORP_CODE,
     TARGET_CODE: body.TARGET_CODE,
     SYSTEM_GROUP_CODE: body.SYSTEM_GROUP_CODE,
-    SYSTEM_CODE: body.SYSTEM_CODE,
-    REQ_TYPE_CODE: body.REQ_TYPE_CODE,
     TM_APPROVAL_REQ_YN: body.TM_APPROVAL_REQ_YN,
     CSR_STATUS: body.CSR_STATUS,
-    IMSI_YN: body.IMSI_YN,
     REQ_FINISH_DATE: body.REQ_FINISH_DATE,
     REG_USER_ID: body.REG_USER_ID,
     REG_DATE: body.REG_DATE,
@@ -147,10 +146,32 @@ exports.update = (req, res) => {
   };
 
   if (req.file) {
+    models.Requests.findOne({
+      attributes: ["REQ_IMG_PATH"],
+      where: {
+        REQ_SEQ: req.params.requestId,
+      },
+    })
+      .then((result) => {
+        if (result.REQ_IMG_PATH) {
+          let filePath = result.REQ_IMG_PATH;
+          let pastFile = filePath.split("/").slice(-1).pop();
+
+          fs.unlink(path.join(appRoot, "uploads", pastFile), (err) => {
+            if (err) {
+              console.log(err);
+              res.send({
+                resultCode: 3,
+                message: err,
+              });
+            }
+          });
+        }
+      })
+      .catch();
     query["REQ_IMG_PATH"] =
       process.env.SERVER_HOST + "/uploads/" + req.file.filename;
   }
-
   models.Requests.update(query, {
     where: {
       REQ_SEQ: req.params.requestId,
@@ -185,11 +206,12 @@ exports.delete = (req, res) => {
     .then((result) => {
       if (result > 0) {
         res.send({
-          resultcode: result,
+          resultCode: 0,
           message: `${req.params.requestId} delete success`,
         });
       } else {
         res.status(500).send({
+          resultCode: 1,
           message: "no data",
         });
       }

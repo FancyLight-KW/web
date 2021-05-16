@@ -24,7 +24,6 @@ const PageNameWrapper = styled.div`
   height: 100%;
   align-items: center;
 `;
-
 const SearchBlock = styled.div`
   display: flex;
   margin-top: 10px;
@@ -51,6 +50,27 @@ const Input = styled.input`
 `;
 
 function MySRPage() {
+  // const [data, setData] = useState([]);
+  // const [loading, setLoading] = useState(false);
+  // const [currentPage, setCurrentPage] = useState(1);
+  // const [postPerPage, setPostPerPage] = useState(15);
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     setLoading(true);
+  //     const res = await axios.get(`${process.env.REACT_APP_API_HOST}/mypage`, {
+  //       headers: {
+  //         Authorization: `Bearer ${cookie.load("token")}`,
+  //       },
+  //     });
+  //     setData(res.data);
+  //     setLoading(false);
+  //   };
+  //   fetchData();
+  // }, []);
+
+  // ------------------
+
   const [Requests, setRequests] = useState([]);
   const [mySRModalVisible, setMySRModalVisible] = useState(false);
   const [myModalSRInfos, setMyModalSRInfos] = useState([]);
@@ -96,41 +116,34 @@ function MySRPage() {
         <Table striped bordered hover>
           <thead>
             <tr>
-              <th rowSpan="2" id="thCenterAlign">
+              <th rowSpan="2" id="centerAlign">
                 No
               </th>
-              <th rowSpan="2" id="thCenterAlign">
+              <th rowSpan="2" id="centerAlign">
                 서비스상태
               </th>
-              <th rowSpan="2" id="thCenterAlign">
+              <th rowSpan="2" id="centerAlign">
                 문의대상
               </th>
-              <th rowSpan="2" id="thCenterAlign">
-                시스템명1
-              </th>
-              <th rowSpan="2" id="thCenterAlign">
-                시스템명2
-              </th>
-              <th rowSpan="2" id="thCenterAlign">
-                문의유형
-              </th>
-              <th rowSpan="2" id="thCenterAlign">
+              <th rowSpan="2" id="centerAlign">
                 제목
               </th>
-
-              <th colSpan="3">서비스 요청</th>
-              <th colSpan="2">서비스 접수</th>
-              <th colSpan="3">서비스 검토/처리</th>
+              <th colSpan="2" id="centerAlign">
+                서비스 요청
+              </th>
+              <th colSpan="2" id="centerAlign">
+                서비스 접수
+              </th>
+              <th colSpan="2" id="centerAlign">
+                서비스 검토/처리
+              </th>
             </tr>
             <tr>
-              <th>부서</th>
-              <th>성명</th>
-              <th>요청등록일</th>
-              <th>성명</th>
-              <th>접수일</th>
-              <th>설명</th>
-              <th>예상완료일</th>
-              <th>처리완료일</th>
+              <th id="centerAlign">요청자</th>
+              <th id="centerAlign">요청등록일</th>
+              <th id="centerAlign">접수자</th>
+              <th id="centerAlign">예상완료일</th>
+              <th id="centerAlign">처리완료일</th>
             </tr>
           </thead>
 
@@ -142,21 +155,15 @@ function MySRPage() {
                   mySROpenModal(request);
                 }}
               >
-                <td>{request.REQ_SEQ}</td>
-                <td>{request.CSR_STATUS}</td>
-                <td>{request.TARGET_CODE}</td>
-                <td></td>
-                <td></td>
-                <td>{request.REQ_TYPE_CODE}</td>
-                <td>{request.TITLE}</td>
-                <td></td>
-                <td></td>
-                <td>{request.createdAt.split(" ")[0]}</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td id="centerAlign">{request.REQ_SEQ}</td>
+                <td id="centerAlign">{request.CSR_STATUS}</td>
+                <td id="centerAlign">{request.TARGET_CODE}</td>
+                <td id="centerAlign">{request.TITLE}</td>
+                <td id="centerAlign">{request.REG_USER.User_name}</td>
+                <td id="centerAlign">{request.createdAt.split(" ")[0]}</td>
+                <td id="centerAlign">{request.MOD_USER_ID}</td>
+                <td id="centerAlign">{request.EXPRECTED_FINISH_DATE}</td>
+                <td id="centerAlign">{request.REAL_FINISH_DATE}</td>
               </tr>
             ))}
           </tbody>

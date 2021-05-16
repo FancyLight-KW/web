@@ -33,14 +33,6 @@ module.exports = function (sequelize, DataTypes) {
         allowNull: false,
         defaultValue: "",
       },
-      SYSTEM_CODE: {
-        type: DataTypes.STRING(10),
-        allowNull: true,
-      },
-      REQ_TYPE_CODE: {
-        type: DataTypes.STRING(10),
-        allowNull: true,
-      },
       TM_APPROVAL_REQ_YN: {
         type: DataTypes.CHAR(1),
         allowNull: false,
@@ -50,22 +42,20 @@ module.exports = function (sequelize, DataTypes) {
         type: DataTypes.STRING(10),
         allowNull: false,
       },
-      IMSI_YN: {
-        type: DataTypes.CHAR(1),
-        allowNull: false,
-        defaultValue: "N",
-      },
       REQ_FINISH_DATE: {
         type: DataTypes.STRING(14),
         allowNull: true,
+        defaultValue: " ",
       },
-      EXPRECTED_FINISH_DATE: {
+      EXPECTED_FINISH_DATE: {
         type: DataTypes.STRING(14),
         allowNull: true,
+        defaultValue: " ",
       },
       REAL_FINISH_DATE: {
         type: DataTypes.STRING(14),
         allowNull: true,
+        defaultValue: " ",
       },
       REG_USER_ID: {
         type: DataTypes.STRING(50),

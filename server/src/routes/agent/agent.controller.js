@@ -1,5 +1,6 @@
 const models = require("../../DB/models");
 const { Op } = require("sequelize");
+const sendMsg = require("../android/sendMsg");
 
 //요원에게 할당된 요청
 exports.findAllUSerDisposeRequest = (req, res) => {
@@ -32,13 +33,13 @@ exports.findAllUSerDisposeRequest = (req, res) => {
     });
 };
 
-//요청 날짜 수정
+//요청 수정
 exports.updateRequest = (req, res) => {
   let body = req.body;
   let params = req.params;
-  console.log(params);
+
   if (params.isfinished != 0) {
-    console.log("요청끝");
+    // 요청을 해결했을 때
     models.Requests.update(
       {
         CSR_STATUS: body.CSR_STATUS,
@@ -53,6 +54,20 @@ exports.updateRequest = (req, res) => {
       .then((result) => {
         // 수정 성공
         if (result[0] > 0) {
+          models.Requests.findOne({
+            attributes: ["REG_USER_ID"],
+            where: {
+              REQ_SEQ: params.requestId,
+            },
+          }).then((result) => {
+            // 기기가 있는 경우 메세지 전송
+            sendMsg.sendMessageToDevice(result.REG_USER_ID, params.requestId, {
+              data: {
+                title: "요청을 처리했습니다.",
+                body: "",
+              },
+            });
+          });
           res.send({
             resultCode: 0,
             message: "update done",
@@ -71,11 +86,11 @@ exports.updateRequest = (req, res) => {
         });
       });
   } else {
-    console.log("요청진행중");
+    // 요청을 진행으로 바꿨을 때
     models.Requests.update(
       {
         CSR_STATUS: body.CSR_STATUS,
-        EXPRECTED_FINISH_DATE: body.DATE,
+        EXPECTED_FINISH_DATE: body.DATE,
       },
       {
         where: {
@@ -86,6 +101,20 @@ exports.updateRequest = (req, res) => {
       .then((result) => {
         // 수정 성공
         if (result[0] > 0) {
+          models.Requests.findOne({
+            attributes: ["REG_USER_ID"],
+            where: {
+              REQ_SEQ: params.requestId,
+            },
+          }).then((result) => {
+            // 기기가 있는 경우 메세지 전송
+            sendMsg.sendMessageToDevice(result.REG_USER_ID, params.requestId, {
+              data: {
+                title: "요청이 곧 처리됩니다.",
+                body: "",
+              },
+            });
+          });
           res.send({
             resultCode: 0,
             message: "update done",

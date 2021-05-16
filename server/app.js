@@ -25,7 +25,7 @@ const authRouter = require("./src/routes/auth/auth");
 const androidRouter = require("./src/routes/android/android");
 const jwtAuth = require("./src/routes/middleware/jwt.auth");
 const dialogflowRouter = require("./src/routes/chatbot/dialogflow");
-
+const scenario = require("./src/routes/chatbot/scenario/index");
 models.sequelize
   .sync()
   .then(() => {
@@ -36,6 +36,7 @@ models.sequelize
     console.log(err);
   });
 
+global.appRoot = path.resolve(__dirname);
 // view engine setup
 app.set("views", path.join(__dirname, "src/views"));
 app.set("view engine", "ejs");
@@ -58,6 +59,9 @@ app.use("/uploads", express.static("uploads"));
 app.use(cors());
 
 app.use("/", indexRouter);
+
+app.use("/scenario", scenario); ///////////////////////////////
+
 app.use("/auth", authRouter);
 app.use(jwtAuth.authChecker);
 app.use("/users", usersRouter);
@@ -67,6 +71,7 @@ app.use("/agent", agentRouter);
 app.use("/admin", adminRouter);
 app.use("/android", androidRouter);
 app.use("/dialogflow", dialogflowRouter);
+
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
   next(createError(404));

@@ -102,7 +102,7 @@ const Maximized = ({
                   Authorization: `Bearer ${cookie.load("token")}`,
                 },
               })
-
+			console.log(response.data.fulfillmentText);
             for (let content of response.data.fulfillmentMessages) {
 
                 conversation = {
@@ -190,7 +190,19 @@ const Maximized = ({
             e.target.value = "";
         }
     }
+	const keyClickHanlder = (e) => {
 
+		if (!e.target.value) {
+			return alert('you need to type somthing first')
+		}
+
+		//we will send request to text query route 
+		textQuery(e.target.value)
+
+
+		e.target.value = "";
+
+    }
     // const renderCards = (cards) => {
     //     return cards.map((card,i) => <Card key={i} cardInfo={card.structValue} />)
     // }
@@ -200,10 +212,22 @@ const Maximized = ({
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
     }
 
+
+
     useEffect(() => {
         scrollToBottom()
       });
-	  
+
+	const today = new Date();   
+
+	let year = today.getFullYear(); // 년도
+	let month = today.getMonth() + 1;  // 월
+	let date = today.getDate();  // 날짜
+	let day = today.getDay();  // 요일
+	let hour = today.getHours();
+	let minute = today.getMinutes();
+	
+	let writeTimeStmap = year + '년 ' + month + '월 ' + date + '일 ' + '오전 '+  hour + ':' + minute;
 	return (
 		<div
 			style={{
@@ -249,6 +273,7 @@ const Maximized = ({
 			>
 				
 				<MessageList active containScrollInSubtree>
+					<div style={{textAlign:'center'}}>{writeTimeStmap}</div>
 					{messagesFromRedux.map((message, i) => (
 						<>
 						<MessageGroup key={i} onlyFirstWithMeta>
@@ -263,14 +288,14 @@ const Maximized = ({
 					))}
 				</MessageList>
 			</div>
-			<TextComposer onKeyPress={keyPressHanlder}>
+			<TextComposer  >
 				<Row align="center">
 					<Fill>
-						<input placeholder="요청사항을 입력하세요." style={{width: '100%',borderRadius: '5px',
+						<input onKeyPress={keyPressHanlder} placeholder="요청사항을 입력하세요." style={{width: '100%',borderRadius: '5px',
 					border: '3px solid lightgray'}} />
 					</Fill>
 					<Fit>
-						<IconButton>
+						<IconButton onClick={keyClickHanlder}>
 							<SendIcon color="#4788ef"/>
 						</IconButton>
 					</Fit>

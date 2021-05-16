@@ -29,10 +29,12 @@ const TopFirstRowhWrapper = styled.div`
   display: flex;
   width: 100%;
   height: 33%;
+  color: black;
 `;
 const SecondRowWrapper = styled.div`
   display: flex;
   height: 33%;
+  color: black;
 `;
 const SearchBlock = styled.div`
   display: flex;
@@ -81,14 +83,14 @@ function SRPage() {
       SearchType === "title"
         ? Keyword === ""
           ? ``
-          : `&title=${Keyword}`
+          : `&title=${encodeURIComponent(Keyword)}`
         : Keyword === ""
         ? ``
-        : `&user=${Keyword}`;
+        : `&user=${encodeURIComponent(Keyword)}`;
 
     //  console.log(queryKeyword);
-    const queryTargetCode = `&targetcode=${TargetCode}`;
-    const queryCSRStatus = `&csrstatus=${CSRStatus}`;
+    const queryTargetCode = `&targetcode=${encodeURIComponent(TargetCode)}`;
+    const queryCSRStatus = `&csrstatus=${encodeURIComponent(CSRStatus)}`;
     const queryDate =
       StartDate === ""
         ? FinishDate === ""
@@ -194,11 +196,11 @@ function SRPage() {
               </option>
               <option value="접수대기">접수대기</option>
               <option value="접수완료">접수완료</option>
-              <option value="변경관리 처리중">변경관리 처리중</option>
-              <option value="처리 지연중">처리 지연중</option>
+              <option value="요청처리중">요청처리중</option>
+              <option value="처리완료">처리완료</option>
+              <option value="요청반려">요청반려</option>
             </Select>
           </SearchBlock>
-
           <SearchBlock>
             · 요청/접수 기간
             <Datepicker change={StartdatedHandler} />
@@ -218,12 +220,11 @@ function SRPage() {
               <option value="OA장비">OA장비</option>
             </Select>
           </SearchBlock>
-
           <SearchBlock>
             ·
             <Select onChange={searchTypeHandler}>
               <option value="title">제목</option>
-              <option value="user">작성자</option>
+              <option value="user">요청자</option>
             </Select>
             <Input size="40" onChange={keywordHandler} />
             <Button
@@ -231,6 +232,7 @@ function SRPage() {
               size="sm"
               id="searchButton"
               onClick={SearchHandler}
+              style={{ marginLeft: "55px", height: "30px" }}
             >
               <img src={searchImg} width="18" height="17" />
               검색
@@ -242,41 +244,36 @@ function SRPage() {
         <Table striped bordered hover>
           <thead>
             <tr>
-              <th rowSpan="2" id="thCenterAlign">
+              <th rowSpan="2" id="centerAlign">
                 No
               </th>
-              <th rowSpan="2" id="thCenterAlign">
+              <th rowSpan="2" id="centerAlign">
                 서비스상태
               </th>
-              <th rowSpan="2" id="thCenterAlign">
+              <th rowSpan="2" id="centerAlign">
                 문의대상
               </th>
-              <th rowSpan="2" id="thCenterAlign">
-                시스템명1
-              </th>
-              <th rowSpan="2" id="thCenterAlign">
-                시스템명2
-              </th>
-              <th rowSpan="2" id="thCenterAlign">
-                문의유형
-              </th>
-              <th rowSpan="2" id="thCenterAlign">
+
+              <th rowSpan="2" id="centerAlign">
                 제목
               </th>
-
-              <th colSpan="3">서비스 요청</th>
-              <th colSpan="2">서비스 접수</th>
-              <th colSpan="3">서비스 검토/처리</th>
+              <th colSpan="2" id="centerAlign">
+                서비스 요청
+              </th>
+              <th colSpan="2" id="centerAlign">
+                서비스 접수
+              </th>
+              <th colSpan="2" id="centerAlign">
+                서비스 검토/처리
+              </th>
             </tr>
             <tr>
-              <th>부서</th>
-              <th>성명</th>
-              <th>요청등록일</th>
-              <th>성명</th>
-              <th>접수일</th>
-              <th>설명</th>
-              <th>예상완료일</th>
-              <th>처리완료일</th>
+              <th id="centerAlign">요청자</th>
+              <th id="centerAlign">요청등록일</th>
+
+              <th id="centerAlign">접수자</th>
+              <th id="centerAlign">예상완료일</th>
+              <th id="centerAlign">처리완료일</th>
             </tr>
           </thead>
 
@@ -288,21 +285,15 @@ function SRPage() {
                   sROpenModal(request);
                 }}
               >
-                <td>{request.REQ_SEQ}</td>
-                <td>{request.CSR_STATUS}</td>
-                <td>{request.TARGET_CODE}</td>
-                <td></td>
-                <td></td>
-                <td>{request.REQ_TYPE_CODE}</td>
-                <td>{request.TITLE}</td>
-                <td></td>
-                <td></td>
-                <td>{request.createdAt.split(" ")[0]}</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td id="centerAlign">{request.REQ_SEQ}</td>
+                <td id="centerAlign">{request.CSR_STATUS}</td>
+                <td id="centerAlign">{request.TARGET_CODE}</td>
+                <td id="centerAlign">{request.TITLE}</td>
+                <td id="centerAlign">{request.REG_USER.User_name}</td>
+                <td id="centerAlign">{request.createdAt.split(" ")[0]}</td>
+                <td id="centerAlign">{request.MOD_USER_ID}</td>
+                <td id="centerAlign">{request.EXPRECTED_FINISH_DATE}</td>
+                <td id="centerAlign">{request.REAL_FINISH_DATE}</td>
               </tr>
             ))}
           </tbody>

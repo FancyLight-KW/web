@@ -1,35 +1,66 @@
 const models = require("../../DB/models");
 const FCM_Admin = require("firebase-admin");
 
-exports.sendMessageToDevice = async (agent, reqNo) => {
-  let msg = {
-    data: {
-      title: "ddd",
-      body: "dd",
-    },
-  };
-
-  await models.Devices.findOne({
+exports.sendMessageToDevice2 = (user, reqNo, msg) => {
+  models.Devices.findOne({
     where: {
-      DEVICE_USER_ID: agent,
+      DEVICE_USER_ID: user,
     },
-  }).then((result) => {
-    msg["token"] = result.DEVICE_ID;
+  })
+    .then((result) => {
+      if (result) {
+        msg["token"] = result.DEVICE_ID;
+        models.Requests.findOne({
+          where: {
+            REQ_SEQ: reqNo,
+          },
+        }).then((result) => {
+          msg.data.body = result.TITLE;
+          FCM_Admin.messaging().send(msg);
+        });
+
+        console.log("메세지 전송 성공" + msg);
+
+        return 0;
+      }
+    })
+    .catch((err) => {
+      console.log("err\n", err);
+      return 1;
+    });
+  console.log("기기가 없음");
+  return 2;
+};
+
+exports.sendMessageToDevice = async (user, reqNo, msg) => {
+  let deviceResult = await models.Devices.findOne({
+    where: {
+      DEVICE_USER_ID: user,
+    },
   });
 
-  // await models.Requests.findOne({
-  //   where: {
-  //     REQ_SEQ: reqNo,
-  //   },
-  // }).then((result) => {
-  //   msg["data"] = {
-  //     title: result.TITLE,
-  //     body: result.CONTENT,
-  //   };
-  // });
+  if (deviceResult) {
+    let requestResult = await models.Requests.findOne({
+      where: {
+        REQ_SEQ: reqNo,
+      },
+    });
 
-  console.log(msg);
-  await FCM_Admin.messaging().send(msg);
+    msg["token"] = deviceResult.DEVICE_ID;
+    msg.data.body = requestResult.TITLE;
 
-  return 0;
+    FCM_Admin.messaging()
+      .send(msg)
+      .then((result) => {
+        console.log("메세지 전송 성공");
+        return 0;
+      })
+      .catch((err) => {
+        console.log("send message err ", err);
+        return 1;
+      });
+  } else {
+    console.log("기기가 없음");
+    return 2;
+  }
 };

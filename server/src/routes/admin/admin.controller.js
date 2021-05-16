@@ -64,6 +64,7 @@ exports.denyRequest = (req, res) => {
 
 exports.allocateAgent = (req, res) => {
   let body = req.body;
+
   models.Requests.update(
     {
       MOD_USER_ID: body.MOD_USER_ID,
@@ -76,23 +77,18 @@ exports.allocateAgent = (req, res) => {
     }
   )
     .then(async (result) => {
-      // send message to android
-      console.log(result[0]);
       if (result[0] > 0) {
-        if (
-          (await sendMsg.sendMessageToDevice(body.MOD_USER_ID, body.REQ_SEQ)) !=
-          0
-        ) {
-          res.status(503).send({
-            resultCode: 3,
-            message: "메세지 전송 실패",
-          });
-        } else {
-          res.send({
-            resultCode: 0,
-            message: `${body.REQ_SEQ} 할당 성공`,
-          });
-        }
+        sendMsg.sendMessageToDevice(body.MOD_USER_ID, body.REQ_SEQ, {
+          data: {
+            title: "요청이 할당되었습니다.",
+            body: "",
+          },
+        });
+
+        res.send({
+          resultCode: 0,
+          message: "요원 할당 성공",
+        });
       } else {
         res.status(502).send({
           resultCode: 2,

@@ -1,13 +1,10 @@
-#thCenterAlign {
+#centerAlign {
   vertical-align: middle;
+  text-align: center;
 }
 #padding_zero {
   padding-right: 0;
   padding-left: 0;
-}
-#searchButton {
-  margin-left: 91px;
-  height: 30px;
 }
 #itsrButton {
   margin-top: 8px;

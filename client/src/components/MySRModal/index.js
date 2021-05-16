@@ -5,6 +5,8 @@ import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Logo from "../../assets/800px-Hyundai_Transys_logo.png";
 import NoImage from "../../assets/noimage.png";
+import axios from "axios";
+import cookie from "react-cookies";
 // import CloseButton from "./CloseButton";
 
 const ModalWrapper = styled.div`
@@ -62,7 +64,7 @@ const TypeText = styled.div`
   line-height: 22px;
   font-weight: 700;
 `;
-const HeaContainer = styled.div`
+const HeadRowContainer = styled.div`
   display: flex;
   width: 100%;
   padding-bottom: 15px;
@@ -141,6 +143,25 @@ function MySRModal({
     event.preventDefault(); // 새로고침 방지
   };
 
+  const deleteSRHandler = (reqseq) => {
+    //  console.log(reqseq);
+    if (window.confirm("삭제하시겠습니까?")) {
+      axios
+        .delete(`${process.env.REACT_APP_API_HOST}/requests/${reqseq}`, {
+          headers: {
+            Authorization: `Bearer ${cookie.load("token")}`,
+          },
+        })
+        .then((response) => {
+          console.log(response);
+          if (response.data.resultCode === 0) {
+            alert("요청이 삭제되었습니다..");
+            window.location.reload();
+          }
+        });
+    }
+  };
+
   return (
     <>
       <ModalOverlay visible={visible} />
@@ -156,18 +177,32 @@ function MySRModal({
           </LogoBox>
           <ContentWrapper>
             <TypeText>
-              <HeaContainer>
+              <HeadRowContainer>
+                <HeadSpan></HeadSpan>
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  onClick={() => {
+                    deleteSRHandler(requestInfos.REQ_SEQ);
+                  }}
+                  style={{ marginLeft: "80px" }}
+                >
+                  삭제하기
+                </Button>
+              </HeadRowContainer>
+              <HeadRowContainer>
                 <HeadSpan>※ 나의 요청 세부정보</HeadSpan>
                 <Link to={`/revise/${requestInfos.REQ_SEQ}`}>
                   <Button
-                    variant="primary"
+                    variant="secondary"
                     size="sm"
                     style={{ marginLeft: "80px" }}
                   >
                     수정하기
                   </Button>
                 </Link>
-              </HeaContainer>
+              </HeadRowContainer>
+
               <SRInfoBlock>
                 <SRInfoSpan>제목</SRInfoSpan>
                 <SRInfoDiv>
@@ -215,6 +250,9 @@ function MySRModal({
                       src={requestInfos.REQ_IMG_PATH}
                       width="200px"
                       height="200px"
+                      onClick={() => {
+                        window.open(requestInfos.REQ_IMG_PATH);
+                      }}
                     />
                   )}
                 </SRImageBox>
