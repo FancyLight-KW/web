@@ -55,14 +55,26 @@ exports.listIntents = async (req, res) => {
     let existingIntent = "";
 
     const [response] = await intentsClient.listIntents(request);
+    response.sort((a, b) => {
+      var nameA = a.displayName.toUpperCase(); // ignore upper and lowercase
+      var nameB = b.displayName.toUpperCase(); // ignore upper and lowercase
+      if (nameA > nameB) {
+        return -1;
+      }
+      if (nameA < nameB) {
+        return 1;
+      }
 
+      // 이름이 같을 경우
+      return 0;
+    });
     let trainingPhrases = {};
     let messageTexts = {};
     let inputContexts = {};
     let outputContext = {};
     let childDegree = {};
     let result = [];
-    let childCardinality = [];
+    let childCardinality = {};
     let cardinalCount = 0;
 
     // response.forEach((intent)=> {
@@ -218,7 +230,10 @@ exports.listIntents = async (req, res) => {
       }else{
         cardinalityNum[intent.displayName] = childCardinality[intent.displayName].length;
       }
-      
+      console.log(intent.displayName);
+      console.log(childCardinality[intent.displayName]);
+      console.log(cardinalityNum);
+
       result.push({
         intentName: intent.displayName,
         trainingPhrases: trainingPhrases[intent.displayName],
