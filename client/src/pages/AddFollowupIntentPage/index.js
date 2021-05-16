@@ -268,10 +268,10 @@ function AddFollowupIntentPage() {
         }else if (response.data.result[indexToFindDegree].childDegree) {
           // childDegree 있으면 ?
           let customNum = response.data.result[indexToFindDegree].childDegree;
-          let customString = "";
-          for (let i = 0; i < customNum; i++) {
-            customString += " - custom";
-          }
+          let customString = " - custom";
+          //for (let i = 0; i < customNum; i++) {
+          //  customString += " - custom";
+          //}
           setIntentName(parentName + customString);
         } else {
           // 없으면
