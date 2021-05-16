@@ -244,7 +244,7 @@ exports.listIntents = async (req, res) => {
         cardinalityNum: cardinalityNum[intent.displayName],
       });
     })
-    console.log(cardinalityNum);
+   // console.log(cardinalityNum);
     result.sort((a, b) => {
       var nameA = a.intentName.toUpperCase(); // ignore upper and lowercase
       var nameB = b.intentName.toUpperCase(); // ignore upper and lowercase
@@ -329,7 +329,7 @@ exports.listIntents = async (req, res) => {
     console.log(outputContext);
     */
 
-    //console.log(result);
+    console.log(result);
     res.send({
       result: result});
     /*

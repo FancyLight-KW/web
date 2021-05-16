@@ -259,7 +259,13 @@ function AddFollowupIntentPage() {
           }
         }
         setIntents([...response.data.result]);
-        if (response.data.result[indexToFindDegree].childDegree) {
+        if (response.data.result[indexToFindDegree].cardinalityNum > 0) {
+          setIntentName(
+            parentName +
+              " - custom" +
+              String(response.data.result[indexToFindDegree].cardinalityNum + 1)
+          );
+        }else if (response.data.result[indexToFindDegree].childDegree) {
           // childDegree 있으면 ?
           let customNum = response.data.result[indexToFindDegree].childDegree;
           let customString = "";
@@ -267,12 +273,6 @@ function AddFollowupIntentPage() {
             customString += " - custom";
           }
           setIntentName(parentName + customString);
-        } else if (response.data.result[indexToFindDegree].cardinalityNum > 0) {
-          setIntentName(
-            parentName +
-              " - custom" +
-              String(response.data.result[indexToFindDegree].cardinalityNum + 1)
-          );
         } else {
           // 없으면
           setIntentName(parentName + " - custom");
