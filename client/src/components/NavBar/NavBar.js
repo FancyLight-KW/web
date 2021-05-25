@@ -26,7 +26,6 @@ const Bold = styled.div`
 `;
 
 function NavBar() {
-  //  let dispatch = useDispatch();
   let history = useHistory();
   const [LoginModalVisible, setLoginModalVisible] = useState(false);
   const [RegisterModalVisible, setRegisterModalVisible] = useState(false);
@@ -36,9 +35,7 @@ function NavBar() {
   const [userLevel, setUserLevel] = useState(null);
   const userInfos = useSelector((state) => state.auth.userInfos);
 
-  // console.log("UserInfo:" + JSON.stringify(userInfos) + userInfos);
   const location = useLocation();
-  //console.log(location.pathname);
 
   useEffect(() => {
     if (cookie.load("token")) {
@@ -65,8 +62,6 @@ function NavBar() {
       }
     }
   }, [userInfos]);
-
-  //console.log(authenticated);
 
   const loginOpenModal = () => {
     setLoginModalVisible(true);
@@ -227,7 +222,7 @@ function NavBar() {
                 </Link>
               </NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.5">
+              <NavDropdown.Item>
                 <Link to="/sradmin" style={{ color: "black" }}>
                   나의 결재목록
                 </Link>
