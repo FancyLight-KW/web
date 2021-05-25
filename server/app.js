@@ -25,7 +25,7 @@ const authRouter = require("./src/routes/auth/auth");
 const androidRouter = require("./src/routes/android/android");
 const jwtAuth = require("./src/routes/middleware/jwt.auth");
 const dialogflowRouter = require("./src/routes/chatbot/dialogflow");
-const scenario = require("./src/routes/chatbot/scenario/index");
+
 models.sequelize
   .sync()
   .then(() => {
@@ -59,9 +59,6 @@ app.use("/uploads", express.static("uploads"));
 app.use(cors());
 
 app.use("/", indexRouter);
-
-app.use("/scenario", scenario); ///////////////////////////////
-
 app.use("/auth", authRouter);
 app.use(jwtAuth.authChecker);
 app.use("/users", usersRouter);

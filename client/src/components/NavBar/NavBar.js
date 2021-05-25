@@ -215,7 +215,10 @@ function NavBar() {
           ) : userLevel === 3 ? (
             <NavDropdown title="관리자용" id="dropDown-nav">
               <NavDropdown.Item>
-                <Link style={{ color: "black" }}>공지사항 관리</Link>
+                <Link to="/mysr" style={{ color: "black" }}>
+                  나의 요청목록
+                </Link>
+                {/* <Link style={{ color: "black" }}>공지사항 관리</Link> */}
               </NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item>
