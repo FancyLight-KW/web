@@ -14,9 +14,26 @@
 - redux-thunk(2.3.0)
 - styled-components(5.2.3)
 
+#### Server
+- ubuntu(18.04.5 LTS)
+- express(4.16.1)
+- npm(7.11.2)
+- bcrypt(5.0.1)
+- cookie-parser(1.4.4)
+- dotenv(8.2.0)
+- multer(1.4.2)
+- sequelize(6.5.0)
+- jsonwebtoken(8.5.1)
+
+#### etc.
+- nginx(1.21)
+- docker(20.10.6)
+- docker-compose(1.17.1)
+
+
 ### Team
-- [홍세화](https://github.com/jrhong95) - Server
-- [성치훈](https://github.com/Chihoon-Sung) - Android
-- [이동기](https://github.com/rkdmf1026) - Android
-- [이우제](https://github.com/woojerry) - Web Front-end
-- [염연웅](https://github.com/bingoring) - Chatbot
+- 🙋‍♂️[홍세화](https://github.com/jrhong95) - Server
+- 💁‍♂️[성치훈](https://github.com/Chihoon-Sung) - Android
+- 🙆‍♂️[이동기](https://github.com/rkdmf1026) - Android
+- 🤷‍♂️[이우제](https://github.com/woojerry) - Web Front-end
+- 🙎‍♂️[염연웅](https://github.com/bingoring) - Chatbot
