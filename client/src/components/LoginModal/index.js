@@ -197,7 +197,7 @@ function LoginModal({
               <TypeText>
                 <h4>로그인</h4>
               </TypeText>
-              <form onSubmit={onSubmitHandler}>
+              <form onSubmit={onSubmitHandler} method="GET">
                 <FormOutWrapper>
                   <FormBox>
                     <FormInnerWrapper>
