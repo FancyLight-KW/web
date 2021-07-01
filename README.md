@@ -1,5 +1,7 @@
 ## 현대트랜시스 산학연계 프로젝트 - AI기반의 모바일 헬프데스크 Web
 [AI기반의 모바일 헬프데스크 App](https://github.com/FancyLight-KW/Application) 
+> **사내 ICT팀 비즈니스부서 사용자들의 IT지원 요청사항에 대한 시나리오 기반의 자동 답변 및 Helpdesk 업무 관리**
+
 <hr>
 
 ### Architecture
