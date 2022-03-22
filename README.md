@@ -4,6 +4,9 @@
 
 <hr>
 
+### Project Period
+2021.02~2021.05
+
 ### Architecture
 ![FancyLight](https://user-images.githubusercontent.com/50645183/119451429-33eba480-bd70-11eb-84e7-7fedb833434b.PNG)
 
